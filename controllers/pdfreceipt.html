@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Receipt</title>
+  <style>
+#invoice-POS{
+  box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+  padding:25px;
+  margin: 0 auto;
+  width: 50%;
+  background: #FFF;
+  font-family: lato;
+}
+  
+::selection {background: #f31544; color: #FFF;}
+::moz-selection {background: #f31544; color: #FFF;}
+h1{
+  font-size: 2em;
+  color: #222;
+}
+h2{
+  font-size: 25px;
+  display: inline;
+}
+h3{
+  font-size: 1.5em;
+  font-weight: 300;
+  line-height: 2em;
+}
+p{
+  font-size: 1em;
+  color: #666;
+  line-height: 1.2em;
+}
+ 
+#top, #mid,#bot{ /* Targets all id with 'col-' */
+  border-bottom: 1px solid #EEE;
+}
+
+#top{min-height: 100px;}
+#mid{min-height: 80px;} 
+#bot{ min-height: 50px;}
+
+.logo{
+  //float: left;
+	height: 60px;
+	width: 60px;
+	background: url(/img/brand-logo-white.png) no-repeat;
+	background-size: 60px 60px;
+}
+.clientlogo{
+  float: left;
+	height: 60px;
+	width: 60px;
+	background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
+	background-size: 60px 60px;
+  border-radius: 50px;
+}
+.info{
+  display: block;
+  //float:left;
+  margin-left: 0;
+}
+.title{
+  float: right;
+}
+.title p{text-align: right;} 
+table{
+  width: 100%;
+  border-collapse: collapse;
+}
+td{
+  //padding: 5px 0 5px 15px;
+  //border: 1px solid #EEE
+}
+.tabletitle{
+  //padding: 5px;
+  font-size: .5em;
+  background: #EEE;
+}
+.service{border-bottom: 1px solid #EEE;}
+.item{width: 24mm;}
+.itemtext{font-size: .5em;}
+
+#legalcopy{
+  margin-top: 5mm;
+  float:right;
+}
+ 
+
+</style>
+</head>
+<body>
+  <div id="invoice-POS">
+    
+  
+      
+      <div class="info"> 
+        <h2>Receipt for the payment</h2>
+        <img style="float:right" width="120px" src="https://app.clxns.in/fis_Logo/<%=fiImage %>"/>
+      </div><!--End Info-->
+      <br clear="all">
+    
+    <div id="mid">
+      <div class="info">
+        <p> 
+          <b>
+          Reciept No: <%= (additionalField.refChequeNo?additionalField.refChequeNo:additionalField.RefChequeNo)?(additionalField.refChequeNo?additionalField.refChequeNo:additionalField.RefChequeNo): additionalField['Cheque No'] %> / <%= finame %></br>
+          Loan Account No: <%=loanId %></br>
+          Customer Name: <span style="text-transform: capitalize"><%=name %></span></br>
+          </b>
+        </p>
+      </div>
+    </div> 
+    
+    <div id="bot">
+        <p> 
+          Received an amount of Rs.<%= additionalField['Recovered_Amount'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> towards Outstanding
+          payment against loan account/credit number mentioned above availed from <%= finame %>.
+      </p>
+      
+         <br>
+      
+					
+
+					<div id="legalcopy">
+            <p class="legal"><strong>Collected By -</strong>
+						</p>
+            <img width="100px" src="https://app.clxns.in/img/brand-logo-white.png"/>
+          </div>
+          <br clear="all">
+				</div><!--End InvoiceBot-->
+  </div><!--End Invoice-->
+
+</body>
+
+</html>

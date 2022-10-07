@@ -1,0 +1,100 @@
+<style>
+  /* .dataTables_wrapper {
+    clear: none !important;
+  } */
+  #main .section-data-tables .dataTables_wrapper table.dataTable tbody {
+    height: auto !important;
+  }
+
+#tableReassignLeadAddTele_filter{
+  display: none !important;
+}
+
+#tableReassignLeadAddTele > tbody > tr > td:nth-child(6){
+  display: block !important;
+}
+
+#tableReassignLeadAddTele_wrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr > th:nth-child(6){
+  display: block !important;
+}
+
+  .filter-icon{
+    letter-spacing: 0px;
+    padding: 0 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    box-shadow: none;
+    line-height: 32px;
+    display: inline-block;
+    height: 32px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+    background-color: orange !important;
+    letter-spacing: 0.5px;
+    color:white;
+
+  }
+</style>
+
+<script>
+  const columnNamesReassignLeadAddTelecaller = '<%- JSON.stringify(datatableAddTelecallers.columns) %>';
+  const apiUrlReassignLeadAddTelecaller = '<%- JSON.parse(JSON.stringify(datatableAddTelecallers.apiUrl)) %>';
+  const reassignId = '<%- datatableAddTelecallers.id ? datatableAddTelecallers.id : null %>';
+  const IsSearchReassignLeadTelecaller = '<%- JSON.parse(JSON.stringify(datatableAddTelecallers.url)) %>';
+  console.log('\n\n Issearch',IsSearch);
+  let myTableReassignLeadAddTelecaller
+  let filterObjReassignLeadTelecaller = {};
+  $(document).ready(() => {
+
+    myTableReassignLeadAddTelecaller = $('#tableReassignLeadAddTele').DataTable({
+      sScrollX: '100%',
+      bLengthChange: false,
+      bInfo: false,
+      paging: false,
+      ordering: false,
+      pageLength: 10,
+      searching : true,
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: `${baseUrl}${apiUrlReassignLeadAddTelecaller}`,
+        type: 'POST',
+        datatype: 'JSON',
+        data: function (data) {
+          data.filterObj = filterObjReassignLeadTelecaller;
+        }
+      },
+      'columns': JSON.parse(columnNamesReassignLeadAddTelecaller),
+      // select: { style: 'multi' }
+    });
+
+  });
+
+
+</script>
+
+<div class="col s12">
+  <div class="container">
+    <div class="section section-data-tables">
+      <div class="row">
+        <div class="col s12 m12 l12">
+          <!-- <div id="button-trigger" class="card roundCorners card-default
+            scrollspy">
+            <div class="card-content">
+              <div class="row">
+                <div class="col s12"> -->
+                  <table id="tableReassignLeadAddTele" class="display responsive
+                                    nowrap" style="min-height: 0px
+                                    !important;width:100%">
+                  </table>
+                <!-- </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

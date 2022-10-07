@@ -1,0 +1,65 @@
+.pagination {
+    .page-item {
+        &:not(.active) {
+            .page-link {
+                @extend %color-primary;
+            }
+
+        }
+
+        &.active {
+            .page-link {
+                @extend %bg-primary;
+            }
+
+        }
+
+        .page-link {
+            @extend .transition-default;
+            font-size: rem(15);
+            font-weight: 500;
+            padding: rem(13) rem(16);
+            border-color: $border-on-light-standard;
+
+            @include breakpoint-min(sm) {
+                font-size: rem(17);
+                padding: rem(13) rem(21);
+
+            }
+
+            &:focus {
+                box-shadow: none;
+            }
+
+            &:hover {
+                background: $border-on-light-standard;
+                color: $color-dark-700;
+            }
+        }
+
+        &:first-child .page-link {
+            border-top-left-radius: rem(5);
+            border-bottom-left-radius: rem(5);
+        }
+
+        &:last-child .page-link {
+            border-top-right-radius: rem(5);
+            border-bottom-right-radius: rem(5);
+        }
+
+        &--page-gap {
+            @extend .transition-default;
+            font-size: rem(17);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding-right: rem(21);
+            padding-left: rem(21);
+            border-top: 1px solid $border-on-light-standard;
+            border-bottom: 1px solid $border-on-light-standard;
+            background: $color-white;
+
+        }
+    }
+
+}

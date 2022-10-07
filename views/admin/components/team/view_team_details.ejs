@@ -1,0 +1,527 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+<style>
+    .statistics{
+      margin-bottom: 0px;
+    }
+    .customModal{
+      top: -3% !important;
+      height: 100%;
+    }
+    .userdata {
+      display: flex;
+      align-items: center;
+    }
+    .usertitle {
+      margin-top: 4px;
+    }
+    .modeltitle {
+      font-size: 20px;
+    }
+    .select-wrapper + label{
+      top: -35px !important;
+    }
+    .addChip {
+      letter-spacing: 0px;
+      padding: 0 12px;
+      font-size: 13px;
+      border-radius: 16px;
+      box-shadow: none;
+      line-height: 32px;
+      display: inline-block;
+      height: 32px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      margin-top: 3px;
+      background-color: #2196f3 !important;
+    }
+
+    .modal .modal-footer {
+      width: 105%;
+      height: 60px;
+    }
+    .circle {
+      /* width: 120px;
+      height: 120px; */
+      /* line-height: 120px;
+      border-radius: 50%; */
+      /* border: 2px solid #2196f3; */
+      font-size: 25px;
+      color: #2196f3;
+      text-align: center;
+      /* background: rgb(245, 245, 245); */
+      /* font-weight: bold; */
+    }
+</style>
+<div id="main">
+
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <!-- <h5 class="breadcrumbs-title mt-0 mb-0"><span>Team Details</span></h5> -->
+                        <!-- <ol class="breadcrumbs mb-0">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/team">Teams</a>
+                            </li>
+                            <li class="breadcrumb-item active">View Team Details
+                            </li>
+                        </ol> -->
+                        <div class="row mt-0" style="color: white; display: flex; align-items: center;">
+                          <div class="col s0 m0 l0" style="padding-right: 3px;">
+                            <p class="mt-0" style="font-size: 20px;text-transform: capitalize;"><%= team.name %></p>
+                          </div>
+                          <div class="col s0 m0 l0" style="font-size:17px; padding-left: 0px;">
+                            <% var roleType= (team.dataValues.teamLeader.roleId==3) ? '- Team Leader' : '- Field Coordinator' %>
+                            <p class="mt-0" style="font-size: 15px;text-transform: capitalize;">( <%= team.teamLeader.firstName %>
+                              <%= team.teamLeader.lastName %> <%= roleType %> )</p>
+                          </div>                          
+                        </div>
+                        <p class="mt-0" style="color: white; padding-left: 4px;"><%= team.description %></p>
+                    </div>
+
+                    <div class="col s2 m6 l6">
+                      <% if(permissionsList.includes('edit')) { %>
+                      
+                          <!-- <a class="btn waves-effect waves-light gradient-45deg-green-teal breadcrumbs-btn right modal-trigger" style="margin-left: 10px"
+                          href='/team/edit/<%= team.id %>'>
+                              <span class="hide-on-small-onl">Edit</span>
+                          </a> -->
+                      
+                      <% }; %>
+
+                      <% if(permissionsList.includes('add')) { %>
+                          <a class="btn waves-effect waves-light gradient-45deg-green-teal breadcrumbs-btn right modal-trigger"
+                          href="#addTeamMemberModal" onclick="getMemberList(`<%= team.id %>`)">
+                              <i class="material-icons hide-on-med-and-up">settings</i>
+                              <span class="hide-on-small-onl">Add Team Members</span>
+                              <i class="material-icons right">add</i>
+                          </a>
+                      
+                      <% }; %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical mt-1 section">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                                <div class="card-content">
+                                  <div class="row mt-0">
+                                    <!-- <div class="col s3 m2 l2">
+                                      <p class="m-0"><b>Team Name</b></p>
+                                      <p class="mt-2"><%= team.name %></p>
+                                    </div>
+                                    <div class="col s3 m3 l3">
+                                      <p class="m-0"><b>Leader Name</b></p>
+                                      <p class="mt-2"><%= team.teamLeader.firstName %>
+                                        <%= team.teamLeader.lastName %></p>
+                                    </div> -->
+                                    <div class="col s3 m2 l2">
+                                      <p class="m-0"><b>Created on</b></p>
+                                      <p class="mt-2"><%= team.createdAt.toString().slice(4, 15)  %></p>
+                                    </div>
+                                    <div class="col s3 m2 l2">
+                                      <p class="m-0"><b>Location</b></p>
+                                      <p class="mt-2"><%= team.location.name  %></p>
+                                    </div>
+                                    <div class="col s3 m3 l3">
+                                      <p class="m-0"><b>No. of FOS</b></p>
+                                      <p class="mt-2"><%= team.fosCount  %></p>
+                                    </div>
+                                    <div class="col s3 m3 l3">
+                                      <p class="m-0"><b>No. of Telecallers</b></p>
+                                      <p class="mt-2"><%= team.teleCount  %></p>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <%- include('../../components/datatable_new.ejs', datatable) -%>
+    </div>
+
+</div>
+
+<div class="card">
+    <div id="addTeamMemberModal" class="modal modal-fixed-footer customModal roundCornersFloat">
+      <form class="addTeamMemberForm" id="addTeamMemberForm">
+        <div class="modal-content customModalContent">
+    
+          <div class="row">
+            <div class="col s8 m8 l8">
+            <h5 class="mt-0"><b style="font-size: 17px;">Add Team Members</b></h5>
+            </div>
+            <div class="col s4 m4 l4">
+            <a class="btn waves-light gradient-45deg-amber-amber darken-4 accent-2 z-depth-4 right sidenav-trigger gradient-45deg-amber-amber" id="filterDiv">
+              <span>Filters</span>
+           </a>
+           </div>
+          </div>
+          <div id="FiltersData" style="display:none";>
+            <div class="row mt-3">
+                <div class="col s6 m6 l6">
+                    <div class="row">
+                        <div class="col s4 m4 l4 mt-1 mb-1">
+                          <label class="ml-0">
+                            <span>User Type :</span>
+                          </label>
+                        </div>
+                        <div class="col s4 m4 l4 mt-1 mb-1">
+                          <label style="margin-left: -30px;">
+                            <input name="group1" id="telecaller" type="radio"/>
+                              <span>Telecaller</span>
+                          </label>
+                        </div>
+                        <div class="col s4 m4 l4 mt-1 mb-1">
+                          <label style="margin-left: -20px;">
+                            <input name="group1" id="fos" type="radio" />
+                              <span>FOS</span>
+                          </label>
+                        </div>
+                      </div>
+                </div>
+                <div class="col s6 m6 l6">
+                  <div class="input-field">
+                      <select id='ProductType' name="ProductType">
+                        <option value="" selected disabled>Choose ProductType</option>
+                        <% productTypes.forEach((product) => { %>
+                          <option value="<%= product.name %>"><%= product.name %></option>
+                        <% }); %>
+                      </select>
+                      <label for="TeamId">ProductType</label>
+                  </div>
+              </div>
+              </div>
+
+          <div class="row mt-1">
+              <div class="col s6 m6 l6">
+                  <div class="input-field">
+                      <select id='experience' name="experience">
+                        <option value="" selected disabled>Choose experience </option>
+                        <option value="1">0 to 3 months</option>
+                        <option value="2">3 to 6 months</option>
+                        <option value="3">6 to 12 months</option>
+                        <option value="4">1 to 3 years</option>
+                        <option value="5">3 to 5 years</option>
+                        <option value="6">5 to 10 years </option>
+                        <option value="7">More than 10 years</option>
+                      </select>
+                      <label for="experience">Experience</label>
+                    </div>
+              </div>
+              <div class="col s6 m6 l6">
+                  <div class="input-field">
+                      <select id='language' name="language" style="margin-top: 15px !important;top: -180.281px !important;">
+                        <option value="" selected disabled>Choose language</option>
+                        <% languages.forEach((language) => { %>
+                          <option value="<%= language.name %>"><%= language.name %></option>
+                        <% }); %>
+                      </select>
+                      <label for="language">language</label>
+                    </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col s12 m12 12" style="text-transform: capitalize !important;">   
+              <div class="input-field">
+                <select id='TeamMemberId' multiple>            
+                </select>
+                <label for="TeamMemberId">Team Member</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer customModalFooter">
+          <a class="modal-action modal-close btn-flat">Cancel</a>
+          <button onclick="addToTeamMember()" type="reset" class="modal-action modal-close btn-flat mr-1">Add</button>
+        </div>
+      </form>
+    </div>
+  
+  </div>
+
+
+<script>
+  const toast = '<%- JSON.stringify(toast) %>';
+  const toastText = '<%- JSON.stringify(toastText) %>';
+  const toastColor = '<%- JSON.stringify(toastColor) %>';
+  const parseToast = JSON.parse(toast);
+  const parseToastText = JSON.parse(toastText);
+  const parseToastColor = JSON.parse(toastColor);
+
+  $(document).ready(function () {
+      if (parseToast) {
+          M.toast({
+              html: parseToastText,
+              classes: parseToastColor
+          })
+      }
+  });
+
+  var teamMemberArr = []
+  var filterObject = { "userType": "telecaller", "productType": "", "experience": [], "language": "" }
+  var addMemberObj = {}
+
+  //get all team members from db
+  function getMemberList(teamId) {
+    console.log("getMemberList teamId ", teamId);
+
+    const data = {
+      id: teamId
+    };
+
+    fetch(`${baseUrl}team/addNewMembersList`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    }).then(response => response.json()).then(data => {
+      console.log("getMemberList Success: -----", data);
+        
+      teamMemberArr = data.data
+
+      console.log("getMemberList teamMemberArr: -----", teamMemberArr);
+
+      //  filterMemberList()
+      //Showing all members from that location
+      let innerHtmlString = ''//'<option value="" disabled selected>Choose Team Member</option>'
+
+      teamMemberArr.forEach(userValue => {
+        innerHtmlString +='<option value="' + userValue.id + '">' + userValue.firstName + ' ' + userValue.lastName +' - '+userValue.employeeId+'('+userValue.role+')'+ '</option>';
+      });
+      if (teamMemberArr.length == 0) {
+        innerHtmlString = '<option value="" selected disabled>No user available for this criteria</option>'
+      }
+
+      document.getElementById('TeamMemberId').innerHTML = innerHtmlString;
+      $('select#TeamMemberId').formSelect()
+    
+      //reset modal data
+      $("#addTeamMemberModal")[0].reset();
+    }).catch(error => {
+      console.error("Error:", error);
+    });
+  }
+
+  //get all team members from db
+  function filterMemberList() {
+    console.log("filterMemberList teamId ", filterObject);
+    console.log('\n\n teamMemberArr',teamMemberArr);
+    var filteredMemberArr = teamMemberArr
+    if (filterObject["productType"] != "") {
+      var productType = filterObject["productType"];
+      var filterArr = []
+      for (const userdata of teamMemberArr) {
+        console.log('getMemberList productType userdata -----', userdata)
+        console.log('getMemberList productType productType -----', productType)
+
+        let ind = userdata.userExp.findIndex((e) => e.productType == productType);
+        console.log('getMemberList ind -----', ind)
+        if (ind > -1) {
+          filterArr.push(userdata)
+        }
+      }
+      filteredMemberArr = filterArr
+    }
+    if (filterObject["experience"].length > 0) {
+      var filterArr = []
+      var experience = filterObject["experience"];
+
+      for (const userdata of filteredMemberArr) {
+        console.log('getMemberList experience userdata -----', userdata.experience, experience[0])
+        if (userdata.experience >= experience[0] && userdata.experience < experience[1]) {
+          console.log('getMemberList experience inside -----')
+          filterArr.push(userdata)
+        }
+      }
+      console.log('getMemberList experience filterArr -----', filterArr)
+
+      filteredMemberArr = filterArr
+    }
+    if (filterObject["userType"] != "") {
+      var userType = filterObject["userType"];
+      console.log('getMemberList userType -----', userType)
+      console.log('getMemberList filteredMemberArr -----', filteredMemberArr)
+      filteredMemberArr = filteredMemberArr.filter((e) => e.role == userType )
+    }    
+    if (filterObject["language"] != "") {
+      var language = filterObject["language"];
+      console.log('getMemberList language -----', language)
+      console.log('getMemberList language.toString().toLowerCase() -----', language.toLowerCase())
+      var filterArr = []
+
+      for (const userdata of filteredMemberArr) {
+        console.log('getMemberList experience language -----', userdata.language)
+
+        const languages = userdata.language.split(',');
+        console.log('getMemberList languages -----', languages)
+
+        let ind = languages.findIndex((e) => e == language.toLowerCase());
+        console.log('getMemberList languages ind -----', ind)
+        if (ind > -1) {
+          filterArr.push(userdata)
+        }
+      }
+      filteredMemberArr = filterArr
+    }
+
+    console.log("getMemberList inside filteredMemberArr ", filteredMemberArr);
+
+    let innerHtmlString = ''//'<option value="" disabled selected>Choose Team Member</option>'
+
+    filteredMemberArr.forEach(userValue => {
+      innerHtmlString +='<option value="' + userValue.id + '">' + userValue.firstName + ' ' + userValue.lastName +' - '+userValue.employeeId+'('+userValue.role+')'+ '</option>';
+    });
+    if (filteredMemberArr.length == 0) {
+      innerHtmlString = '<option value="" selected disabled>No user available for this criteria</option>'
+    }
+
+    document.getElementById('TeamMemberId').innerHTML = innerHtmlString;
+    $('select#TeamMemberId').formSelect()
+  }
+
+  function addToTeamMember() {
+    console.log("addToTeamMember  addMemberObj", addMemberObj);
+    alert(addMemberObj);
+    fetch(`${baseUrl}team/addToTeam`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(addMemberObj)
+    }).then(response => response.json()).then(data => {
+      console.log("getMemberList Success: -----", data);
+      
+      location.reload(true);
+      $('#example').DataTable().ajax.reload(null, false);
+   
+      // $('#ProductType').prop('selectedIndex',0);
+      // $('#experience').prop('selectedIndex',0);
+      // $('#language').prop('selectedIndex',0);
+      // $('#TeamMemberId').val('');
+
+      // $("#ProductType")[0].selectedIndex = 0;
+      // $("#experience")[0].selectedIndex = 0;
+      // $("#language")[0].selectedIndex = 0;
+      
+      // Reset()
+      
+      M.toast({
+          html: "Members added successfully",
+          classes: "green"
+      })
+    }).catch(error => {
+      console.error("Error:", error);
+    });
+  }
+
+  //product type selected
+  $("#ProductType").change(function(){
+    var productType = this.value;
+    console.log("getMemberList inside productType ", productType);
+
+    filterObject["productType"] = productType
+
+    filterMemberList()
+  });
+  
+  //product type selected
+  $("#TeamMemberId").change(function(){
+    var memberValue = $('#TeamMemberId').val();
+    console.log("getMemberList TeamMemberId ", memberValue); //["58", "59"]
+
+    var team = '<%- JSON.stringify(team) %>';
+    var teamData = JSON.parse(team)
+    console.log("getMemberList teamData ", teamData.id);
+
+    
+    addMemberObj = { 
+      members: memberValue,
+      teamId: teamData.id
+    }
+  });
+  
+  //product type selected
+  $("#language").change(function(){
+    var language = this.value;
+    console.log("getMemberList inside language ", language);
+
+    filterObject["language"] = language
+
+    filterMemberList()
+  });
+
+  //checkbox selected
+  $('#telecaller').click(function() {
+    filterObject["userType"] = "telecaller"
+
+    filterMemberList()
+  });
+
+  //checkbox selected
+  $('#fos').click(function() {
+    filterObject["userType"] = "fos"
+
+    filterMemberList()
+  });
+
+  //experience selected
+  $("#experience").change(function(){
+    var experience = this.value;
+    console.log("getMemberList inside experience ", experience);
+
+    var exp = []
+    if (experience == 1) {
+      exp = [0, 3]
+    }
+    if (experience == 2) {
+      exp = [3, 9]
+    }
+    if (experience == 3) {
+      exp = [6, 12]
+    }
+    if (experience == 4) {
+      exp = [12, 36]
+    }
+    if (experience == 5) {
+      exp = [36, 60]
+    }
+    if (experience == 6) {
+      exp = [60, 120]
+    }
+    if (experience == 7) {
+      exp = [120, 10000]
+    }
+    filterObject["experience"] = exp
+
+    console.log("getMemberList exp filterObject ", filterObject);
+    filterMemberList()
+  })
+
+
+ $('#filterDiv').click(function(){
+   $('#FiltersData').toggle();
+});
+
+</script>
+
+<%- include('../../bottom.ejs') -%>

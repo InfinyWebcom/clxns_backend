@@ -1,0 +1,1147 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<style>
+[type='checkbox'] + span:not(.lever):before, [type='checkbox']:not(.filled-in) + span:not(.lever):after {
+  left: 13px;
+}
+
+[type='checkbox'] + span:not(.lever) {
+  margin-left: 9px;
+}
+
+.input-field > label {
+  top: -16px;
+}
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+</style>
+
+<script>
+  let isStateSelect=false;
+  let selected = 1;
+  
+  $(document).on('click','button.btn',function(){
+    if(selected == 1) {
+      selected = 2;
+      $('.tabs').tabs('select','Roles');
+    } 
+    else if(selected == 2) {
+      selected = 1;
+      $('.tabs').tabs('select','Experience');
+      document.getElementById('next').style.display = 'none';
+    } 
+  });
+
+  $(document).on('click','.tab',function(){
+    document.getElementById('next').style.display = 'block';
+  });
+
+</script>
+<div id="main">
+
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col s10 m6 l6">
+            <h5 class="breadcrumbs-title mt-0 mb-0"><span>Edit User</span></h5>
+            <ol class="breadcrumbs mb-0">
+              <!-- <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+                            </li> -->
+              <li class="breadcrumb-item"><a href="/user">User Manager</a>
+              </li>
+              <li class="breadcrumb-item active">Edit User
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <div class="section section-data-tables">
+          <div class="card roundCorners">
+            <div class="card-content">
+              <div class="row">
+                <div class="col s6 l6 m6">
+                    <p class="caption mb-0">
+                        CLXNS User Manager allows you to create various user types having specific
+                        read/edit/write access or an access to specific module.
+                    </p>
+                </div> 
+                <div class="col s6 l6 m6">
+                    <a class="right modal-trigger" href="#ChangePasswordModal">
+                        <span>Change Password</span>
+                    </a>
+                </div>   
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form class="validateEditUser" id="validateAddUser" method="POST" action="/user/edit">
+    <div class="row">
+      <div class="col s12">
+        <div class="row">
+          <div class="container">
+  
+            <div class="col s12">
+              <div id="button-trigger" class="card roundCorners card-default scrollspy">
+                <div class="card-content" style="padding: 0px; margin-bottom: -30px;" id="ui-tabs">
+                  <ul class="tabs" style="border-radius: 10px 10px 0px 0px;">
+                    <li class="tab col m4"><a class="active" href="#Roles" id='test2'>Role & Location</a></li>
+                    <li class="tab col m4"><a href="#Basic" id='test1'>Basic</a></li>
+                    <li class="tab col m4"><a href="#Experience" id='test3'>Experience</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+  
+            <div id="Basic" class="col s12">
+              <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+                <div class="card-content">
+                  <div class="row">
+                    <div id="general">
+                      <input type="hidden" name="id" id="id" value="<%= user.id %>" />
+                        <div class="row">
+                            <div class="col s4">
+                                <div class="input-field">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" id="firstName" name="firstName" required
+                                        value="<%= user.firstName %>"
+                                        data-error=".errorTxt1">
+                                    <small class="errorTxt1"></small>
+                                </div>
+                            </div>
+                            <div class="col s4">
+                                <div class="input-field">
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" id="lastName" name="lastName" required
+                                        value="<%= user.lastName %>"
+                                        data-error=".errorTxt2">
+                                    <small class="errorTxt2"></small>
+                                </div>
+                            </div>
+                            <div class="col s4">
+                              <div class="input-field">
+                                <label for="dob">DOB</label>
+                                <input class="" type="date" id="dob" name="dob" required
+                                    placeholder="" value="<%= user.dob %>"
+                                    data-error=".errorTxt3" required min="1900-01-02" min="2021-01-01">
+                                <small class="errorTxt3"></small>
+                            </div>
+                          </div>
+                        </div>
+          
+                        <div class="row">
+                            <div class="col s4">
+                                <div class="input-field">
+                                    <label for="email">E-mail</label>
+                                    <input id="email" type="text" name="email" required
+                                    value="<%= user.email %>"
+                                        data-error=".errorTxt4" onblur=""
+                                        onkeyup="validateFields(event)">
+                                    <small class="errorTxt4"></small>
+                                    <small class="">
+                                        <div id="emailError"
+                                            style="font-size: .8rem; position: relative; color: #ff4081;">
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col s4">
+                                <div class="input-field">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" id="phone" name="phone" required
+                                    value="<%= user.phone %>"
+                                        data-error=".errorTxt5" onkeyup="validateFields(event)">
+                                    <small class="errorTxt5"></small>
+                                    <small class="">
+                                        <div id="phoneError"
+                                            style="font-size: .8rem; position: relative; color: #ff4081;">
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col s4">
+                              <div class="input-field">
+                                <label for="emergencyPhone">Emergency Phone</label>
+                                <input type="text" id="emergencyPhone" name="emergencyPhone" required
+                                value="<%= user.emergencyPhone %>"
+                                    data-error=".errorTxt6" onkeyup="validateFields(event)">
+                                <small class="errorTxt7"></small>
+                                <small class="">
+                                    <div id="emergencyPhoneError"
+                                        style="font-size: .8rem; position: relative; color: #ff4081;">
+                                    </div>
+                                </small>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col s4">
+                              <label for="location">Location</label>
+                              <div class="input-field mt-0">
+                                  <select class="error" id="location" name="location" required data-error=".errorTxt8">
+                                      <% locations.forEach((location) => { %>
+                                        <option  <%= (user && user.location) ? (user.location == location.name) ? 'selected':'' : '' %> value="<%= location.name %>"><%= location.name %></option>
+                                        <% }); %>
+                                  </select>
+                                  <small class="errorTxt8"></small>
+                                  <small class="">
+                                      <div id="locationError"
+                                          style="font-size: .8rem; position: relative; color: #ff4081;">
+                                      </div>
+                                  </small>
+                              </div>
+                          </div>
+                          <div class="col s4">
+                            <label for="bloodGroup">Blood Group</label>
+                            <div class="input-field mt-0">
+                                <select class="error" id="bloodGroup" name="bloodGroup" required data-error=".errorTxt9">
+                                    <option value="<%= user.bloodGroup %>"   selected><%= user.bloodGroup %>
+                                    </option>
+                                    <option <%= (user && user.bloodGroup) ? (user.bloodGroup == 'O+') ? 'selected':'': ''; %> value="O+">O+</option>
+                                    <option <%= (user && user.bloodGroup) ? (user.bloodGroup == 'O-') ? 'selected':'': ''; %> value="O-">O-</option>
+                                    <option <%= (user && user.bloodGroup) ? (user.bloodGroup == 'A+') ? 'selected':'': ''; %> value="A+">A+</option>
+                                    <option <%= (user && user.bloodGroup) ? (user.bloodGroup == 'A-') ? 'selected':'': ''; %> value="A-">A-</option>
+                                    <option <%= (user && user.bloodGroup) ? (user.bloodGroup == 'B+') ? 'selected':'': ''; %> value="B+">B+</option>
+                                    <option  <%= (user && user.bloodGroup) ? (user.bloodGroup == 'B-') ? 'selected':'': ''; %> value="B-">B-</option>
+                                    <option  <%= (user && user.bloodGroup) ? (user.bloodGroup == 'AB+') ? 'selected':'': ''; %> value="AB+">AB+</option>
+                                    <option  <%= (user && user.bloodGroup) ? (user.bloodGroup == 'AB-') ? 'selected':'': ''; %> value="AB-">AB-</option>
+                                </select>
+                                <small class="errorTxt9"></small>
+                                <small class="">
+                                    <div id="locationError"
+                                        style="font-size: .8rem; position: relative; color: #ff4081;">
+                                    </div>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col s4">
+                          <div class="input-field">
+                              <label for="employeeId">Employee ID</label>
+                              <input type="text" id="employeeId" name="employeeId" required
+                              value="<%= user.employeeId %>" data-error=".errorTxt24" style="margin-top: 7px;" onkeyup="validateFields(event)">
+                              <small class="errorTxt24"></small>
+                              <small class="">
+                                <div id="employeeIdError"
+                                    style="font-size: .8rem; position: relative; color: #ff4081;">
+                                </div>
+                            </small>
+                          </div>
+                      </div>
+                      </div>
+                        <div class="row">
+                            <div class="input-field col m8 s8">
+                                  <label for="address">Address</label>
+                                  <input type="text" id="address" name="address" required
+                                      value="<%= user.address %>"
+                                      data-error=".errorTxt10">
+                                  <small class="errorTxt10"></small>
+                          </div>
+                          <div class="input-field col m s4">
+                            <label for="address">Pincode</label>
+                            <input type="text" id="pincode" name="pincode" required
+                            value="<%= user.pincode %>"
+                                data-error=".errorTxt11">
+                            <small class="errorTxt11"></small>
+                    </div>
+                        </div>
+
+                          <div class="row">
+                            <h6 class="ml-1" style="color: #9e9e9e;font-size: 1rem;">Language</h6>
+                            <% newArrayLanguages.forEach((newArrayLanguage) => { %>
+                            <div class="input-field col m2 s2">
+                                  <label>
+                                    <input type="checkbox" name="language[]" data-error="#errorTxt12" value="<%=newArrayLanguage.LanguageName%>" <% if (newArrayLanguage.isCheck) { %>checked <% } %>/>
+                                    <span style="text-transform: capitalize;"><%=newArrayLanguage.LanguageName%></span>
+                                  </label>
+                          </div>
+                          <% }); %>
+                        </div>
+                        <div id="errorTxt12" class="mt-3" style="font-size: .8rem;color: #ff4081;"></div>
+
+                      
+                      <div class="row dynamicInput mt-3"></div>
+                      <div class="row">
+                        <div class="col s12 display-flex form-action">
+                            <span class="btn blue darken-1 mr-2 ml-0 mt-3 btn"
+                                id="addLanguage">
+                                Other Language
+                            </span>
+                        </div>
+                      </div>
+                      <!-- </form> -->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col s12 display-flex justify-content-end">
+                        <!-- <button type="button" class="btn blue darken-1 mr-2 btn next">
+                            Next
+                        </button> -->
+                        <span  class="btn blue darken-1 mr-2 btn next basicNext">
+                          Next
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+            </div>
+      
+            <div id="Roles" class="col s12">
+              <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+                <div class="card-content">
+                  <div class="row">
+                    <div id="general">
+                        <div class="row">
+                            <div class="input-field col m12 s12"
+                                style="text-transform: capitalize !important;">
+                                <select class="error" id="roleId" name="roleId" required data-error=".errorTxt14" onchange="handleSelectRole()">
+                                    <% roles.forEach((role) => { %>
+                                    <option  <%= (user && user.roleId) ? (user.roleId == role.id) ? 'selected':'': ''; %> label="<%= role.name %>" value="<%= role.id %>"><%= role.name.replace('_',' ').toLowerCase().split(' ').map((word)=> {return word[0].toUpperCase() + word.substr(1);}).join(" "); %></option>
+                                    <% }); %>
+                                </select>
+                                <label>Role</label>
+                                <small class="errorTxt14"></small>
+                            </div>
+                        </div>
+  
+                        <div class="row m-0">
+                          <div id="myChips" style="display: inline-block;"></div>
+                        </div>
+  
+                       <%if(user.reportingTo){%>
+                        <div class="row mt-2">
+                          <div id="myReporting"></div>
+                        </div>
+                       <%}else{%>
+                        <div class="row mt-2">
+                          <div id="myReporting"></div>
+                        </div>
+                        <%}%>
+                        <div class="row">
+                          <h6 class="ml-1 mt-1" style="color: #9e9e9e;font-size: 12px;">Operating Location</h6>
+                          <% newArrayLocations.forEach((newArrayLocation) => { %>
+                            <div class="input-field col m2 s2">
+                              <label style="margin-left: -12px;">
+                                <input type="checkbox" name="locationId[]" data-error="#erroroPeratingLocation"  value="<%= newArrayLocation.locationId %>" <% if (newArrayLocation.isCheck) { %>checked <% } %>/>
+                                <span><%= newArrayLocation.LocationName %></span>
+                              </label>
+                         </div>
+                            <% }); %>
+                      </div>
+                      <div id="erroroPeratingLocation" class="mt-3" style="font-size: .8rem;color: #ff4081;"></div>
+                     
+                      <div class="row mt-5">
+                        <div id="myStateCity"></div>
+                      </div>
+                       
+                      <div class="row mt-2">
+                        <div id="myPincode" style="margin-left: 10px;"></div>
+                      </div> 
+                      
+                       <script>
+                            let reportTo = '<%- JSON.stringify(userReportingTo) %>';
+                            let userRoleCheck='<%- userRole %>';
+                            let userState,userCity,pincodeNewList;
+                            let UserStateCityCheck='<%- JSON.stringify(UserStateCity) %>';
+                            if(userRoleCheck==="fos"){
+                             userState = '<%= UserStateCity %>'?'<%- JSON.stringify(UserStateCity.state) %>':'';
+                             userCity = '<%= UserStateCity %>'?'<%- JSON.stringify(UserStateCity.city) %>':'';
+                             pincodeNewList= '<%- ServicePincode %>' ? '<%- JSON.stringify(ServicePincode) %>' : '';
+                             console.log('\n\n pincodeNewList55 :-',pincodeNewList);
+                            }
+                         
+                            console.log('\n\n Report To :-',reportTo);
+                            function setChips(role) {
+  
+                                fetch(`${baseUrl}permissions/rolePermissions`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ role: role })
+                                }).then(response => response.json()).then(data => {
+                                    
+                                  console.log('data:', data);
+                                  let chipsHtml = '<label for="location">Permissions</label><br>';
+  
+                                  data.data.forEach(parent => {
+                                    if (parent.isCheck) { 
+                                      chipsHtml += `<span class='chip customChip mt-1'><b>${parent.module.charAt(0).toUpperCase() + parent.module.slice(1)}:</b> `
+                                  }
+                                    
+                                    parent.actions.forEach((action, id, array) => {
+                                      if (action.isCheck && id != array.length - 1) { 
+                                      chipsHtml += `${action.name.charAt(0).toUpperCase() + action.name.slice(1)}, `
+                                      }
+                                      else if (action.isCheck && id == array.length - 1) {
+                                        chipsHtml += `${action.name.charAt(0).toUpperCase() + action.name.slice(1)}`
+                                      } 
+                                    })
+  
+                                    chipsHtml += `</span>`
+  
+                                  });
+  
+                                  document.getElementById('myChips').innerHTML = chipsHtml;
+  
+                                }).catch(error => {
+                                    console.log('Error:', error);
+                                }); 
+  
+                            }
+  
+                            function FindLevel(newRoleId,isEdit) {
+                            const data = {
+                            isEdit:isEdit,
+                            roleId:newRoleId
+                            };
+
+                            console.log('data :-', data);
+
+                            fetch(`${baseUrl}user/findLevel`, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify(data),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                              console.log('Success:', data);
+                            let textName=(data.payload.isEdit) ? (JSON.parse(reportTo)) : 'Choose your option';
+                            let option= data.payload.reportingName.map(reportname => {
+                              return `<option value='${reportname.id}' >${reportname.name}</option>`;
+                            }).join('');
+                            console.log('option:', option);
+                              let reportHtml =`<div class="input-field col 12 s12"
+                              style="text-transform: capitalize !important;">
+                              <select class="error" id="reportingTo" name="reportingTo" required
+                                  value="<%= (form && form.reportingTo) ? form.reportingTo : '' %>"
+                                  data-error=".errorTxt22">
+                                  <option value="${textName}" selected>${textName}</option>
+                                  ${option}
+                              </select>
+                              <label>Reporting To</label>
+                              <small class="errorTxt22"></small>
+                            </div>`;
+                            document.getElementById('myReporting').innerHTML = reportHtml;
+                            $('select').formSelect();
+                            })
+                            .catch((error) => {
+                              console.error('Error:', error);
+                            });
+
+                            }
+
+                            function FindStateCity(newRoleId,isEdit) {
+
+                            console.log('newRoleId :-', newRoleId);
+
+                            const data = {
+                            isStateSelect:isEdit,
+                            roleId:newRoleId,
+                            state: (!isEdit)?'':userState.replaceAll('"','')
+                            };
+
+                            console.log('data :-', data);
+
+                            fetch(`${baseUrl}user/findStateCity`, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify(data),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                              console.log('Success:', data);
+                            
+                            let textSateName=(data.payload.isStateSelect) ? userState.replaceAll('"','') : 'Choose your option'; 
+                            let textCityName=(data.payload.isStateSelect) ? userCity.replaceAll('"','') : 'Choose your option'; 
+                            let option= data.payload.StateLocation.map(stateLocation => {
+                              return `<option value='${stateLocation.state}'>${stateLocation.state}</option>`;
+                            }).join('');
+
+                            let option2= data.payload.CityLocation.map(cityLocation => {
+                              return `<option value='${cityLocation.city}'>${cityLocation.city}</option>`;
+                            }).join('');
+
+                              let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+                            <label style="font-size: 12px;">State</label>
+                            <select class="error" id="state" name="state" required
+                                data-error=".errorTxt20" onchange="handleCity()">
+                                <option value="${textSateName}" selected>${textSateName}</option>
+                                ${option}
+                            </select>
+                            <small class="errorTxt20"></small>
+                            </div>
+                            <div class="col s6" style="text-transform: capitalize !important;">
+                            <label style="font-size: 12px;">City</label>
+                            <select class="error" id="city" name="city" required
+                              data-error=".errorTxt21" onchange="handlePincode()">
+                              <option value="${textCityName}" selected>${textCityName}</option>
+                              ${option2}
+                            </select>
+                            <small class="errorTxt21"></small>
+                            </div>`;
+                            document.getElementById('myStateCity').innerHTML = reportHtml;
+                            $('select').formSelect();
+                            })
+                            .catch((error) => {
+                              console.error('Error:', error);
+                            });
+
+                            }
+
+                            function FindCity(newStateName,isEdit) {
+
+                            console.log('newStateName :-', newStateName);
+
+                            const data = {
+                            isStateSelect : isEdit,
+                            stateName:newStateName
+                            };
+
+                            console.log('data :-', data);
+
+                            fetch(`${baseUrl}user/findCity`, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify(data),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                              console.log('Success:', data);
+
+                            let cityName=(data.payload.isStateSelect) ? userCity.replaceAll('"','') : 'Choose your option'; 
+                            let optionCity= data.payload.City.map(city => {
+                              return `<option value='${city.city}'>${city.city}</option>`;
+                            }).join('');
+
+                            console.log('optionCity:', optionCity);
+                              let cityHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+                            <label style="font-size: 12px;">City</label>
+                            <select class="error" id="city" name="city" required
+                              value="<%= (form && form.city) ? form.city : '' %>"
+                              data-error=".errorTxt21" onchange="handlePincode()">
+                              <option value="${cityName}" selected>${cityName}</option>
+                              ${optionCity}
+                            </select>
+                            <small class="errorTxt21"></small>
+                            </div>`;
+                            
+                            document.getElementById('city').innerHTML = cityHtml;
+                            $('select').formSelect();
+                            })
+                            .catch((error) => {
+                              console.error('Error:', error);
+                            });
+
+                            }
+
+                            function FindPincode(newCityName) {
+
+                            console.log('newCityName :-', newCityName);
+
+                            const data = {
+                              cityName:newCityName,
+                              pincodeList:pincodeNewList ? pincodeNewList : []
+                            };
+
+                            console.log('data :-', data);
+
+                            fetch(`${baseUrl}user/findPincode`, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify(data),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                              console.log('Success:', data);
+
+
+                            let option=data.payload.Pincode.map(pincode=>{
+                              return `<label>
+                              <input type="checkbox" name="pincodeId[]" value="${pincode.code}"  ${ pincode.isCheck ? 'checked' :'' } />
+                              <span>${pincode.code}</span>
+                            </label>`;
+                            }).join('');
+
+                              let reportHtml =`<h6 class="mt-3" style="color: #9e9e9e">Select Pincode</h6>
+                              
+                              ${option}
+                            
+                            `;
+                            document.getElementById('myPincode').innerHTML = reportHtml;
+                            $('select').formSelect();
+                            })
+                            .catch((error) => {
+                              console.error('Error:', error);
+                            });
+
+                            }
+
+                       </script>
+          
+                      <!-- </form> -->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col s12 display-flex justify-content-end">
+                        <!-- <button type="button" class="btn blue darken-1 mr-2 btn next">
+                            Next
+                        </button> -->
+                        <span  class="btn blue darken-1 mr-2 mt-3 btn next roleNextBtn">
+                          Next
+                      </span>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="Experience" class="col s12">
+              <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+                <div class="card-content">
+                  <div class="row" style="display: flex;
+                  align-items: center;">
+                  <label for="experience" style="margin-left: 14px;">Experience</label>
+                    <div class="col s1 m-0" style="margin-left: 70px !important;">
+                      <div class="input-field">
+                        <!-- <label for="experience">Experience in Months</label> -->
+                        <input type="text" id="year" name="year" required
+                            value="<%= years %>"
+                            data-error=".errorTxt15" style='text-align: center'>
+                        <small class="errorTxt15"></small>
+                      </div>
+                    </div>
+                    <div class="col s1 m-0" style='max-width: 50px'>
+                      <span>year </span>
+                    </div>
+                    <div class="col s1 m-0">
+                      <div class="input-field ">
+                        <!-- <label for="experience">Experience in Months</label> -->
+                        <input type="text" id="month" name="month" max="12" required
+                            value="<%= months %>"
+                            data-error=".errorTxt16" style='text-align: center'>
+                        <small class="errorTxt16"></small>
+                      </div>
+                  </div>
+                  <div class="col s1 m-0">
+                    <span>month </span>
+                  </div>
+                  </div>
+                  <% UserExperiences.forEach((UserExperience) => { %>
+                      <div class="row">
+                        <div class="col s6" style="text-transform: capitalize !important;">
+                          <label>Product Type</label>
+                          <select class="error" id="productType" name="productType" required  data-error=".errorTxt17">
+                              <option value="<%= UserExperience.productType %>" selected><%= UserExperience.productType %></option>
+                              <% productTypes.forEach((productType) => { %>
+                              <option <%= (user && user.productType) ? (user.productType == productType.name) ? 'selected':'': '' %>   value="<%= productType.name %>"><%= productType.name %></option>
+                              <% }); %>
+                          </select>
+                          <small class="errorTxt17" style="color: #ff4081;"></small>
+                      </div>
+                      <div class="col s6" style="text-transform: capitalize !important;">
+                        <label>DPD</label>
+                        <select class="error" id="dpd" name="dpd" required data-error=".errorTxt18">
+                            <option value="<%= UserExperience.dpd %>" selected><%= UserExperience.dpd %></option>
+                            <% dpds.forEach((dpd) => { %>
+                            <option <%= (user && user.dpd) ? (user.dpd == dpd.name) ? 'selected':'': '' %> value="<%= dpd.name %>"><%= dpd.name %></option>
+                            <% }); %>
+                        </select>
+                       
+                        <small class="errorTxt18" style="color: #ff4081;"></small>
+                    </div>
+                      </div>
+                  <% }); %>
+
+                      <div class="row ExperienceMain"></div>
+                      <div class="row">
+                        <div class="col s12 display-flex form-action">
+                            <span class="btn blue darken-1"
+                                id="addExperience" style="margin-top: 10px;">
+                                Add More Experience
+                            </span>
+                        </div>
+                      </div>
+  
+                      <div class="row">
+                        <div class="col s12 display-flex justify-content-end form-action">
+                            <!-- <button type="submit" class="btn blue darken-1 mr-2 btn"
+                                id="addUser">
+                                Save
+                            </button> -->
+                            <span  class="btn blue darken-1 mr-2 btn"
+                              id="addUser">
+                              Save
+                          </span>
+                        </div>
+                      </div>
+                </div>
+              </div>
+  
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+ <!-- CAMPAIGNS MODAL -->
+ <div class="card">
+  <div id="ChangePasswordModal" class="modal customModal roundCornersFloat">
+    <div class="modal-content customModalContent">
+      <h5 class="mt-0"><b>Change Password</b></h5>
+      <form class="validatePassword" id="myForm" method="POST" action="/user/updateUserPassword" >
+        <div class="row">
+            <input type="hidden" name="id" value="<%= user.id %>" />
+
+            <div class="col s12">
+                <div class="input-field">
+                    <input id="password" name="password" type="password"
+                        data-error=".errorTxt10">
+                    <label for="password">New Password</label>
+                    <small class="errorTxt10"></small>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field">
+                    <input id="repswd" type="password" name="repswd"
+                        data-error=".errorTxt11">
+                    <label for="repswd">Confirm New Password</label>
+                    <small class="errorTxt11"></small>
+                </div>
+            </div>
+            <div class="col s12 display-flex justify-content-end form-action">
+                <button type="submit"
+                    class="btn blue darken-1 waves-effect waves-light mr-1">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; //January is 0!
+  var yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = '0' + dd
+  }
+  if (mm < 10) {
+    mm = '0' + mm
+  }
+
+  today = yyyy + '-' + mm + '-' + dd;
+  document.getElementById("dob").setAttribute("max", today);
+  let isEdit=true;
+  reportTo = '<%- JSON.stringify(userReportingTo) %>';
+ 
+  let newRole='<%- user.roleId %>';
+  
+
+  if(reportTo!=null && isEdit){
+      isEdit=true;
+      FindLevel(newRole,isEdit);
+     }
+  
+
+  const handleCity=()=>{
+  isEdit=false;
+  let state = document.getElementById("state");
+  
+  let newStateName=state.options[state.selectedIndex].value;
+  
+  FindCity(newStateName,isEdit);
+
+ };
+
+ const handlePincode=()=>{
+  let city = document.getElementById("city");
+ 
+  let newCityName=city.options[city.selectedIndex].value;
+ 
+  FindPincode(newCityName);
+ };
+
+ let userCheck='<%- JSON.stringify(user.roles.name) %>';
+ 
+ let userCityCheck='<%- JSON.stringify(UserStateCity.state) %>';
+
+//Permission View
+
+ if(userCheck!=null){
+  let newLable='<%- user.roles.name %>';
+  setChips(newLable);
+ }
+
+ //FindStateCity
+
+ if(userCheck!=null && JSON.parse(userCheck)=="fos"){
+  isEdit=true;
+  let newRoleID='<%- user.roles.id %>';
+  FindStateCity(newRoleID,isEdit);
+ }
+
+ //CityCheck
+
+ if(userCityCheck!=null && JSON.parse(userCheck)=="fos"){
+    isEdit=true;
+    let newStateName=userCityCheck.replaceAll('"','');
+   
+    FindCity(newStateName,isEdit);
+    
+  }
+  
+let UserCity='<%- JSON.stringify(UserStateCity.city) %>';
+  if(UserCity!=null && JSON.parse(userCheck)=="fos"){
+  let newUserCity=UserCity.replaceAll('"','');
+  FindPincode(newUserCity);
+  }
+
+
+  const handleSelectRole = () => {
+
+    let roleId = document.getElementById("roleId");
+    isStateSelect=false;
+    isEdit=false;
+    let selectedLabel = roleId.options[roleId.selectedIndex].label;
+
+    let newRoleId=roleId.options[roleId.selectedIndex].value;
+   
+    FindLevel(newRoleId,isEdit);
+
+    setChips(selectedLabel);
+
+    if(selectedLabel=='fos'){
+      FindStateCity(newRoleId,isEdit);
+    }
+    if(selectedLabel != 'fos') {
+      document.getElementById('myStateCity').innerHTML = '<span></span>';
+      document.getElementById('myPincode').innerHTML = '<span></span>';
+    }
+
+    if (selectedLabel == "telecaller") {
+      document.getElementById('for-telecaller').style.display = 'block';
+      document.getElementById('for-fos').style.display = 'none';
+    } else if (selectedLabel == "fos") {
+      document.getElementById('for-fos').style.display = 'block';
+      document.getElementById('for-telecaller').style.display = 'none';
+    } else {
+      document.getElementById('for-fos').style.display = 'none';
+      document.getElementById('for-telecaller').style.display = 'none';
+    }
+  }
+
+  const loadFile = function (event) {
+    let reader = new FileReader();
+    reader.onload = function () {
+      let profileImg = document.getElementById('profileImg');
+      profileImg.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
+
+  const validateFields = async (e) => {
+    return ;
+    const validRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    let data = {};
+
+    if (e.target.name == 'email') {
+      data.email = e.target.value
+    }
+    if (e.target.name == 'phone') {
+      data.phone = e.target.value
+    }
+
+    if (e.target.name == 'employeeId') {
+      data.employeeId = e.target.value
+    }
+
+    const response = await fetch(
+      `${baseUrl}user/validateFields`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    const myJson = await response.json();
+    console.log('JSON :-', myJson);
+
+    if (e.target.name == 'email') {
+      if (validRegex.test(e.target.value) == false) {
+        document.getElementById('emailError').innerHTML = 'This email id invalid';
+        document.getElementById("addUser").disabled = true;
+      } else if (myJson.isExist) {
+        console.log('isExits :- TRUE');
+        document.getElementById('emailError').innerHTML = 'This email id already exists';
+        document.getElementById("addUser").disabled = true;
+      } else {
+        console.log('isExits :- FALSE');
+        document.getElementById('emailError').innerHTML = '';
+        document.getElementById("addUser").disabled = false;
+      }
+    }
+
+    if (e.target.name == 'phone') {
+      if (myJson.isExist) {
+        console.log('isExits :- TRUE');
+        document.getElementById('phoneError').innerHTML = 'This phone number already exists';
+        document.getElementById("addUser").disabled = true;
+      } else {
+        console.log('isExits :- FALSE');
+        document.getElementById('phoneError').innerHTML = '';
+        document.getElementById("addUser").disabled = false;
+      }
+    }
+
+    if (e.target.name == 'employeeId') {
+    if (myJson.isExist) {
+      console.log('isExits :- TRUE');
+      document.getElementById('employeeIdError').innerHTML = 'This employeeId already exists';
+      document.getElementById("addUser").disabled = true;
+    } else {
+      console.log('isExits :- FALSE');
+      document.getElementById('employeeIdError').innerHTML = '';
+      document.getElementById("addUser").disabled = false;
+    }
+  }
+
+  }
+
+ $(document).ready(function () {
+   var i=1;
+   $('#addLanguage').click(function () {
+     i++;
+     $('.dynamicInput').append(`
+
+                      <div class="input-field col m12 s12">
+                              <label for="language">Specify Other Language</label>
+                              <input type="text" id="language" name="language[]" required
+                              data-error=".errorTxt8">
+                              <small class="errorTxt8"></small>
+                              <a href="#" class="remove_language">Remove</a>
+                      </div>
+     `);
+     $('.dynamicInput').on("click",".remove_language", function(e){
+        e.preventDefault(); 
+        $(this).parent('div').remove(); i--;
+    })
+   });
+ });
+
+ $(document).ready(function () {
+   var i=1;
+   var ProductTypes=<%- JSON.stringify(productTypes) %>;
+   var Dpds=<%- JSON.stringify(dpds) %>;
+   $('#addExperience').click(function () {
+     i++;
+     var html='';
+     var option='';
+     var op2 = '';
+     console.log(typeof(ProductTypes));
+     console.log(ProductTypes);
+     console.log(Dpds);
+     option=ProductTypes.map(productType => {
+      return `<option value='${productType.name}'>${productType.name}</option>`;
+    }).join('');
+   
+    op2= Dpds.map(dpds => {
+         return `<option value='${dpds.name}'>${dpds.name}</option>`;
+    }).join('');
+   
+     html = `<div class="Experience">
+                      <div class="col s6" style="text-transform: capitalize !important;">
+                        <label>Product Type</label>
+                        <select class="error" id="productType" name="productType" required
+                            value="<%= (form && form.productType) ? form.productType : '' %>"
+                            data-error=".errorTxt18" onchange="handleSelectRole()">
+                            <option value="" disabled selected>Choose your option</option>
+                            ${option}
+                        </select>
+                        <small class="errorTxt18"></small>
+                    </div>
+                    <div class="col s6" style="text-transform: capitalize !important;">
+                      <label>DPD</label>
+                      <select class="error" id="dpd" name="dpd" required
+                          value="<%= (form && form.dpd) ? form.dpd : '' %>"
+                          data-error=".errorTxt19">
+                          <option value="" disabled selected>Choose your option</option>
+                          ${op2}
+                      </select>
+                      <small class="errorTxt19"></small>
+                  </div>
+                        <a href="#" class="remove_experience ml-2">Remove</a>
+              </div>
+            `;
+       console.log(html);
+     $('.ExperienceMain').append(html);
+     $('select').formSelect();
+     $('.Experience').on("click",".remove_experience", function(e){
+        e.preventDefault(); 
+        $(this).parent('div').remove(); i--;
+    });
+   });
+ });
+
+  const toast = '<%- JSON.stringify(toast) %>';
+  const toastText = '<%- JSON.stringify(toastText) %>';
+  const toastColor = '<%- JSON.stringify(toastColor) %>';
+  const parseToast = JSON.parse(toast);
+  const parseToastText = JSON.parse(toastText);
+  const parseToastColor = JSON.parse(toastColor);
+  const error = JSON.parse('<%- JSON.stringify(error) %>');
+  
+
+  $(document).ready(function () {
+    if (parseToast) {
+      M.toast({
+        html: parseToastText,
+        classes: parseToastColor
+      })
+    }
+
+
+   
+    
+    if(error){
+        error.forEach(element => {
+          M.toast({html: element.msg});
+        });
+      }
+    // stepper and valid
+      // before  next btn click validatation
+    
+      var formIsValid = {
+        basic:true,
+        Roles:true,
+        experience:true
+    }
+
+    const roleField = ['roleId','reportingTo','locationId[]'];
+    const basicFormField = ['firstName','dob','email','phone','emergencyPhone','lastName','location','bloodGroup','employeeId','address','pincode','language[]'];
+    const expField = ['experience','YearsORMonths','productType','dpd'];
+
+      function checkvalidation() {
+        var basic = [];
+        var role = [];
+        var exp = [];
+        basicFormField.forEach(element => {
+          basic.push($("[name='"+element+"']").valid());
+          
+        });
+        roleField.forEach(element => {
+          role.push($("[name='"+element+"']").valid());
+          
+        });
+
+        expField.forEach(element => {
+          exp.push($("[name='"+element+"']").valid());
+          
+        });
+        formIsValid.Roles = (role.includes(false)) ? false:formIsValid.Roles;
+        formIsValid.basic = (basic.includes(false)) ? false:formIsValid.basic;
+        formIsValid.experience = (exp.includes(false)) ? false:formIsValid.experience;
+        console.table(formIsValid);
+      }
+      
+      $(document).on('keydown,click,keypress','input', function () {
+        checkvalidation();
+      });
+
+      $(document).on('change','select', function () {
+        checkvalidation();
+      });
+     
+      $(document).on('click','.roleNextBtn', function () {
+        if($(".validateEditUser").valid()){
+          console.log('validate Roles');
+          formIsValid.Roles = true;
+          $('ul.tabs').tabs("select", "Basic");
+        }else{
+          formIsValid.Roles = false;
+          console.log('Not valid');
+          // $('ul.tabs').tabs("select", "Roles");
+        }
+    }); 
+
+    $(document).on('click','.basicNext', function () {
+        if($(".validateEditUser").valid()){
+          $('ul.tabs').tabs("select", "Experience");
+          formIsValid.basic = true;
+          console.log('validate basic');
+        }else{
+          formIsValid.basic = false;
+          console.log('Not valid');
+          // $('ul.tabs').tabs("select", "Basic");
+        }
+    }); 
+
+    $(document).on('click','#addUser', function () {
+        if($(".validateEditUser").valid()){
+          console.log('validate Exp ');
+          console.log(formIsValid);
+          formIsValid.experience = true;
+          if(formIsValid.experience && formIsValid.Roles && formIsValid.basic){
+            console.log(formIsValid);
+            $('.validateEditUser').submit();
+          }
+          if(!formIsValid.Roles){
+            $('ul.tabs').tabs("select", "Roles");
+            $(".validateEditUser").valid();
+          }
+          if(!formIsValid.basic){
+            $('ul.tabs').tabs("select", "Basic");
+            $(".validateEditUser").valid();
+          }
+
+
+        }else{
+          formIsValid.experience = false;
+          console.log('Not valid');
+          // $('ul.tabs').tabs("select", "Roles");
+        }
+    }); 
+
+
+  });
+
+</script>
+
+<%- include('../../bottom.ejs') -%>

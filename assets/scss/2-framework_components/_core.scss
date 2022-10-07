@@ -1,0 +1,229 @@
+body {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    @include font-face($font-all);
+    color: $color-dark-700;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+html {
+    @include breakpoint-max(lg) {
+        font-size: 87.5%;
+    }
+}
+
+@include rtl {
+    html {
+        direction: $dir;
+
+    }
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+button {
+    cursor: pointer;
+    padding: 0;
+    border: 0;
+
+    &:focus {
+        outline: 0;
+    }
+}
+ul {
+    li {
+  
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      a,
+      p {
+        padding-bottom: 3px;
+      }
+    }
+  }
+  
+picture {
+    display: inline-block;
+}
+
+span {
+    display: inline-block;
+}
+
+svg {
+    display: block;
+    text, tspan{
+        font-family: $font-body;
+    }
+}
+
+input,
+textarea {
+    padding: 0;
+
+    &:focus {
+        outline: 0;
+    }
+
+    @include input-placeholder {
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+section {
+    position: relative;
+}
+
+select{
+    width: 100%;
+}
+
+address {
+    font-style: italic;
+    margin: 0 0 1.75em;
+}
+
+code,
+kbd,
+tt,
+var,
+samp,
+pre {
+    font-family: Inconsolata, monospace;
+}
+
+pre {
+    border: 1px solid darken($color: $border-on-light-standard, $amount: 5);
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.3125;
+    margin: 0 0 1.75em;
+    max-width: 100%;
+    overflow: auto;
+    padding: 1.75em;
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+abbr,
+acronym {
+    border-bottom: 1px dotted darken($color: $border-on-light-standard, $amount: 5);
+    cursor: help;
+}
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+mark,
+ins {
+    @extend %bg-primary;
+    color: #fff;
+    padding: 0.125em 0.25em;
+    text-decoration: none;
+}
+
+big {
+    font-size: 125%;
+}
+
+dl {
+    margin: 0 0 1.75em;
+}
+
+dt {
+    font-weight: 700;
+}
+
+dd {
+    margin: 0 0 1.75em;
+}
+
+ol {
+    list-style: decimal;
+    margin-left: 1.5em;
+}
+
+li>ul,
+li>ol {
+    margin-bottom: 0;
+}
+
+del {
+    opacity: 0.8;
+}
+
+table,
+th,
+td {
+    border: 1px solid $border-on-light-standard;
+}
+
+table {
+    background: $color-white;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-width: 1px 0 0 1px;
+    margin: 0 0 1.75em;
+    table-layout: fixed;
+    width: 100%;
+    border-radius: rem(5);
+    overflow: hidden;
+}
+
+caption,
+th,
+td {
+    font-weight: normal;
+    text-align: left;
+}
+
+th {
+    border-width: 0 1px 1px 0;
+    font-weight: 700;
+}
+
+td {
+    border-width: 0 1px 1px 0;
+}
+
+th,
+td {
+    padding: rem(7);
+}

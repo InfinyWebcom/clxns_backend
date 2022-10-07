@@ -1,0 +1,38 @@
+.logo-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+
+    @include breakpoint-min (sm) {
+        flex-direction: row;
+    }
+
+    @include breakpoint-min (xl) {
+        flex-direction: row;
+    }
+
+    &__image {
+        margin-bottom: rem(40);
+        margin-right: rem(20);
+        margin-left: rem(20);
+
+        @include breakpoint-min (sm) {
+            flex: 0 0 calc(50% - 40px);
+        }
+
+        @include breakpoint-min (md) {
+            flex: 0 0 calc(33.33% - 40px);
+        }
+
+        @include breakpoint-min (lg) {
+            flex: 0 0 calc(25% - 40px);
+        }
+
+        @include breakpoint-min (xl) {
+            flex: auto;
+        }
+    }
+}

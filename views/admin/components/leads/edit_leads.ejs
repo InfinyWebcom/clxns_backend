@@ -1,0 +1,388 @@
+<%- include('../../top.ejs') -%>
+  <%- include('../../header.ejs') -%>
+    <%- include('../../sidenav.ejs') -%>
+      <div id="main">
+        <div class="row">
+          <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+          <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <!-- Search for small screen-->
+            <div class="container">
+              <div class="row">
+                <div class="col s10 m6 l6">
+                  <h5 class="breadcrumbs-title mt-0 mb-0">
+                    <span>Leads Details</span>
+                  </h5>
+                  <ol class="breadcrumbs mb-0">
+                    <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/leads">Leads</a></li>
+                    <li class="breadcrumb-item active">Edit Leads Details</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="container">
+              <section class="tabs-horizontal mt-1 section">
+                <div class="row">
+                  <div class="col s12 m12 l12">
+                    <div id="Form-advance" class="card card card-default scrollspy">
+                      <div class="card-content">
+                        <h4 class="card-title">Edit Leads</h4>
+                        <form id="formValidateLeads" action="/leads/edit/<%= leads.loanAccountNo%>" method="post"
+                          enctype="multipart/form-data">
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="name">Customer Name</label>
+                              <input id="name" name="name" type="text" data-error=".errorTxt1"
+                                value="<%= leads.name %>" />
+                              <small class="errorTxt1"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <select id="productType" name="productType" required data-error=".errorTxt13">
+                                <option value="<%= leads.productType %>" selected
+                                  ><%= leads.productType %></option
+                                >
+                                <option value="PL">Personal Loan</option>
+                                <option value="CL">Car Loan</option>
+                                <option value="HL">Home Loan</option>
+                                <option value="CC">Credit Card</option>
+                              </select>
+                              <small class="errorTxt13"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="FIId">Bank Name</label>
+                              <input style="
+                              border-bottom: 1px solid
+                                rgba(0, 0, 0, 0.42);
+                            " id="FIId" name="bank_name" type="text" data-error=".errorTxt12"
+                                value="<%= leads.FIId %>" disabled />
+                              <small class="errorTxt12"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="city">City</label>
+                              <input style="
+                              border-bottom: 1px solid
+                                rgba(0, 0, 0, 0.42);
+                            " id="city" name="city" type="text" value="<%= leads.city %>"
+                                data-error=".errorTxt3" disabled/>
+                              <small class="errorTxt3"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="phone">Phone(Number Only)</label>
+                              <input id="phone" name="phone" type="text" maxlength="10" value="<%= leads.phone %>"
+                                data-error=".errorTxt4" />
+                              <small class="errorTxt4"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="email">Email</label>
+                              <input id="email" name="email" type="text" value="<%= leads.email %>"
+                                data-error=".errorTxt5" />
+                              <small class="errorTxt5"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m12 s12">
+                              <label for="address">Address</label>
+                              <textarea id="address" name="address" class="materialize-textarea" data-error=".errorTxt6"
+                                ><%= leads.address %></textarea>
+                              <small class="errorTxt6"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="amountDue">Loan Amount</label>
+                              <input id="amountDue" name="amountDue" type="text" value="<%= leads.amountDue %>"
+                                data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="amountOutstanding">Amount Outstanding</label>
+                              <input id="amountOutstanding" name="amountOutstanding" type="text"
+                                value="<%= leads.amountOutstanding %>" data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="disbursementDate">Date of Loan Disbursement</label>
+                              <input id="disbursementDate" name="disbursementDate" type="text"
+                                value="<%= leads.disbursementDate %>" data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="daysDue">Days Due</label>
+                              <input id="daysDue" name="daysDue" type="text" value="<%= leads.daysDue %>"
+                                data-error=".errorTxt8" />
+                              <small class="errorTxt8"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="loanAccountNo">Loan Account No</label>
+                              <input id="loanAccountNo" name="loanAccountNo" type="text"
+                                value="<%= leads.loanAccountNo %>" data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="emiStartDate">EMI Start Date</label>
+                              <input id="emiStartDate" name="emiStartDate" type="text"
+                                value="<%= leads.emiStartDate %>" data-error=".errorTxt8" />
+                              <small class="errorTxt8"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="numberOfPendingEMIs"> No of Pending EMIs</label>
+                              <input id="numberOfPendingEMIs" name="numberOfPendingEMIs" type="text"
+                                value="<%= leads.numberOfPendingEMIs %>" data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="penaltyAmount">Penalty Amount</label>
+                              <input id="penaltyAmount" name="penaltyAmount" type="text"
+                                value="<%= leads.penaltyAmount %>" data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="ODValue">OD Value</label>
+                              <input id="ODValue" name="ODValue" type="text" value="<%= leads.ODValue %>"
+                                data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="ODInt">OD Int</label>
+                              <input id="ODInt" name="ODInt" type="text" value="<%= leads.ODInt %>"
+                                data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="poolId">Pool Name</label>
+                              <input style="
+                              border-bottom: 1px solid
+                                rgba(0, 0, 0, 0.42);
+                            " id="poolId" name="poolId" type="text" value="<%= leads.poolId %>"
+                                data-error=".errorTxt7" disabled/>
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="telecallerAssigned"> Telecaller Assigned</label>
+                              <input style="
+                              border-bottom: 1px solid
+                                rgba(0, 0, 0, 0.42);
+                            " id="telecallerAssigned" name="telecallerAssigned" type="text"
+                                value="<%= leads.telecallerAssigned %>" data-error=".errorTxt7" disabled/>
+                              <small class="errorTxt7"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="DPDBucket">DPD Bucket</label>
+                              <input id="DPDBucket" name="DPDBucket" type="text" value="<%= leads.DPDBucket %>"
+                                data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <select id="status" name="status" required>
+                                <option value="<%= leads.status %>" selected
+                                  ><%= leads.status %></option
+                                >
+                                <option value="Pending">Pending</option>
+                                <option value="Ready To Pay">Ready To Pay</option>
+                                <option value="Promise To Pay">Promise To Pay</option>
+                                <option value="Refuse To Pay">Refuse To Pay</option>
+                                <option value="Dispute">Dispute</option>
+                                <option value="Unraechable">Unraechable</option>
+                                <option value="Reminder">Reminder</option>
+                                <option value="Surrender">Surrender</option>
+                                <option value="Other">Other</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="reminderDate">Reminder Date</label>
+                              <input id="reminderDate" name="reminderDate" type="text"
+                                value="<%= leads.reminderDate %>" data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <select id="closeStatus" name="closeStatus" required>
+                                <option value="<%= leads.closeStatus %>" selected
+                                  ><%= leads.closeStatus %></option
+                                >
+                                <option value="Paid">Paid</option>
+                                <option value="Refuse To Pay">Refuse To Pay</option>
+                                <option value="Legal">Legal</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Unreachable">Unreachable</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="fieldVisitStatus">Field Visit Status</label>
+                              <select id="fieldVisitStatus" name="fieldVisitStatus" required>
+                                <option value="<%= leads.fieldVisitStatus %>" selected
+                                  ><%= leads.fieldVisitStatus %></option
+                                >
+                                <option value="Assigned">Assigned</option>
+                                <option value="Unassigned">Unassigned</option>
+                              </select>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="FOSAssigned">FOS Assigned</label>
+                              <input style="
+                              border-bottom: 1px solid
+                                rgba(0, 0, 0, 0.42);
+                            " id="FOSAssigned" name="FOSAssigned" type="text" value="<%= leads.FOSAssigned %>"
+                                data-error=".errorTxt7" disabled/>
+                              <small class="errorTxt7"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col s12">
+                              <label for="collectionStatus">Collection Status</label>
+                              <select id="collectionStatus" name="collectionStatus" required>
+                                <option value="<%= leads.collectionStatus %>" selected
+                                  ><%= leads.collectionStatus %></option
+                                >
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="transactionType">Transaction Type</label>
+                              <select id="transactionType" name="transactionType" required>
+                                <option value="<%= leads.transactionType %>" selected
+                                  ><%= leads.transactionType %></option
+                                >
+                                <option value="Cheque">Cheque</option>
+                                <option value="Online">Online</option>
+                              </select>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="chequeNo">Cheque No</label>
+                              <input id="chequeNo" name="chequeNo" type="text" value="<%= leads.chequeNo %>"
+                                data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="chequeDate">Cheque Date</label>
+                              <input id="chequeDate" name="chequeDate" type="text" value="<%= leads.chequeDate %>"
+                                data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="chequeBank">Cheque Bank</label>
+                              <textarea id="chequeBank" name="chequeBank" class="materialize-textarea"
+                                data-error=".errorTxt6" ><%= leads.chequeBank %></textarea>
+                              <small class="errorTxt6"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="state">Transaction No</label>
+                              <input id="transactionNo" name="transactionNo" type="text"
+                                value="<%= leads.transactionNo %>" data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="imageVerified">Image Verified</label>
+                              <select id="imageVerified" name="imageVerified" required>
+                                <option value="<%= leads.imageVerified %>" selected
+                                  ><%= leads.imageVerified %></option
+                                >
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="locationVerified">Location Verified</label>
+                              <select id="locationVerified" name="locationVerified" required>
+                                <option value="<%= leads.locationVerified %>" selected
+                                  ><%= leads.locationVerified %></option
+                                >
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                              </select>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="intendToPay">IntendToPay</label>
+                              <select id="intendToPay" name="intendToPay" required>
+                                <option value="<%= leads.intendToPay %>" selected
+                                  ><%= leads.intendToPay %></option
+                                >
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m6 s12">
+                              <label for="abilityToPay">AbilityToPay</label>
+                              <select id="abilityToPay" name="abilityToPay" required>
+                                <option value="<%= leads.abilityToPay %>" selected
+                                  ><%= leads.abilityToPay %></option
+                                >
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                              </select>
+                            </div>
+                            <div class="input-field col m6 s12">
+                              <label for="uploaded_id">Uploaded Id</label>
+                              <input id="uploaded_id" name="uploaded_id" type="text" value="<%= leads.uploaded_id %>"
+                                data-error=".errorTxt7" />
+                              <small class="errorTxt7"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col m12 s12">
+                              <label for="pending_leads">Comments</label>
+                              <textarea id="comments" name="comments" class="materialize-textarea"
+                                data-error=".errorTxt6">
+                                  <%= leads.comments %></textarea>
+                              <small class="errorTxt6"></small>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col s12">
+                              <a class="
+                                      btn
+                                      waves-effect waves-light
+                                      gradient-45deg-purple-deep-orange
+                                      float-right
+                                    " href="/leads">Cancel</a>
+                                    <button class="btn cyan waves-effect waves-light right mr-2" type="submit" 
+                  > Save</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div class="content-overlay"></div>
+          </div>
+        </div>
+      </div>
+
+      <%- include('../../bottom.ejs') -%>

@@ -1,0 +1,113 @@
+//  Color palette 
+// =============================================================
+
+$color-white: #fff;
+$color-black: #000;
+
+// Gray Shade (Especially used as typography color in the "light" and "default dark" theme)
+$color-light-gray-100: #F8F8F8;
+$color-light-gray-200: #f8fafc;
+$color-light-gray-300: #F0F0F0;
+$color-light-gray-400: #ececec;
+$color-gray-200: #CDCDD9;
+$color-gray-300: #979EA5;
+$color-gray-400: #7C7D8D;
+
+// Blue Shade (Especially used as typography color in the "dark blue" theme)
+$color-blue-100: #F5F9FF;
+$color-blue-200: #e2e7f8;
+$color-blue-300: #a4baff;
+$color-blue-400: #7f94e2;
+$color-blue-500: #6f85d4;
+$color-red-100: #FFF4F4;
+$color-darkblue-400: #1e2994;
+$color-darkblue-500: #121871;
+
+// Dark Shade (Especially used as background color in the "default dark" theme )
+$color-dark-500: #1E202D;
+$color-dark-600: #191B28;
+$color-dark-700: #12141f;
+
+// Color purple 
+$color-purple: #9313db;
+
+// gradient Color
+$gradient-yellow-1: linear-gradient(to top, #d4ba00 0%, #ffdf00 100%);
+$gradient-alt-1: linear-gradient(180deg, #465577 0%, #262f4b 63%, #151b34 100%, #151b34 100%);
+$gradient-alt-2: linear-gradient(135deg, #d04ecd 0%, #2646ec 78%, #1846ef 100%);
+
+// Dark blue gradient Colors (Especially used as background color in the dark blue theme )
+$gradient-darkblue-1: linear-gradient(45deg, #0e0f69 0%, #2b38af 100%);
+$gradient-darkblue-2: radial-gradient(circle 850px at 30% 50%, #27269f 0%, #0e0f69 100%);
+$gradient-darkblue-3: radial-gradient(circle 1120px at 50% 60%, #27269f 0%, #0e0f69 100%);
+$gradient-darkblue-4: radial-gradient(circle 1625px at 50% 100%, #27269f 0%, #0e0f69 100%);
+$gradient-darkblue-5: radial-gradient(farthest-corner at 50% 0%, #27269F 0%, #0E0F69 90%);
+$gradient-darkblue-6: linear-gradient(180deg, #0e0f69 0%, #2b38af 100%);
+$gradient-purple-1: linear-gradient(-225deg, rgba(146, 52, 208, 0.75) 0%, rgba(135, 50, 201, 0.75) 10%, #652bb5 40%, #211e8c 100%);
+
+// Theme colors (These are the color that presents on visual color switcher)
+$color-royal-blue: #264eee;
+$color-blue: #3965f4;
+$color-amethyst: #C04DD0;
+$color-roman: #da5d5d;
+$color-amaranth: #FF4B36;
+$color-orange: #eb7939;
+$color-light-orange: #fb9720;
+$color-coral: #FF4B36;
+$color-fern: #52B570;
+$color-green: #1ED660;
+
+// Theme gradients (These are the gradients that presents on visual color switcher)
+$gradient-1: linear-gradient(to right, #5179f5 0%, #66e4cd 100%);
+$gradient-2: linear-gradient(45deg, #23a6e2 0%, #64c5a7 100%);
+$gradient-3: linear-gradient(225deg, #EF8F6D 0%, #EB699D 100%);
+$gradient-4: linear-gradient(45deg, #ff4bc4 0%, #375aeb 66%, #2b5bed 100%);
+$gradient-5: linear-gradient(90deg, #0099FF 0%, #6610f2 100%);
+$gradient-6: linear-gradient(45deg, #8448ff 0%, #21007b 80%);
+$gradient-7: linear-gradient(-70deg, #8131c6 0%, #211e8c 100%),
+linear-gradient(-70deg, #8131c6 0%, #211e8c 100%);
+$gradient-8: linear-gradient(to right, #642B73 0%, #C6426E 100%);
+
+// CTA button color: (Color for CTA/ Most focuesd button)
+$cta-color: $gradient-yellow-1;
+$cta-color-2: $color-orange;
+$cta-color-3: $color-coral;
+$cta-color-4: $color-green;
+$cta-color-5: $color-light-orange;
+
+// Border color
+$border-on-light-bg: rgba(#000, .06);
+$border-on-light-standard: $color-light-gray-400;
+$border-on-primary-bg: rgba(#fff, .07);
+$border-on-dark-bg: rgba(#fff, .05);
+$border-on-darkblue-bg: rgba(#3965f4, .15);
+
+// Declaring the primary color.
+// 
+// YOU CAN CHANGE THE DEFAULT THEME COLOR BY UPDATING "$COLOR-PRIMARY" VARIABLE. YOU CAN EITHER UPDATE IT BY PLACING ANY COLOR VARIABLE FROM ABOVE OR PASTE YOUR OWN COLOR CODE. 
+// 
+$color-primary: $color-blue;
+
+
+// Colors Init
+// =============================================================
+/**! ----- Theme Common colors (Also Used as extend in SCSS ) ---- **/
+// bg primary
+%bg-primary {
+    background: $color-primary;
+}
+
+// color primary
+%color-primary {
+    color: $color-primary;
+}
+
+// fill primary
+%fill-primary {
+    fill: $color-primary;
+}
+
+// btn border color
+%btn-border-color-primary {
+    border-color: $color-primary;
+}

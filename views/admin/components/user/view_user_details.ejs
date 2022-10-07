@@ -1,0 +1,144 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <!-- Search for small screen-->
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>User Details</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/user">Users</a>
+                            </li>
+                            <li class="breadcrumb-item active">View User Details
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical mt-1 section">
+                    <div class="row">
+                        <div class="col l4 s12">
+                            <!-- tabs  -->
+                            <div class="card-panel">
+                                <ul class="tabs">
+                                    <li class="tab">
+                                        <a href="#general">
+                                            <i class="material-icons">brightness_low</i>
+                                            <span>General</span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="tab">
+                                        <a href="#change-password">
+                                            <i class="material-icons">lock_open</i>
+                                            <span>Change Password</span>
+                                        </a>
+                                    </li> -->
+                                    <!-- <li class="tab">
+                                        <a href="#info">
+                                            <i class="material-icons">error_outline</i>
+                                            <span> Info</span>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col l8 s12">
+                            <div id="general">
+                                <div class="card-panel">
+                                    <div class="display-flex">
+                                        <div class="media">
+                                            <img src="http://localhost:8080/uploads<%= user.profile_img %>"
+                                                class="border-radius-4" alt="profile image" height="84" width="84"
+                                                onerror="this.src='../../../app-assets/images/avatar/avatar-1.png'">
+                                        </div>
+                                    </div>
+                                    <div class="divider mb-1 mt-1"></div>
+                                    <form class="formValidate" method="get">
+                                        <div class="row mt-3">
+                                            <div class="col s6">
+                                                <div class="input-field">
+                                                    <label for="f_name">First name</label>
+                                                    <input type="text" id="f_name" name="f_name" disabled="true"
+                                                        value="<%= user.first_name %>" data-error=".errorTxt1">
+                                                    <small class="errorTxt1"></small>
+                                                </div>
+                                            </div>
+                                            <div class="col s6">
+                                                <div class="input-field">
+                                                    <label for="l_name">Last name</label>
+                                                    <input type="text" id="l_name" name="l_name" disabled="true"
+                                                        value="<%= user.last_name %>" data-error=".errorTxt1">
+                                                    <small class="errorTxt1"></small>
+                                                </div>
+                                            </div>
+
+                                            <div class="col s12">
+                                                <div class="input-field">
+                                                    <label for="role">Role</label>
+                                                    <input type="text" id="role" name="role" disabled="true"
+                                                        value="<%= user.role %>" data-error=".errorTxt1">
+                                                    <small class="errorTxt1"></small>
+                                                </div>
+                                            </div>
+
+                                            <div class="col s6">
+                                                <div class="input-field">
+                                                    <label for="email">E-mail</label>
+                                                    <input id="email" type="email" name="email" disabled="true"
+                                                        value="<%= user.email %>" data-error=".errorTxt3">
+                                                    <small class="errorTxt3"></small>
+                                                </div>
+                                            </div>
+
+                                            <div class="col s6">
+                                                <div class="input-field">
+                                                    <label for="phone">Phone</label>
+                                                    <input type="number" id="phone" name="phone" disabled="true"
+                                                        value="<%= user.phone %>" data-error=".errorTxt1">
+                                                    <small class="errorTxt1"></small>
+                                                </div>
+                                            </div>
+
+                                            <div class="col s12">
+                                                <div class="input-field">
+                                                    <label for="location">Location</label>
+                                                    <input type="text" id="location" name="location" disabled="true"
+                                                        value="<%= user.location %>" data-error=".errorTxt1">
+                                                    <small class="errorTxt1"></small>
+                                                </div>
+                                            </div>
+                                            <div class="col s12">
+                                                <div class="input-field">
+                                                    <label for="address">Address</label>
+                                                    <input type="text" id="address" name="address" disabled="true"
+                                                        value="<%= user.address %>" data-error=".errorTxt1">
+                                                    <small class="errorTxt1"></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="content-overlay"></div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../bottom.ejs') -%>

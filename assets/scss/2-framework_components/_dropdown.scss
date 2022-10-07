@@ -1,0 +1,123 @@
+/**! ----- dropdown module---- **/
+.dropdown-module {
+    margin-bottom: 0;
+    padding-#{$left}: 0;
+    list-style: none;
+
+    &__toggler {
+        background: transparent;
+        padding: 0;
+
+    }
+
+    .flag-image {
+        box-shadow: 0 0 0 3px #fff;
+        border-radius: 100px;
+        height: rem(24);
+        width: rem(24);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+
+        svg,
+        img {
+            @include centerer;
+            height: 32px;
+
+        }
+    }
+
+    &-list {
+        border: 0;
+        padding: rem(10);
+        margin: 0;
+        @include pos-abs(45px, -20px, auto, auto);
+        @extend .box-shadow--2;
+        @extend .rounded--default;
+        background: $color-white;
+        display: block;
+        min-width: rem(200);
+        display: none;
+        z-index: 9999;
+        padding-#{$left}: 0;
+        list-style: none;
+
+        &:before {
+            content: '';
+            @include pos-abs(-10px, 20px, auto, auto);
+            @include arrow(up, 10, #fff);
+        }
+    }
+
+    &__item {
+        padding: rem(10) rem(12);
+        @extend .rounded--default;
+        text-transform: uppercase;
+        font-size: rem(14);
+        font-weight: 700;
+        @extend .transition-default;
+        color: $color-dark-600;
+
+        &:focus,
+        &:hover {
+            @extend %color-primary;
+        }
+    }
+
+    &--dark {
+        .dropdown-module-list {
+            background: $color-dark-700;
+
+            &:before {
+                @include arrow(up, 10, $color-dark-700);
+            }
+
+        }
+
+        .dropdown-module__item {
+            color: $color-white;
+
+            &:focus,
+            &:hover {
+                @extend %color-primary;
+            }
+
+        }
+    }
+
+    &--darkblue {
+        .dropdown-module-list {
+            background: $gradient-darkblue-1;
+
+            &:before {
+                @include arrow(up, 10, $color-darkblue-400);
+            }
+
+        }
+
+        .dropdown-module__item {
+            color: $color-white;
+
+            &:focus,
+            &:hover {
+                color: $color-white;
+                opacity: .8;
+            }
+
+        }
+    }
+
+    &--right {
+        .dropdown-module-list {
+            #{$right}: auto;
+            #{$left}: rem(-20);
+
+            &:before {
+                #{$right}: auto;
+                #{$left}: rem(20);
+            }
+        }
+    }
+}

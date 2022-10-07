@@ -1,0 +1,52 @@
+/*---------- dot ripple ----------*/
+@keyframes dot-ripple {
+    0% {
+        box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.2), 0px 0px 0px 0px rgba(255, 255, 255, 0.2)
+    }
+
+    50% {
+        box-shadow: 0px 0px 0px 10px rgba(255, 255, 255, 0.1), 0px 0px 0px 0px rgba(255, 255, 255, 0.1)
+    }
+
+    100% {
+        box-shadow: 0px 0px 0px 20px rgba(255, 255, 255, 0), 0px 0px 0px 12px rgba(255, 255, 255, 0)
+    }
+}
+
+@keyframes dot-ripple--dark {
+    0% {
+        box-shadow: 0px 0px 0px 0px rgba(42, 44, 48, 0.2), 0px 0px 0px 0px rgba(42, 44, 48, 0.2)
+    }
+
+    50% {
+        box-shadow: 0px 0px 0px 10px rgba(42, 44, 48, 0.1), 0px 0px 0px 0px rgba(42, 44, 48, 0.1)
+    }
+
+    100% {
+        box-shadow: 0px 0px 0px 20px rgba(42, 44, 48, 0), 0px 0px 0px 12px rgba(42, 44, 48, 0)
+    }
+}
+
+
+/*---------- Lightmove ----------*/
+@keyframes Lightmove {
+    0% {
+        #{$left}: -30px
+    }
+
+    20%,
+    100% {
+        #{$left}: 100%
+    }
+}
+
+/*---------- SVG animation ----------*/
+.svg-line {
+    stroke-dasharray: 3000;
+    stroke-dashoffset: 3000;
+    transition: 6s cubic-bezier(0.65, 0.05, 0.36, 1);
+
+    .loaded & {
+        stroke-dashoffset: 0;
+    }
+}

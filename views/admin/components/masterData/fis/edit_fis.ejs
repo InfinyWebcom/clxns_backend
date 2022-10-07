@@ -1,0 +1,144 @@
+<%- include('../../../top.ejs') -%>
+<%- include('../../../header.ejs') -%>
+<%- include('../../../sidenav.ejs') -%>
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>Edit FIs</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            </li>
+                            <li class="breadcrumb-item"><a href="/masterData/fis">FIs</a>
+                            </li>
+                            <li class="breadcrumb-item active">Edit FIs
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <div class="section section-data-tables">
+                    <div class="card roundCorners">
+                        <div class="card-content">
+                            <p class="caption mb-0">
+                                Edit a FIs here and assign FIs to various leads.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical section">
+                    <div class="row">
+                        <div class="col l12 s12">
+                            <div id="general">
+                                <form class="validateEditFis" id="validateEditFis" method="POST" action="/masterData/fis/edit/<%= fis.id%>" enctype="multipart/form-data">
+                                    <div class="card-panel roundCorners">
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="name">Fis Name</label>
+                                                        <input type="text" id="name" name="name"
+                                                            data-error=".errorTxt1" value="<%= fis.name %>">
+                                                        <small class="errorTxt1"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s6">
+                                                    <div id="view-file-input">
+                                                        <div class="file-field input-field">
+                                                          <div class="btn" style="padding: 0 15px; ">
+                                                            <i class="material-icons left">file_upload</i>
+                                                            <span>FIs Logo</span>
+                                                            <input id="fiImage" name="fiImage" type="file" accept="image/*" value="http://localhost:8080/fis_Logo/<%=fis.fiImage %>">
+                                                          </div>
+                                                          
+                                                          <div class="file-path-wrapper" style="padding-right: 6px;">
+                                                            <input class="file-path validate" type="text" value="<%= fis.fiImage %>">  
+                                                          </div>
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s4">
+                                                    <div class="input-field">
+                                                        <label for="shortName">Short Name</label>
+                                                        <input type="text" id="shortName" name="shortName"
+                                                            data-error=".errorTxt6" value="<%= fis.shortName %>">
+                                                        <small class="errorTxt6"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s4">
+                                                    <div class="input-field" style="text-transform: capitalize !important;">
+                                                        <select class="error" id="location" name="location"
+                                                        data-error=".errorTxt2" required>
+                                                            <!-- <option value="<%= fis.location %>" disabled selected><%= fis.location %></option> -->
+                                                            <% Locations.forEach((location) => { %>
+                                                              <option value="<%= location.name %>" <% if (location.name == fis.location) { %>selected
+                                                                <% } %>><%= location.name %></option>
+                                                            <% }); %>
+                                                        </select>
+                                                        <label>Location</label>
+                                                        <small class="errorTxt2"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s4">
+                                                    <div class="input-field">
+                                                        <select class="error" id='category' name="category"  data-error=".errorTxt3" required>
+                                                          <option value="<%= fis.category %>"  selected><%= fis.category %></option>
+                                                          <option value="Bank">Bank</option>
+                                                          <option value="NBFC">NBFC</option>
+                                                          <option value="Fintech">Fintech</option>
+                                                        </select>
+                                                        <label for="category">Category</label>
+                                                      </div>
+                                                    <small class="errorTxt3"></small>
+                                            </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <div class="input-field">
+                                                        <label for="description">Description</label>
+                                                        <input type="text" id="description" name="description"
+                                                            data-error=".errorTxt4" value="<%= fis.description %>">
+                                                        <small class="errorTxt4"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s12 display-flex justify-content-end form-action">
+                                                    <button type="submit"
+                                                        class="btn blue darken-1 waves-effect waves-light mr-2" id="addFis">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../bottom.ejs') -%>

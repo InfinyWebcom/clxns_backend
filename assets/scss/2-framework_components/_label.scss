@@ -1,0 +1,43 @@
+// DESCRIPTION:
+// designing a mini title along with section title
+// MARKUP:
+// <span class="label label--sm label-bg--light--200">...</span>
+.label{
+    position: relative;
+    font-weight: 600;
+    &:not([class*='rounded-']){
+        border-radius: rem(100);
+    }
+    &--sm{
+        font-size: rem(15);
+        padding: rem(7) rem(20);
+    }
+    &--lg{
+        font-size: rem(24);
+        padding: rem(9) rem(35);
+    }
+    &-bg--primary{
+        @extend %color-primary;
+        background: $color-white;
+    }
+    &-bg--light--100{
+        color: $color-white;
+        background: rgba(255,255,255,0.06);
+    }
+    &-bg--light--700{
+        color: $color-white;
+        background: $color-white;
+    }
+    &-bg--light--200{
+        color: $color-white;
+        &::before{
+            content: "";
+            @extend %bg-primary;
+            opacity: .05;
+            height: 100%;
+            width: 100%;
+            @include centerer;
+            border-radius: rem(100)
+        }
+    }
+}

@@ -1,0 +1,46 @@
+.decor {
+    width: 8px;
+    height: 8px;
+    border-radius: 3px;
+    position: relative;
+    transform: rotate(-315deg);
+    position: absolute;
+    top: 10px;
+    @extend %bg-primary;
+
+    &:after {
+        content: '';
+        @include centerer;
+        position: absolute;
+        width: rem(8);
+        height: rem(8);
+        border-radius: 2px;
+        box-shadow: 0px 0px 0px 5px rgba($color-blue, 0.08), 0px 0px 0px 12px rgba($color-blue, 0.04);
+        animation: dot-ripple 2s linear infinite;
+        transform: translate(-50%, -50%) translateZ(0);
+        @include rtl{
+        transform: translate(50%, -50%) translateZ(0);
+
+        }
+    }
+
+    &--square {
+        border-radius: 0;
+        transform: rotate(45deg);
+
+        &:after {
+            border-radius: 0;
+
+        }
+    }
+
+    &--light {
+        background: #B8BBC8!important;
+
+        &:after {
+            box-shadow: 0px 0px 0px 5px rgba($color-white, 0.06), 0px 0px 0px 12px rgba($color-white, 0.02)!important;
+
+        }
+    }
+
+}

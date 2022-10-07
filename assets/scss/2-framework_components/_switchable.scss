@@ -1,0 +1,47 @@
+.switchable {
+	&__image {
+		width: 100%;
+
+		@include breakpoint-min(lg) {
+			position: relative;
+			width: rem(730);
+
+			@media (max-width: 1950px) {
+				#{$left}: -200px;
+			}
+		}
+
+		@include breakpoint-min(xl) {
+			width: rem(850);
+		}
+
+		@media (min-width: 1600px) {
+			width: rem(1050);
+		}
+
+		@media (min-width: 1800px) {
+			width: rem(1180);
+		}
+	}
+
+	&__content {
+		@include breakpoint-min(lg) {
+			width: 100%;
+			max-width: 550px;
+		}
+	}
+
+	&--reverse {
+		@include breakpoint-min(lg) {
+			display: flex;
+			flex-direction: row-reverse;
+		}
+
+		.switchable__image {
+			@media (max-width: 1950px) {
+				#{$left}: auto;
+			}
+		}
+	}
+
+}

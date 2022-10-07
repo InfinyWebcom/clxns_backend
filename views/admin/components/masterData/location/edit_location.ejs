@@ -1,0 +1,82 @@
+<%- include('../../../top.ejs') -%>
+<%- include('../../../header.ejs') -%>
+<%- include('../../../sidenav.ejs') -%>
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>Edit location</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            </li>
+                            <li class="breadcrumb-item"><a href="/masterData/locations">Location</a>
+                            </li>
+                            <li class="breadcrumb-item active">Edit Location
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <div class="section section-data-tables">
+                    <div class="card roundCorners">
+                        <div class="card-content">
+                            <p class="caption mb-0">
+                                Edit a location here and assign location to various leads.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical section">
+                    <div class="row">
+                        <div class="col l12 s12">
+                            <div id="general">
+                                <form class="validateAddLocation" id="validateAddLocation" method="POST" action="/masterData/locations/edit/<%= location.id%>">
+                                    <div class="card-panel roundCorners">
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <div class="input-field">
+                                                        <label for="name">Location Name</label>
+                                                        <input type="text" id="name" name="name"
+                                                            data-error=".errorTxt1" value="<%= location.name %>">
+                                                        <small class="errorTxt1"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s12 display-flex justify-content-end form-action">
+                                                    <button type="submit"
+                                                        class="btn blue darken-1 waves-effect waves-light mr-2" id="addRole">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../bottom.ejs') -%>

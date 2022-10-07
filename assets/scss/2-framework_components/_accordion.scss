@@ -1,0 +1,69 @@
+.accordion {
+
+    // default styling
+    .card {
+        background: transparent;
+        border: 0;
+    }
+
+
+    .btn-header {
+        background: rgba($color-white, .05);
+        border-radius: 3px 3px 0 0;
+        white-space: normal;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: rem(16) rem(30);
+
+        .section--dark & {
+            background: rgba($color-white, .03);
+        }
+
+        &:hover,
+        &:focus {
+            text-decoration: none;
+        }
+    }
+
+    i {
+        @extend .transition-default;
+    }
+
+    .collapsed {
+        border-radius: 3px;
+
+        i {
+            transform: rotate(180deg);
+        }
+    }
+
+    .card-body {
+        border-radius: 0 0 3px 3px;
+    }
+
+    //  accordion v1
+    &--v1 {
+        .card-body {
+            background-color: rgba($color-black, .08);
+        }
+
+        i {
+            color: $color-gray-400;
+
+            .section--darkblue & {
+                color: $color-blue-400;
+            }
+        }
+    }
+
+    //  accordion v2 (used on other demos)
+    &--v2{
+        .card{
+            box-shadow: 0 rem(0) rem(0) 1px rgba(44, 46, 48, 0.08);
+        }
+        [aria-expanded="true"]{
+            box-shadow: 0 0 0 1px #eee;
+        }    
+    }
+}

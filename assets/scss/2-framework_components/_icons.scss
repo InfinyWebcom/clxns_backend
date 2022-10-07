@@ -1,0 +1,334 @@
+/**! ----- Icon with Background ---- **/
+// MARKUP:
+// <span class="icon--lg color--white rounded-circle">
+// <i class="icon icon-key"></i>
+// </span>
+
+.icon {
+    &--sm {
+        height: rem(42);
+        width: rem(42);
+        flex: 0 0 rem(42);
+        font-size: rem(20);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &--md {
+        height: rem(60);
+        width: rem(60);
+        flex: 0 0 rem(60);
+        font-size: rem(26);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &--lg {
+        height: rem(100);
+        width: rem(100);
+        flex: 0 0 rem(100);
+        font-size: rem(42);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        img,
+        svg,
+        .svg {
+            max-width: rem(48);
+        }
+    }
+
+    &--xl {
+        height: rem(136);
+        width: rem(136);
+        flex: 0 0 rem(144);
+        font-size: rem(60);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/**! ----- Icon Font Size ---- **/
+.icon {
+    &--2x {
+        i {
+            font-size: rem(30);
+        }
+    }
+
+    &--3x {
+        i {
+            font-size: rem(45);
+        }
+    }
+
+    &--4x {
+        i {
+            font-size: rem(60);
+        }
+    }
+
+    &--5x {
+        i {
+            font-size: rem(75);
+        }
+    }
+
+    &--6x {
+        i {
+            font-size: rem(90);
+        }
+    }
+
+    &--7x {
+        i {
+            font-size: rem(105);
+        }
+    }
+
+    &--8x {
+        i {
+            font-size: rem(120);
+        }
+    }
+
+    &--9x {
+        i {
+            font-size: rem(135);
+        }
+    }
+
+    &--10x {
+        i {
+            font-size: rem(150);
+        }
+    }
+}
+
+/**! ----- Icon Group ---- **/
+.icon-group {
+    display: flex;
+    flex-wrap: wrap;
+    padding-#{$left}: 0;
+    list-style: none;
+
+    a {
+        padding: rem(10);
+        @extend .transition-default;
+    }
+}
+
+.icon-group:not(.icon-group--vertical) {
+    li {
+        &:first-child {
+            margin-left: 0 !important;
+        }
+
+        &:last-child {
+            margin-right: 0 !important;
+        }
+
+        &:first-child a {
+            margin-left: 0 !important;
+            padding-left: 0;
+        }
+
+        &:last-child a {
+            margin-right: 0 !important;
+            padding-right: 0;
+
+        }
+    }
+
+}
+
+/**! ----- Icon Rounded ---- **/
+
+// MARKUP:
+
+// <ul class="icon-group icon-rounded icon-rounded-color--primary justify-content-center">
+    // <li><a href="#" class="color--primary"><i class="fab fa-facebook-f"></i></a></li>
+    // <li><a href="#" class="color--primary"><i class="fab fa-telegram-plane"></i></a></li>
+    // <li><a href="#" class="color--primary"><i class="fab fa-linkedin-in"></i></a></li>
+    // <li><a href="#" class="color--primary"><i class="fab fa-twitter"></i></a></li>
+    // <li><a href="#" class="color--primary"><i class="fab fa-medium-m"></i></a></li>
+    // <li><a href="#" class="color--primary"><i class="fab fa-bitcoin"></i></a></li>
+    // <li><a href="#" class="color--primary"><i class="fab fa-youtube"></i></a></li>
+// </ul>
+
+.icon-rounded {
+    a {
+        padding: 0;
+        margin: rem(2.5);
+    }
+
+    i {
+        height: rem(36);
+        width: rem(36);
+        border-radius: 100px;
+        font-size: rem(15);
+        line-height: rem(36);
+        text-align: center;
+        border-width: 1px;
+        border-style: solid;
+        @extend .transition-default;
+
+    }
+    
+    &-color--primary {
+        @extend %btn-border-color-primary;
+    }
+    &-color--gray {
+        i {
+            border-color: $color-gray-400;
+            &:hover{
+                @extend %btn-border-color-primary;
+                @extend %color-primary;
+            }
+    
+        }
+    }
+    // i{
+    //     &:hover{
+    //         @extend %color-primary;
+    //     }
+    // }
+}
+
+/**! ----- Icon Fill Wide ---- **/
+// MARKUP:
+
+// <div class="icon-fill--wide d-flex flex-wrap justify-content-center">
+//     <a class="t-icon box-shadow--4 rounded--05" href="#">
+//         <span class="t-icon__brand-icon h4-font"><i class="fab fa-telegram-plane"></i></span>
+//         <span class="t-icon__brand-name h5-font">telegram</span>
+//     </a>
+// </div>
+
+.icon-fill--wide {
+    .t-icon {
+        padding: rem(18) rem(38);
+        // background: $color-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @include breakpoint-max(sm) {
+            min-width: 200px;
+        }
+
+        @extend .transition-default;
+
+        &__brand-icon {
+            margin-#{$right}: rem(15);
+            @extend .transition-default;
+            line-height: 0;
+        }
+
+        &__brand-name {
+            @extend .transition-default;
+        }
+
+        &:hover {
+            box-shadow: 0 20px 44px 0 rgba(0, 0, 0, 0.20);
+
+            .t-icon__brand-icon,
+            .t-icon__brand-name {
+                color: white;
+            }
+        }
+    }
+}
+
+
+/**! ----- Icon Vertical ---- **/
+// MARKUP:
+
+// <ul class="icon-group icon-group--vertical rounded--full justify-content-center mb-3 mb-md-10">
+// <li><a href="#" class="color--primary"><i class="fab fa-facebook-f"></i></a></li>
+// <li><a href="#" class="color--primary"><i class="fab fa-telegram-plane"></i></a></li>
+// <li><a href="#" class="color--primary"><i class="fab fa-linkedin-in"></i></a></li>
+// <li><a href="#" class="color--primary"><i class="fab fa-twitter"></i></a></li>
+// <li><a href="#" class="color--primary"><i class="fab fa-medium-m"></i></a></li>
+// <li><a href="#" class="color--primary"><i class="fab fa-bitcoin"></i></a></li>
+// <li><a href="#" class="color--primary"><i class="fab fa-youtube"></i></a></li>
+// </ul>
+
+.icon-group--vertical {
+    display: inline-flex;
+    background: rgba(0, 0, 0, 0.12);
+
+    @include breakpoint-min(lg) {
+        flex-direction: column;
+    }
+
+    a {
+
+        @include breakpoint-min(md) {
+            padding: rem(5) rem(10);
+        }
+
+        @include breakpoint-max(md) {
+            padding: rem(10) rem(10);
+        }
+
+        &:hover {
+            color: $color-white;
+            transform: scale(1.1);
+        }
+    }
+
+    li {
+
+        &:first-child {
+            a {
+                @include breakpoint-min(md) {
+                    padding-top: rem(15);
+                }
+
+                @include breakpoint-max(md) {
+                    padding-#{$left}: rem(20);
+                }
+            }
+        }
+
+        &:last-child {
+            a {
+                @include breakpoint-min(md) {
+                    padding-bottom: rem(15);
+                }
+
+                @include breakpoint-max(md) {
+                    padding-#{$right}: rem(20);
+                }
+            }
+        }
+    }
+}
+
+/**! ----- Sticky Icons Group ---- **/
+.icon-group--sticky {
+    @include breakpoint-min(md) {
+        @media (max-width: 1365px) {
+            @include centerer(false, true);
+            #{$right}: rem(0);
+        }
+    }
+
+    @media (min-width: 1366px) {
+        position: fixed !important;
+        z-index: 1;
+        #{$right}: 0;
+    }
+
+    .boxed-layout & {
+        @include centerer(true, false);
+        display: flex;
+        justify-content: flex-end;
+        max-width: 1366px;
+    }
+}

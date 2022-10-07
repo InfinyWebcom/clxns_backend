@@ -1,0 +1,164 @@
+<script>
+  const columnNamesLeads = '<%- JSON.stringify(datatableLeads.columns) %>';
+  const apiUrlLeads = '<%- JSON.parse(JSON.stringify(datatableLeads.apiUrl)) %>';
+
+  const id = '<%- datatableLeads.id ? datatableLeads.id : null %>';
+  let myTableLeads
+  let filterObjLeads = {};
+
+  $(document).ready(() => {
+
+    myTableLeads = $('#exampleLeads').DataTable({
+      bLengthChange: false,
+      bInfo: false,
+      paging: true,
+      ordering: false,
+      pageLength: 50,
+      searching:  (IsSearch=='campaignDetails' ? false : true),
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: `${baseUrl}${apiUrlLeads}`,
+        type: 'POST',
+        datatype: 'JSON',
+        data: function (data) {
+          data.filterObjLeads = filterObjLeads;
+          data.id = id;
+        }
+      },
+      'columns': JSON.parse(columnNamesLeads),
+      // select: { style: 'multi' }
+    });
+
+  });
+
+  function action(actionUrl, userId, teamId) {
+
+    console.log('action :-', actionUrl, userId, teamId);
+
+    const data = {
+      actionUrl: actionUrl,
+      userId: userId,
+      teamId: teamId,
+    };
+
+    fetch(`${baseUrl}${actionUrl}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        $('#exampleLeads').DataTable().ajax.reload(null, false);
+        $('#exampleTelecallers').DataTable().ajax.reload(null, false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
+
+  document.getElementById('actionButton').addEventListener('click', function () {
+
+    const data = myTableLeads.rows('.selected').data();
+
+    let selectedItems = [];
+    data.map(item => {
+      selectedItems.push(item)
+    });
+    console.log('rows ASD :-', selectedItems);
+
+  });
+
+  function checkboxFunc(data) {
+    console.log('checkbox :-', data);
+  }
+
+
+  function reassignLead(telecallerName, loanAccountNo) {
+
+    currentlyAssignedTo = telecallerName
+    leadLoanAccountNo = loanAccountNo
+
+    // console.log('reassignLead- currentlyAssignedTo :', currentlyAssignedTo);
+    // console.log('reassignLead- leadLoanAccountNo :', leadLoanAccountNo);
+
+    document.getElementById('currentlyAssignedTo').innerHTML = currentlyAssignedTo;
+
+  }
+
+  function reassignLeadSave() {
+
+
+    let telecallerSelect = document.getElementById("reassignTelecallerList");
+    let telecallerId = telecallerSelect.value;
+    console.log('reassignLeadSave - leadLoanAccountNo :', leadLoanAccountNo);
+    console.log('reassignLeadSave - reassignTelecallerList :', telecallerId);
+
+    const data = {
+      newTelecaller: telecallerId,
+      leadLoanAccountNo: leadLoanAccountNo,
+    };
+
+
+    fetch(`${baseUrl}campaign/reassignLead`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        $('#exampleLeads').DataTable().ajax.reload(null, false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
+
+  function assignLead(loanAccountNo) {
+
+    leadLoanAccountNo = loanAccountNo
+
+  }
+
+  function assignLeadSave() {
+
+    let telecallerSelect = document.getElementById("assignTelecallerList");
+    let telecallerId = telecallerSelect.value;
+    console.log('assignLeadSave - leadLoanAccountNo :', leadLoanAccountNo);
+    console.log('assignLeadSave - assignTelecallerList :', telecallerId);
+
+    const data = {
+      newTelecaller: telecallerId,
+      leadLoanAccountNo: leadLoanAccountNo,
+    };
+
+    fetch(`${baseUrl}campaign/reassignLead`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(response => response.json()).then(data => {
+        console.log('Success:', data);
+        $('#exampleLeads').DataTable().ajax.reload(null, false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
+</script>
+
+<div class="section section-data-tables">
+  <div class="col s12">
+    <table id="exampleLeads" class="display responsive nowrap" style="width:100%">
+    </table>
+  </div>
+</div>

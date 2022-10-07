@@ -1,0 +1,26 @@
+.token-saleinfo {
+    &--v1 {
+        .content {
+            flex: 1;
+        }
+
+        .allocation-bar {
+            width: 100%;
+        }
+    }
+
+    &--v2 {
+        .container {
+            @media screen and (min-width: 1330px) {
+                max-width: rem(1300);
+            }
+        }
+    }
+}
+
+.oval--md {
+    height: rem(16);
+    width: rem(16);
+    border-radius: 100px;
+}
+

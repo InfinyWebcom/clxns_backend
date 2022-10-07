@@ -1,0 +1,95 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>Add Role</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/permissions/roles">Role</a>
+                            </li>
+                            <li class="breadcrumb-item active">Add Role
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <div class="section section-data-tables">
+                    <div class="card roundCorners">
+                        <div class="card-content">
+                            <p class="caption mb-0">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, aspernatur corrupti
+                                provident iure mollitia quos aliquid quae obcaecati molestiae, eum incidunt
+                                necessitatibus, id omnis eius! Tenetur incidunt beatae consequuntur fuga.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical section">
+                    <div class="row">
+                        <div class="col l12 s12">
+                            <div id="general">
+                                <form class="validateAddRole" id="validateAddRole" method="POST" action="/permissions/roles/addPermissions">
+                                    <div class="card-panel roundCorners">
+                                        <div class="row">
+
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="name">Roll ID</label>
+                                                        <input type="text" id="name" name="name"
+                                                            data-error=".errorTxt1">
+                                                        <small class="errorTxt1"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s6">
+                                                  <div class="input-field">
+                                                      <label for="name">Module ID</label>
+                                                      <input type="text" id="name" name="name"
+                                                          data-error=".errorTxt1">
+                                                      <small class="errorTxt1"></small>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s12 display-flex justify-content-end form-action">
+                                                    <button type="submit"
+                                                        class="btn blue darken-1 waves-effect waves-light mr-2" id="addUser">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../bottom.ejs') -%>

@@ -1,0 +1,119 @@
+<%- include('../../../top.ejs') -%>
+<%- include('../../../header.ejs') -%>
+<%- include('../../../sidenav.ejs') -%>
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>Edit Disposition</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            </li>
+                            <li class="breadcrumb-item"><a href="/masterData/dispositions">Dispositions</a>
+                            </li>
+                            <li class="breadcrumb-item active">Edit disposition
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <div class="section section-data-tables">
+                    <div class="card roundCorners">
+                        <div class="card-content">
+                            <p class="caption mb-0">
+                                Edit a disposition here and assign disposition to various leads.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical section">
+                    <div class="row">
+                        <div class="col l12 s12">
+                            <div id="general">
+                                <form class="validateDispositions" id="validateDispositions" method="POST" action="/masterData/dispositions/edit/<%= dis.id%>">
+                                    <div class="card-panel roundCorners">
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col s4">
+                                                    <div class="input-field">
+                                                        <select id='type' name="type" data-error=".errorTxt3">
+                                                          <option value="<%= dis.type %>" selected><%= dis.type %></option>
+                                                          <!-- <option value="Collection">Collection</option> -->
+                                                          <option value="Telecaller">Telecaller</option>
+                                                          <option value="Fos">Fos</option>
+                                                        </select>
+                                                        <label for="type">Type</label>
+                                                      </div>
+                                                    <small class="errorTxt3"></small>
+                                                </div>
+                                                <div class="col s8">
+                                                    <div class="input-field">
+                                                        <label for="name">Disposition Name</label>
+                                                        <input type="text" id="name" name="name"
+                                                            data-error=".errorTxt1" value="<%= dis.name %>">
+                                                        <small class="errorTxt1"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <h6 class="text-uppercase pb-0 mb-0 fontStyle"><b>Next Action</b></h6>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-1">
+                                                <div class="col s2">
+                                                    <div>Set Reminder</div>
+                                                </div>
+                                                <div class="input-field col s10 navbar-color mb-0 mt-0 pt-0 pb-0">
+                                                    <div class="switch">
+                                                        <label> No <input type="checkbox" id="setReminder" name="setReminder" value='yes' <%= dis.setReminder ? "checked" : "" %> /> <span class="lever"></span> Yes </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s2">
+                                                    <div>Allow Feedback</div>
+                                                </div>
+                                                <div class="input-field col s10 navbar-color mb-0 mt-0 pt-0 pb-0">
+                                                    <div class="switch">
+                                                        <label> No <input type="checkbox" id="allowFeedback" name="allowFeedback" value='yes' <%= dis.allowFeedback ? "checked" : "" %> /> <span class="lever"></span> Yes </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s12 display-flex justify-content-end form-action">
+                                                    <button type="submit"
+                                                        class="btn blue darken-1 waves-effect waves-light mr-2" id="addDisposition">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../bottom.ejs') -%>

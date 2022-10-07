@@ -1,0 +1,217 @@
+<style>
+  .fontStyle{
+   font-size: 13px;
+  }
+</style>
+<script>
+let isFresh;
+ function applyFilterNew() {
+    filter=true;
+    filterObj.isFresh='';
+    filterObj.fi =  ($('input[name="fis"]').is(':checked'))?$('input[name="fis"]:checked').val():'';
+    filterObj.loanType = ($('input[name="loanType"]').is(':checked')) ? $("input[name='loanType']:checked").val() :'';
+    filterObj.PoolId = ($('#PoolId').val())?  $('#PoolId').val() :'';
+    filterObj.IDFrom = $('#fromSerialNoNew').val();
+    filterObj.IDTo = $('#toSerialNoNew').val();
+    filterObj.amountMore = $('#amountMoreNew').val();
+    filterObj.amountLess = $('#amountLessNew').val();
+    filterObj.DPDBucket = ($('#DPDBucketNew').val())?$('#DPDBucketNew').val():'';
+    console.log("\n\n\ Filter OBJ",filterObj);
+    filterObj.callStatus='';
+    filterObj.team='';
+    filterObj.telecaller='';
+    filterObj.paymentStatus ='';
+    filterObj.EmployeeID = '';
+    $('#example').DataTable().draw();
+    filterApi(filterObj);
+  }
+
+  function clearUserFilter() {
+        console.log('clearUserFilter -----', filterObj);
+        filterObj = {}
+        filterObj.isFresh='';
+        filterObj.isDeleted=0;
+        filterObj.teamId=null;
+        filterObj.fi='';
+        filterObj.PoolId='';
+        filterObj.loanType='';
+        filterObj.IDFrom='';
+        filterObj.IDTo='';
+        filterObj.amountLess='';
+        filterObj.amountMore='';
+        filterObj.DPDBucket='';
+        filterObj.callStatus='';
+        filterObj.team='';
+        filterObj.telecaller='';
+        filterObj.telecallerAssigned='No';
+        filterObj.FOSAssigned='No';
+        filterObj.paymentStatus ='';
+        filterObj.EmployeeID = '';
+        filterApi(filterObj);
+        $('#example').DataTable().draw();
+    }
+
+  //  function radioButtonFunc(name) {
+    $(document).on('click','input[name="group1"]',function() {
+    console.log('-=-=',$(this).prop('previousValue'))
+        if($(this).prop('previousValue') === true){
+            $(this).prop('checked', false)
+        } else {
+             $(this).prop('checked', true)
+           
+        }
+        
+      $(this).prop('previousValue', $(this).prop('checked')); 
+    });
+  
+    // };
+
+let teamsId;
+function applyAssignLeadToTeam() {
+  let teleSelect = $(".checkId");
+if(teleSelect){
+  teleSelect = Array.from(teleSelect);
+  teleSelect = teleSelect.filter(ele => ele.checked).map(ele => ele.value).join();
+  console.log('\n\nteleSelect:',teleSelect);
+}
+teleId =teleSelect;
+
+console.log('\n\nteleId :',teleId);
+let teamSelect = document.getElementById("TeamMemberId");
+
+teamsId = teamSelect.value;
+
+const data = {
+  filterObj: filterObj,
+  teamId: teamsId,
+  telecallerId:teleId
+};
+
+console.log('data body: ', data);
+// $.ajax({
+//     type: "POST",
+//     url: baseUrl+'leads/newLeads/assignLeadToTeam',
+//     data: data,
+//     dataType: "json",
+//     success: function (response) {
+//       console.log(response);
+//     }
+//   });
+// console.log('data body after ajax: ', data);
+
+
+if (teamsId) {
+  fetch(`${baseUrl}leads/newLeads/assignLeadToTeam`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      // $('#example').DataTable().ajax.reload(null, false);
+      location.reload();
+      if (data.title=='Success') {
+          M.toast({
+              html: 'Leads assigned!',
+              classes: 'green'
+          })
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}
+}
+  </script> 
+<div>
+    <h6 class="mt-0 text-uppercase pb-0 mb-0 fontStyle" style="margin-top: 10px !important;"><b>FI Name</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-0 pt-0">
+            <div class="center-align row">
+                    <% fis.forEach(function(fi,i){ %>
+                    <div class="input-field col s12 mt-0 pb-5">
+                      <label>
+                        <input name="fis" type="radio" value="<%= fi.id %>"/>
+                        <span><%= fi.name %></span>
+                    </label>
+                    </div>
+                    <% }); %>
+            </div>
+
+        </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Loan Type</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+            <div class="center-align row">
+                    <% productTypes.forEach(function(productType,i){ %>
+                    <div class="input-field col s12 mt-0 pb-5">
+                      <label>
+                        <input name="loanType" type="radio" value="<%= productType.id %>"/>
+                        <span> <%= productType.name %></span>
+                    </label>
+                    </div>
+                    <% }); %>
+            </div>
+
+        </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Pool</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+            <div class="center-align row">
+                    <div class="input-field col s12 mt-0 pb-5">
+                      <select id="PoolId" name="PoolId">
+                        <option value="" disabled selected>Select Pool</option>
+                        <% leadsUploads.forEach((leadsUpload) => { %>
+                          <option value="<%= leadsUpload.id %>"><%=leadsUpload.bankName%> <%=moment(leadsUpload.createdAt).format('YYYY-MM-DD')%></option>
+                          <% }); %>
+                    </select>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="navbar-options row">
+      <div class="input-field col s6 navbar-color mb-0 mt-4 pt-0 pb-2">
+        <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>From SerialNo</b></h6>
+        <input type="text" id="fromSerialNoNew" name="fromSerialNoNew" placeholder="">
+      </div>
+      <div class="input-field col s6 navbar-color mb-0 mt-4 pt-0 pb-2">
+        <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>To SerialNo</b></h6>
+        <input type="text" id="toSerialNoNew" name="toSerialNoNew" placeholder="">
+      </div>
+    </div>
+
+    <div class="navbar-options row">
+      <div class="input-field col s6 navbar-color mb-0 mt-4 pt-0 pb-2">
+        <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>OS more than</b></h6>
+        <input type="number" id="amountMoreNew" name="amountMoreNew" placeholder="">
+      </div>
+      <div class="input-field col s6 navbar-color mb-0 mt-4 pt-0 pb-2">
+        <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>OS less than</b></h6>
+        <input type="number" id="amountLessNew" name="amountLessNew" placeholder="">
+      </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>DPD Bucket</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+          <div class="center-align row">
+                  <div class="input-field col s12 mt-0 pb-5">
+                    <select id="DPDBucketNew" name="DPDBucket">
+                      <option value="" disabled selected>Select DPDBucket</option>
+                      <% dpdBuckets.forEach((dpdBucket) => { %>
+                        <option value="<%= dpdBucket.shortName %>"><%=dpdBucket.shortName%></option>
+                        <% }); %>
+                  </select>
+                  </div>
+          </div>
+      </div>
+    </div>
+</div>

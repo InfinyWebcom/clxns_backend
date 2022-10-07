@@ -1,0 +1,14 @@
+/**! ----- Learn (used in home cloud storage)  ---- **/
+.learn {
+    .switchable__image {
+        @include breakpoint-min(lg) {
+            @include breakpoint-max(xl) {
+                max-width: rem(600);
+            }
+        }
+
+        @media (min-width: 1800px) {
+            max-width: rem(1000);
+        }
+    }
+}

@@ -1,0 +1,325 @@
+// CARD MARKUP:
+// 
+// <div class="col-12 col-lg-6">
+// <article class="article">
+//     <div class="card text-center">
+//         <a href="#" class="article__thumbnail">
+//             <div class="article__thumbnail-image">
+//                 <img src="..." alt="..." class="card-img-top background-image-holder">
+//             </div>
+//          </a>
+//          <!-- end of image -->
+//         <div class="article-author">
+//             <a href="#" class="article-author__avatar">
+//                 <img src="..." class="background-image-holder" alt="...">
+//             </a>
+//             <div>
+//                 <a href="#" class="article-author__name">...</a>
+//             </div>
+//         </div>
+//         <div class="card-body">
+//             <a href="#"><h2 class="article__title">...</h2></a>
+//             <span class="article__date">...</span>
+//         </div>
+//     </div>
+// </article>
+// </div>
+
+
+/**! ----- Blog post single card ---- **/
+.article {
+    &:not(.sticky--featured) {
+        @include breakpoint-max(md) {
+            max-width: 350px;
+            margin: 0 auto;
+        }
+    }
+
+    .card {
+        text-align: center;
+        overflow: hidden;
+        border-color: $border-on-light-standard;
+
+        &-body {
+            padding: rem(30);
+            position: relative;
+            z-index: 2;
+        }
+    }
+
+    &__thumbnail {
+        width: 100%;
+
+        &-image {
+            min-height: 12.5rem;
+            background-size: cover;
+            background-position: center center;
+        }
+        + .article-author{
+            margin-top: rem(-42);
+            padding-top: 0;
+    
+        }
+    }    
+    &-author {
+        padding-top: rem(30);
+        display: inline-block;
+        position: relative;
+        z-index: 2;
+
+        &__avatar {
+            height: rem(72);
+            width: rem(72);
+            margin-right: auto;
+            margin-left: auto;
+            margin-bottom: rem(3);
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+            @extend .transition-default;
+            background-size: cover;
+            background-position: center center;
+
+            &:hover {
+                box-shadow: 0 0 0 5px #fff;
+            }
+        }
+
+        &__name {
+            font-size: rem(15);
+            font-weight: 500;
+            color: $color-gray-400;
+            @extend .transition-default;
+
+            &:hover {
+                @extend %color-primary;
+            }
+        }
+    }
+
+    &__title {
+        margin-bottom: rem(15);
+        display: flex;
+        flex-direction: column;
+
+        h2 {
+            font-size: rem(20);
+            line-height: rem(32);
+            font-weight: 500;
+            @extend .transition-default;
+
+            &:hover {
+                @extend %color-primary;
+            }
+        }
+
+    }
+
+    &__date {
+        color: $color-gray-400;
+        font-size: rem(14);
+    }
+}
+
+
+/**! ----- Blog sticky post card common css style ---- **/
+.sticky {
+    .card {
+        @extend %bg-primary;
+        &:hover {
+            .article__thumbnail-image {
+                &::before {
+                    opacity: .95;
+                }
+            }
+        }
+    }
+
+    .article {
+        &__thumbnail-image {
+            min-height: 100%;
+            background-size: cover;
+            background-position: center center;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+
+            &::before {
+                content: "";
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                left: 0;
+                top: 0;
+                z-index: 2;
+                border-radius: rem(5);
+                @extend %bg-primary;
+                opacity: .8;
+                transition: .3s;
+            }
+
+            &:hover {
+                &::before {
+                    opacity: .95;
+                }
+            }
+        }
+    }
+
+    .article {
+        &__title {
+            h2 {
+                color: $color-white;
+
+                &:hover {
+                    color: $color-white !important;
+                }
+
+            }
+
+        }
+
+        &__date {
+            color: $color-white;
+        }
+
+        &-author {
+            &__name {
+                color: $color-white;
+
+                &:hover {
+                    color: $color-white !important;
+                }
+            }
+        }
+    }
+
+}
+
+// BLOG STICKY FEATURED MARKUP:
+// 
+// 
+
+// <div class="col">
+// <article class="article sticky sticky--featured">
+//     <div class="card">
+//         <div class="article__thumbnail">
+//             <div class="article__thumbnail-image">
+//                 <img src="img/blog-page-img-1.jpg" alt="thumbnail" class="card-img-top background-image-holder">
+//             </div>
+//         </div>
+//         <!-- end of image -->
+//         <div class="card-body">
+//             <span class="label label--sm btn-bg--cta--4 mb-2 rounded--05">Featured</span>
+//             <a href="#" class="article__title"><h2>Get The Boot A Birds Eye Look Into Mcse Boot Camps</h2></a>
+//             <div class="article-author">
+//                 <a href="#" class="article-author__avatar">
+//                     <img src="img/author-avatar-1.png" class="background-image-holder" alt="author">
+//                 </a>
+//                 <div>
+//                     <a href="#" class="article-author__name">Sam Tyler</a>
+//                 </div>
+//             </div>
+//             <!-- end of author avatar & name -->
+//         </div>
+//         <!-- end of body content -->
+//     </div>
+// </article>
+// </div>
+
+/**! ----- Blog sticky post featured card (Large one) ---- **/
+.sticky--featured {
+    .card {
+        text-align: left;
+        border-radius: rem(15);
+
+        &-body {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: rem(40) rem(30);
+
+            @include breakpoint-min(lg) {
+                padding-top: 120px;
+                padding-bottom: 40px;
+                padding-left: 90px;
+
+            }
+        }
+
+    }
+
+    .article {
+        &__title {
+            max-width: rem(470);
+
+            h2 {
+                font-size: rem(30);
+                line-height: rem(40);
+                font-weight: 400;
+
+            }
+
+            @include breakpoint-min(lg) {
+                h2 {
+
+                    font-size: rem(36);
+                    line-height: rem(45);
+                }
+
+            }
+        }
+
+        &-author {
+            margin-top: 0;
+
+            &__avatar {
+                margin-bottom: rem(10);
+            }
+
+            &__name {
+                font-size: rem(18);
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+// BLOG STICKY REGULAR(CARD) MARKUP:
+// 
+// 
+// <div class="col-12 col-lg-6">
+// <article class="article sticky sticky--regular">
+//     <div class="card">
+//         <div class="article__thumbnail">
+//             <div class="article__thumbnail-image">
+//                 <img src="img/blog-page-img-2.jpg" alt="thumbnail" class="card-img-top background-image-holder">
+//             </div>
+//          </div>
+//          <!-- end of image -->
+//          <div class="article-author">
+//              <a href="#" class="article-author__avatar">
+//                  <img src="img/author-avatar-3.png" class="background-image-holder" alt="author">
+//              </a>
+//              <div>
+//                  <a href="#" class="article-author__name">Sam Tyler</a>
+//              </div>
+//          </div>
+//          <!-- end of author avatar & name -->
+//          <div class="card-body">
+//             <a href="#" class="article__title"><h2>Tips to increase your adwords profits</h2></a>
+//             <span class="article__date">22 Aug 2019</span>
+//         </div>
+//         <!-- end of body content -->
+//     </div>
+// </article>
+// </div>
+
+/**! ----- Blog sticky post regular card  ---- **/
+.sticky--regular {
+    .article {
+        &__thumbnail {
+            min-height: rem(200);
+        }
+    }
+}

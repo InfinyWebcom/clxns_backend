@@ -1,0 +1,1083 @@
+<%- include('../../top.ejs') -%> <%- include('../../header.ejs') -%> <%-
+include('../../sidenav.ejs') -%>
+<div id="main">
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue"></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <!-- Search for small screen-->
+      <div class="container">
+        <div class="row">
+          <div class="col s10 m6 l6">
+            <h5 class="breadcrumbs-title mt-0 mb-0">
+              <span>View Campaign Lead Details</span>
+            </h5>
+            <ol class="breadcrumbs mb-0">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+              <li class="breadcrumb-item">
+                <a href="/leads">Campaign Lead</a>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="container">
+        <div class="col s12">
+          <div
+            id="button-trigger"
+            class="card roundCorners card-default scrollspy"
+          >
+            <div
+              class="card-content"
+              style="padding: 0px; margin-bottom: -30px"
+            >
+              <ul class="tabs" style="border-radius: 10px 10px 0px 0px">
+                <li class="tab col m4"><a href="#test1">Info</a></li>
+                <li class="tab col m4"><a href="#test2">History</a></li>
+                <li class="tab col m4"><a href="#test3">Events</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="test1" class="col s12">
+          <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+            <div class="card-content">
+              <div class="row">
+                <form
+                id="formValidateLeads"
+                action="/leads/addLeads"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="name">Customer Name</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="name"
+                      name="name"
+                      type="text"
+                      data-error=".errorTxt1"
+                      value="<%= leads.name %>"
+                      disabled
+                    />
+                    <small class="errorTxt1"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="productType">productType</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="productType"
+                      name="productType"
+                      type="text"
+                      data-error=".errorTxt13"
+                      value="<%= leads.productType %>"
+                      disabled
+                    />
+                    <small class="errorTxt13"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="fi_name">Bank Name</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="bank_name"
+                      name="bank_name"
+                      type="text"
+                      data-error=".errorTxt12"
+                      value="<%= leads.bank_name %>"
+                      disabled
+                    />
+                    <small class="errorTxt12"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="city">City</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="city"
+                      name="city"
+                      type="text"
+                      value="<%= leads.city %>"
+                      data-error=".errorTxt3"
+                      disabled
+                    />
+                    <small class="errorTxt3"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="phone">Phone(Number Only)</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="phone"
+                      name="phone"
+                      type="text"
+                      maxlength="10"
+                      value="<%= leads.phone %>"
+                      data-error=".errorTxt4"
+                      disabled
+                    />
+                    <small class="errorTxt4"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="email">Email</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="email"
+                      name="email"
+                      type="text"
+                      value="<%= leads.email %>"
+                      data-error=".errorTxt5"
+                      disabled
+                    />
+                    <small class="errorTxt5"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="address">Address</label>
+                    <textarea
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="address"
+                      name="address"
+                      class="materialize-textarea"
+                      data-error=".errorTxt6"
+                      disabled
+                    >
+    <%= leads.address %></textarea
+                    >
+                    <small class="errorTxt6"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="amountDue">Loan Amount</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="amountDue"
+                      name="amountDue"
+                      type="text"
+                      value="<%= leads.amountDue %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="amountOutstanding">Amount Outstanding</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="amountOutstanding"
+                      name="amountOutstanding"
+                      type="text"
+                      value="<%= leads.amountOutstanding %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="disbursementDate">Date of Loan Disbursement</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="disbursementDate"
+                      name="disbursementDate"
+                      type="text"
+                      value="<%= leads.disbursementDate %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="daysDue">Days Due</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="daysDue"
+                      name="daysDue"
+                      type="text"
+                      value="<%= leads.daysDue %>"
+                      data-error=".errorTxt8"
+                      disabled
+                    />
+                    <small class="errorTxt8"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="loanAccountNo">Loan Account No</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="loanAccountNo"
+                      name="loanAccountNo"
+                      type="text"
+                      value="<%= leads.loanAccountNo %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="emiStartDate">EMI Start Date</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="emiStartDate"
+                      name="emiStartDate"
+                      type="text"
+                      value="<%= leads.emiStartDate %>"
+                      data-error=".errorTxt8"
+                      disabled
+                    />
+                    <small class="errorTxt8"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="numberOfPendingEMIs"> No of Pending EMIs</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="numberOfPendingEMIs"
+                      name="numberOfPendingEMIs"
+                      type="text"
+                      value="<%= leads.numberOfPendingEMIs %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="penaltyAmount">Penalty Amount</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="penaltyAmount"
+                      name="penaltyAmount"
+                      type="text"
+                      value="<%= leads.penaltyAmount %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="ODValue">OD Value</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="ODValue"
+                      name="ODValue"
+                      type="text"
+                      value="<%= leads.ODValue %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="ODInt">OD Int</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="ODInt"
+                      name="ODInt"
+                      type="text"
+                      value="<%= leads.ODInt %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="poolId">Pool Name</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="poolId"
+                      name="poolId"
+                      type="text"
+                      value="<%= leads.poolId %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="telecallerAssigned"> Telecaller Assigned</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="telecallerAssigned"
+                      name="telecallerAssigned"
+                      type="text"
+                      value="<%= leads.telecallerAssigned %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="DPDBucket">DPD Bucket</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="DPDBucket"
+                      name="DPDBucket"
+                      type="text"
+                      value="<%= leads.DPDBucket %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="status">Status</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="status"
+                      name="status"
+                      type="text"
+                      value="<%= leads.status %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="reminderDate">Reminder Date</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="reminderDate"
+                      name="reminderDate"
+                      type="text"
+                      value="<%= leads.reminderDate %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="closeStatus">Close Status</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="closeStatus"
+                      name="closeStatus"
+                      type="text"
+                      value="<%= leads.closeStatus %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="fieldVisitStatus">Field Visit Status</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="fieldVisitStatus"
+                      name="fieldVisitStatus"
+                      type="text"
+                      value="<%= leads.fieldVisitStatus %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="FOSAssigned">FOS Assigned</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="FOSAssigned"
+                      name="FOSAssigned"
+                      type="text"
+                      value="<%= leads.FOSAssigned %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <label for="collectionStatus">Collection Status</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="collectionStatus"
+                      name="collectionStatus"
+                      type="text"
+                      value="<%= leads.collectionStatus %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="transactionType">transactionType</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="transactionType"
+                      name="transactionType"
+                      type="text"
+                      value="<%= leads.transactionType %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="chequeNo">Cheque No</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="chequeNo"
+                      name="chequeNo"
+                      type="text"
+                      value="<%= leads.chequeNo %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="chequeDate">Cheque Date</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="chequeDate"
+                      name="chequeDate"
+                      type="text"
+                      value="<%= leads.chequeDate %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="chequeBank">Cheque Bank</label>
+                    <textarea
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="chequeBank"
+                      name="chequeBank"
+                      class="materialize-textarea"
+                      data-error=".errorTxt6"
+                      disabled
+                    >
+    <%= leads.chequeBank %></textarea
+                    >
+                    <small class="errorTxt6"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="state">Transaction No</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="transactionNo"
+                      name="transactionNo"
+                      type="text"
+                      value="<%= leads.transactionNo %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="imageVerified">Image Verified</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="imageVerified"
+                      name="imageVerified"
+                      type="text"
+                      value="<%= leads.imageVerified %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="locationVerified">Location Verified</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="locationVerified"
+                      name="locationVerified"
+                      type="text"
+                      value="<%= leads.locationVerified %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="intendToPay">IntendToPay</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="intendToPay"
+                      name="intendToPay"
+                      type="text"
+                      value="<%= leads.intendToPay %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="abilityToPay">AbilityToPay</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="abilityToPay"
+                      name="abilityToPay"
+                      type="text"
+                      value="<%= leads.abilityToPay %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="uploaded_id">Uploaded Id</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="uploaded_id"
+                      name="uploaded_id"
+                      type="text"
+                      value="<%= leads.uploaded_id %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="pending_leads">Comments</label>
+                    <textarea
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="comments"
+                      name="comments"
+                      class="materialize-textarea"
+                      data-error=".errorTxt6"
+                      disabled
+                    >
+                                      <%= leads.comments %></textarea
+                    >
+                    <small class="errorTxt6"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <a
+                      class="
+                        btn
+                        waves-effect waves-light
+                        gradient-45deg-purple-deep-orange
+                        float-right
+                      "
+                      href="/campaign"
+                      >Cancel</a
+                    >
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="test2" class="col s12">
+          <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+            <div class="card-content">
+              <div class="row">
+                <form
+                id="formValidateLeads"
+                action="/leads/addLeads"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <div class="row">
+                  <div class="input-field col s12">
+                    <label for="name">Customer Name</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="name"
+                      name="name"
+                      type="text"
+                      data-error=".errorTxt1"
+                      value="<%= leads.customer_name %>"
+                      disabled
+                    />
+                    <small class="errorTxt1"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="fi_name">Product</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="product"
+                      name="product"
+                      type="text"
+                      data-error=".errorTxt13"
+                      value="<%= leads.product %>"
+                      disabled
+                    />
+                    <small class="errorTxt13"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="fi_name">BANK NAME</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="bank_name"
+                      name="bank_name"
+                      type="text"
+                      data-error=".errorTxt12"
+                      value="<%= leads.bank_name %>"
+                      disabled
+                    />
+                    <small class="errorTxt12"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="city">City</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="city"
+                      name="city"
+                      type="text"
+                      value="<%= leads.city %>"
+                      data-error=".errorTxt3"
+                      disabled
+                    />
+                    <small class="errorTxt3"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="phone">Phone(Number Only)</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="phone"
+                      name="phone"
+                      type="text"
+                      maxlength="10"
+                      value="<%= leads.phone %>"
+                      data-error=".errorTxt4"
+                      disabled
+                    />
+                    <small class="errorTxt4"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="email">Email</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="email"
+                      name="email"
+                      type="text"
+                      value="<%= leads.email %>"
+                      data-error=".errorTxt5"
+                      disabled
+                    />
+                    <small class="errorTxt5"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="pending_leads">Address</label>
+                    <textarea
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="address"
+                      name="address"
+                      class="materialize-textarea"
+                      data-error=".errorTxt6"
+                      disabled
+                    >
+                                            <%= leads.address %></textarea
+                    >
+                    <small class="errorTxt6"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="amount_due">Amount Due</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="amount_due"
+                      name="amount_due"
+                      type="text"
+                      value="<%= leads.amount_due %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="amount_outstanding">Amount Outstanding</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="amount_outstanding"
+                      name="amount_outstanding"
+                      type="text"
+                      value="<%= leads.amount_outstanding %>"
+                      data-error=".errorTxt8"
+                      disabled
+                    />
+                    <small class="errorTxt8"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="days_due">Days Due</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="days_due"
+                      name="days_due"
+                      type="text"
+                      value="<%= leads.days_due %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="loan_acount_num">Loan Acount Number</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="loan_acount_num"
+                      name="loan_acount_num"
+                      type="text"
+                      value="<%= leads.loan_acount_num %>"
+                      data-error=".errorTxt8"
+                      disabled
+                    />
+                    <small class="errorTxt8"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="pool_name">Pool Name</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="pool_name"
+                      name="pool_name"
+                      type="text"
+                      value="<%= leads.pool_name %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <select id="caller_assigned" name="caller_assigned" required>
+                      <option
+                        value="<%= leads.caller_assigned %>"
+                        selected
+                        disabled
+                      >
+                        <%= leads.caller_assigned %>
+                      </option>
+                    </select>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <select id="fos_assigned" name="fos_assigned" required>
+                      <option value="<%= leads.fos_assigned %>" selected disabled>
+                        <%= leads.fos_assigned %>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="pending_leads">Comments</label>
+                    <textarea
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="comments"
+                      name="comments"
+                      class="materialize-textarea"
+                      data-error=".errorTxt6"
+                      disabled
+                    >
+                                         <%= leads.comments %></textarea
+                    >
+                    <small class="errorTxt6"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <a
+                      class="
+                        btn
+                        waves-effect waves-light
+                        gradient-45deg-purple-deep-orange
+                        float-right
+                      "
+                      href="/leads"
+                      >Cancel</a
+                    >
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="test3" class="col s12">
+          <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+            <div class="card-content">
+              <div class="row">
+                <form
+                id="formValidateLeads"
+                action="/leads/addLeads"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <div class="row">
+                  <div class="input-field col s12">
+                    <label for="name">Customer Name</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="name"
+                      name="name"
+                      type="text"
+                      data-error=".errorTxt1"
+                      value="<%= leads.customer_name %>"
+                      disabled
+                    />
+                    <small class="errorTxt1"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="fi_name">Product</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="product"
+                      name="product"
+                      type="text"
+                      data-error=".errorTxt13"
+                      value="<%= leads.product %>"
+                      disabled
+                    />
+                    <small class="errorTxt13"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="fi_name">BANK NAME</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="bank_name"
+                      name="bank_name"
+                      type="text"
+                      data-error=".errorTxt12"
+                      value="<%= leads.bank_name %>"
+                      disabled
+                    />
+                    <small class="errorTxt12"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="city">City</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="city"
+                      name="city"
+                      type="text"
+                      value="<%= leads.city %>"
+                      data-error=".errorTxt3"
+                      disabled
+                    />
+                    <small class="errorTxt3"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="phone">Phone(Number Only)</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="phone"
+                      name="phone"
+                      type="text"
+                      maxlength="10"
+                      value="<%= leads.phone %>"
+                      data-error=".errorTxt4"
+                      disabled
+                    />
+                    <small class="errorTxt4"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="email">Email</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="email"
+                      name="email"
+                      type="text"
+                      value="<%= leads.email %>"
+                      data-error=".errorTxt5"
+                      disabled
+                    />
+                    <small class="errorTxt5"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="pending_leads">Address</label>
+                    <textarea
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="address"
+                      name="address"
+                      class="materialize-textarea"
+                      data-error=".errorTxt6"
+                      disabled
+                    >
+                                            <%= leads.address %></textarea
+                    >
+                    <small class="errorTxt6"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="amount_due">Amount Due</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="amount_due"
+                      name="amount_due"
+                      type="text"
+                      value="<%= leads.amount_due %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="amount_outstanding">Amount Outstanding</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="amount_outstanding"
+                      name="amount_outstanding"
+                      type="text"
+                      value="<%= leads.amount_outstanding %>"
+                      data-error=".errorTxt8"
+                      disabled
+                    />
+                    <small class="errorTxt8"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <label for="days_due">Days Due</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="days_due"
+                      name="days_due"
+                      type="text"
+                      value="<%= leads.days_due %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <label for="loan_acount_num">Loan Acount Number</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="loan_acount_num"
+                      name="loan_acount_num"
+                      type="text"
+                      value="<%= leads.loan_acount_num %>"
+                      data-error=".errorTxt8"
+                      disabled
+                    />
+                    <small class="errorTxt8"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="pool_name">Pool Name</label>
+                    <input
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="pool_name"
+                      name="pool_name"
+                      type="text"
+                      value="<%= leads.pool_name %>"
+                      data-error=".errorTxt7"
+                      disabled
+                    />
+                    <small class="errorTxt7"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m6 s12">
+                    <select id="caller_assigned" name="caller_assigned" required>
+                      <option
+                        value="<%= leads.caller_assigned %>"
+                        selected
+                        disabled
+                      >
+                        <%= leads.caller_assigned %>
+                      </option>
+                    </select>
+                  </div>
+                  <div class="input-field col m6 s12">
+                    <select id="fos_assigned" name="fos_assigned" required>
+                      <option value="<%= leads.fos_assigned %>" selected disabled>
+                        <%= leads.fos_assigned %>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col m12 s12">
+                    <label for="pending_leads">Comments</label>
+                    <textarea
+                      style="border-bottom: 1px solid rgba(0, 0, 0, 0.42)"
+                      id="comments"
+                      name="comments"
+                      class="materialize-textarea"
+                      data-error=".errorTxt6"
+                      disabled
+                    >
+                                         <%= leads.comments %></textarea
+                    >
+                    <small class="errorTxt6"></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <a
+                      class="
+                        btn
+                        waves-effect waves-light
+                        gradient-45deg-purple-deep-orange
+                        float-right
+                      "
+                      href="/leads"
+                      >Cancel</a
+                    >
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<%- include('../../bottom.ejs') -%>

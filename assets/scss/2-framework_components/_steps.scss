@@ -1,0 +1,65 @@
+// DESCRIPTION:
+// Designing feature element with icon.
+
+// MARKUP:
+
+// <div class="step position-relative d-flex align-items-start">
+    // <div class="mr-3 mr-md-4">
+    // <span class="icon--lg step__icon bg-color--white-opacity--05 box-shadow--1 rounded-circle">
+    //    <img src="img/exchange-05.svg" alt="icon">
+    // </span>
+    // </div>
+    // <!-- end of icon -->
+    // <div class="position-relative">
+    // <h3 class="h4-font font-w--600 mb-1 step__title">...</h3>
+    // <p class="opacity--80">...</p>
+    // </div>
+    // <!-- end of content -->
+// </div>
+
+/**! ----- Steps V1 ---- **/
+.steps--v1 {
+    .steps-wrapper {
+        counter-reset: section;
+    }
+}
+
+.step {
+    &__title {
+        position: relative;
+        z-index: 1;
+
+        &:after {
+            color: #fff;
+            position: absolute;
+            content: counter(section, decimal-leading-zero);
+            counter-increment: section;
+            font-family: $font-heading;
+            width: 100%;
+            height: 100%;
+            top: rem(-40);
+            #{$left}: 0;
+            font-size: rem(60);
+            font-weight: 700;
+            -webkit-text-stroke: 5px;
+            letter-spacing: 5px;
+            opacity: .05;
+            z-index: -1;
+        }
+    }
+
+    &:not(:last-child) {
+        &:before {
+            content: "";
+            position: absolute;
+            height: calc(100% - 6.25rem);
+            width: 2px;
+            top: rem(100);
+            #{$left}: rem(50);
+            background-image: linear-gradient(rgba(255, 255, 255, 0.1) 33%, rgba(255, 255, 255, 0) 0%);
+            background-position: right;
+            background-size: 2px 11px;
+            background-repeat: repeat-y;
+        }
+    }
+}

@@ -1,0 +1,1489 @@
+<%- include('../../top.ejs') -%>
+  <%- include('../../header.ejs') -%>
+    <%- include('../../sidenav.ejs') -%>
+      <style>
+        #main .section-data-tables .dataTables_wrapper table.dataTable tbody tr td:nth-child(3){
+          width: 10px;
+          text-overflow:ellipsis ;
+          overflow :hidden;
+          white-space: pre-line;
+        }
+
+        .tabs .tab a {
+          text-overflow: initial !important;
+          overflow: hidden;
+        }
+        .Pstyle {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          color: cornsilk;
+        }
+        .PstyleSpace{
+          line-height: 15px;
+        }
+        .headStyle{
+          margin-left: -18px !important;
+          display: flex;
+          align-items: baseline;
+          gap: 5px;
+        }
+        /* .timeline::before {
+            position: absolute;
+            z-index: -1;
+            top: 35px;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            content: ' ';
+            background-color: #080708 !important;
+          } */
+        .filterModal {
+          top: 26% !important;
+          }
+      </style>
+      <div id="main">
+        <div class="row">
+          <div class="content-wrapper-before gradient-45deg-indigo-light-blue"></div>
+          <div class="breadcrumbs-dark pb-0" id="breadcrumbs-wrapper">
+            <!-- Search for small screen-->
+            <div class="container">
+              <div class="row" style="margin-left: 20px;">
+              <div class="row">
+              <div class="row col s9 headStyle">
+                <h5 style="color: cornsilk;">
+                  <%=leads.name %> |
+                </h5>
+                <h6 style="color: cornsilk;"> Loan Account No : <%= leads.loanAccountNo %>
+                </h6>
+              </div>
+              <div class="row col s9 headStyle">
+                <h6 style="color: cornsilk;text-transform: capitalize;" > ( Payment Status : <%= leads.paymentStatus %> )
+                </h6>
+              </div>
+              <% if(url.includes(`newLeads`) && !url.includes(`assignLeads`)){ %>
+              <div class="col s3 m3 l3">
+                <a class="btn waves-effect waves-light gradient-45deg-green-teal
+                float-right" href="/leads/newLeads" style="border-radius: 8px;">Back</a>
+              </div>
+              <% } else {%>
+                <div class="col s3 m3 l3">
+                  <a class="btn waves-effect waves-light gradient-45deg-green-teal
+                  float-right" href="/leads/assignLeads" style="border-radius: 8px;">Back</a>
+                </div>
+              <% } %>
+            </div>  
+              <div class="row m-0">
+                <div class="col s4 m4 l4 p-0">
+                  <p class="Pstyle">
+                    <i class="material-icons iconStyle">mail</i>
+                    <% if ((leads.email!='-') && (leads.email!='')) { %> <%= leads.email %><% }else{%>N/A<% } %>
+                  </p>
+                  </div>
+                  <div class="col s4 m4 l4 p-0">
+                  <p class="Pstyle">
+                    <i class="material-icons iconStyle">call</i>+91<%= leads.phone %>
+                  </p>
+                  </div>
+                  <div class="col s4 m4 l4 p-0">
+                  <p class="Pstyle">
+                    <i class="material-icons iconStyle">place</i>
+                    <%= leads.applicantCity %>( <%= leads.applicantState %> )
+                  </p>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <div class="container">
+              <div class="section section-data-tables">
+                <div class="card roundCorners" style="margin-top: 5px;">
+                  <div class="card-content">
+                    <div class="row">
+                      <div class="col s12 m12 l12">
+                        <div class="row mt-0">
+                          <div class="col s4 m4 l4">
+                            <p class="m-0"><b>Amount Due</b></p>
+                            <h5 class="mt-2">&#x20b9 <%= parseInt(amountCollected).toLocaleString() %>
+                            </h5>
+                            <p class="mt-2">Principal Outstanding Amount &#x20b9 <%= parseInt(leads.pos).toLocaleString() %></p>
+                          </div>
+                          <div class="col s4 m4 l4">
+                            <p class="m-0"><b>Interest Due Amount</b></p>
+                            <h5 class="mt-2">&#x20b9 <%= parseInt(leads.ODInt).toLocaleString() %></h5>
+                            <p class="mt-2">Penalty &#x20b9 <%= parseInt(leads.penaltyAmount).toLocaleString() %></p>
+                          </div>
+                          <div class="col s4 m4 l4">
+                            <p class="m-0"><b>DPD Bucket</b></p>
+                            <h5 class="mt-2"><%= leads.DPDBucket %>(<%= dpdBucket %>)</h5>
+                            <p class="mt-2">Status - <%= DispositionName %><% if (SubDispositionsName=='N/A') { %><%= %><% }else{%> ( <%= SubDispositionsName %> )<% }%></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="container">
+            <div class="col s12">
+              <div id="button-trigger" class="card roundCorners card-default scrollspy">
+                <div class="card-content" style="padding: 0px; margin-bottom: -30px">
+                  <ul class="tabs" style="border-radius: 10px 10px 0px
+                              0px;display: flex;">
+                    <li class="tab col m2" style="text-transform:
+                     capitalize;"><a class="active" href="#contact">Contact</a></li>
+                    <li class="tab col m2" style="text-transform:
+                    capitalize;"><a class="active" href="#customer">Customer info</a></li>
+                    <li class="tab col m2" style="text-transform:
+                    capitalize;"><a class="active" href="#loan">Loan Details</a></li>
+                   <% if ((leads.paymentStatus!='Paid' && leads.amountCollected!=leads.ODValue && roleName.name=='telecaller' && leads.fosId==null) || roleName.name!='telecaller') { %>
+                    <li class="tab col m2" style="text-transform:
+                        capitalize;"><a class="active" href="#status">Status</a></li>
+                   <% }%>
+                    <!-- <li class="tab col m2" style="text-transform:
+                    capitalize;"><a href="#script">Script</a></li>            -->
+                    <li class="tab col m2" style="text-transform:
+                                capitalize;"><a href="#history">History</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+              <div id="contact" class="col s12">
+              <div id="button-trigger" class="card card-default
+                                scrollspy" style="border-radius: 0px 0px 10px
+                                10px;">
+                <div class="card-content">
+                  <div class="row">
+                    <div class="row">
+                      <div class="input-field col m6 s12">
+                        <label for="phone">Phone(Number Only)</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0,
+                                    0, 0.42);color: #3d3b3b;" id="phone" name="phone" type="text" maxlength="10"
+                          value="<%= leads.phone %>" data-error=".errorTxt4" disabled />
+                        <small class="errorTxt4"></small>
+                      </div>
+                      <div class="input-field col m6 s12">
+                        <label for="applicantAlternateMobile_1">Applicant Alternate Mobile1</label>
+                        <input style="border-bottom: 1px solid rgba(0,
+                                        0, 0, 0.42);color: #3d3b3b;" id="applicantAlternateMobile_1" name="applicantAlternateMobile_1" type="text"
+                          value="<%= leads.applicantAlternateMobile_1 %>" data-error=".errorTxt7" disabled />
+                        <small class="errorTxt7"></small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col m6 s12">
+                        <label for="applicantAlternateMobile_2">Applicant Alternate Mobile2</label>
+                        <input style="border-bottom: 1px solid rgba(0,
+                                        0, 0, 0.42);color: #3d3b3b;" id="applicantAlternateMobile_2" name="applicantAlternateMobile_2" type="text"
+                          value="<%= leads.applicantAlternateMobile_2 %>" data-error=".errorTxt7" disabled />
+                        <small class="errorTxt7"></small>
+                      </div>
+                      <div class="input-field col m6 s12">
+                        <label for="refContactNumber_1">Reference Contact Number1</label>
+                        <input style="border-bottom: 1px solid rgba(0,
+                                        0, 0, 0.42);color: #3d3b3b;" id="refContactNumber_1" name="refContactNumber_1" type="text"
+                          value="<%= leads.refContactNumber_1 %>" data-error=".errorTxt7" disabled />
+                        <small class="errorTxt7"></small>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="input-field col m6 s12">
+                        <label for="refContactNumber_2">Reference Contact Number2</label>
+                        <input style="border-bottom: 1px solid rgba(0,
+                                        0, 0, 0.42);color: #3d3b3b;" id="refContactNumber_2" name="refContactNumber_2" type="text"
+                          value="<%= leads.refContactNumber_2 %>" data-error=".errorTxt7" disabled />
+                        <small class="errorTxt7"></small>
+                      </div>
+                      <div class="input-field col m6 s12">
+                        <label for="refContactNumber_3">Reference Contact Number3</label>
+                        <input style="border-bottom: 1px solid rgba(0,
+                                        0, 0, 0.42);color: #3d3b3b;" id="refContactNumber_3" name="refContactNumber_3" type="text"
+                          value="<%= leads.refContactNumber_3 %>" data-error=".errorTxt7" disabled />
+                        <small class="errorTxt7"></small>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="input-field col m12 s12">
+                        <label for="coApplicantContactNumber">Co-Applicant Contact Number</label>
+                        <input style="border-bottom: 1px solid rgba(0,
+                                        0, 0, 0.42);color: #3d3b3b;" id="coApplicantContactNumber" name="coApplicantContactNumber" type="text"
+                          value="<%= leads.coApplicantContactNumber %>" data-error=".errorTxt7" disabled />
+                        <small class="errorTxt7"></small>
+                      </div>
+                    </div>
+
+                  <%var i=1; newLeadContact.forEach((newContact) => { %>
+                    <% if (newContact.type=='mobile') { %>
+                    <div class="row">
+                    <div class="input-field col m12 s12">
+                      <label for="coApplicantContactNumber">New Contact-<%=i++%></label>
+                      <input style="border-bottom: 1px solid rgba(0,
+                                      0, 0, 0.42);color: #3d3b3b;" id="coApplicantContactNumber" name="coApplicantContactNumber" type="text"
+                        value="<%= newContact.content %>" data-error=".errorTxt7" disabled />
+                      <small class="errorTxt7"></small>
+                    </div>
+                    </div>
+                    <% }%>
+                    <% }); %>
+
+                    <div class="row">
+                      <div class="input-field col m12 s12">
+                        <label for="address">Address</label>
+                        <textarea style="border-bottom: 1px solid rgba(0, 0,
+                                    0, 0.42);color: #3d3b3b;" id="address" name="address" class="materialize-textarea"
+                          data-error=".errorTxt6" disabled><%= leads.address %></textarea>
+                        <small class="errorTxt6"></small>
+                      </div>
+                    </div>
+                    <% var i=1; newLeadContact.forEach((newContact) => { %>
+                      <% if (newContact.type=='address') { %>
+                        <div class="row">
+                          <div class="input-field col m12 s12">
+                            <label for="address">New Address-<%=i++%></label>
+                            <textarea style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="address" name="address" class="materialize-textarea"
+                              data-error=".errorTxt6" disabled><%= newContact.content %></textarea>
+                            <small class="errorTxt6"></small>
+                          </div>
+                        </div>
+                      <% }%>
+                      <% }); %>
+
+                    <div class="row">
+                      <div class="input-field col m6 s12">
+                        <label for="applicantAltAddress">Applicant Alternate Address</label>
+                        <input style="border-bottom: 1px solid rgba(0,
+                                        0, 0, 0.42);color: #3d3b3b;" id="applicantAltAddress" name="applicantAltAddress" type="text"
+                          value="<%= leads.applicantAltAddress %>" data-error=".errorTxt7" disabled />
+                        <small class="errorTxt7"></small>
+                      </div>
+                      <div class="input-field col m6 s12">
+                        <label for="coApplicantAddress">Co-Applicant Address</label>
+                        <input style="border-bottom: 1px solid rgba(0,
+                                        0, 0, 0.42);color: #3d3b3b;" id="coApplicantAddress" name="coApplicantAddress" type="text"
+                          value="<%= leads.coApplicantAddress %>" data-error=".errorTxt7" disabled />
+                        <small class="errorTxt7"></small>
+                      </div>
+                    </div>
+                    <div class="row col s12 center">
+                      <a class="modal-trigger btn waves-light gradient-45deg-green-teal" id="addMoreInfo" style="border-radius: 8px;" href="#addContactInfo">Add More</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="customer" class="col s12">
+                <div id="button-trigger" class="card card-default
+                                  scrollspy" style="border-radius: 0px 0px 10px
+                10px;">
+                  <div class="card-content">
+                    <div class="row">
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="name">Customer Name</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                      0, 0.42);color: #3d3b3b;" id="name" name="name" type="text" data-error=".errorTxt1"
+                            value="<%= leads.name %>" disabled />
+                          <small class="errorTxt1"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="phone">Phone(Number Only)</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                      0, 0.42);color: #3d3b3b;" id="phone" name="phone" type="text" maxlength="10"
+                            value="<%= leads.phone %>" data-error=".errorTxt4" disabled />
+                          <small class="errorTxt4"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="email">Email</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                      0, 0.42);color: #3d3b3b;" id="email" name="email" type="text" value="<%= leads.email %>"
+                            data-error=".errorTxt5" disabled />
+                          <small class="errorTxt5"></small>
+                        </div>
+                        <div class="input-field col m3 s12">
+                          <label for="city">City</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                      0, 0.42);color: #3d3b3b;" id="city" name="city" type="text" value="<%= leads.applicantCity %>"
+                            data-error=".errorTxt3" disabled />
+                          <small class="errorTxt3"></small>
+                        </div>
+                        <div class="input-field col m3 s12">
+                          <label for="city">Applicant Pincode</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                      0, 0.42);color: #3d3b3b;" id="applicantPincode" name="applicantPincode" type="text" value="<%= leads.applicantPincode %>"
+                            data-error=".errorTxt3" disabled />
+                          <small class="errorTxt3"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m12 s12">
+                          <label for="address">Address</label>
+                          <textarea style="border-bottom: 1px solid rgba(0, 0,
+                                      0, 0.42);color: #3d3b3b;" id="address" name="address" class="materialize-textarea"
+                            data-error=".errorTxt6" disabled><%= leads.address %></textarea>
+                          <small class="errorTxt6"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="applicantState">Applicant State</label>
+                          <input style="border-bottom: 1px solid rgba(0,
+                                          0, 0, 0.42);color: #3d3b3b;" id="applicantState" name="applicantState" type="text"
+                            value="<%= leads.applicantState %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="applicantAddressType">Applicant Address Type</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="applicantAddressType" name="applicantAddressType" type="text" value="<%= leads.applicantAddressType %>"
+                            data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="applicantAltAddressType">Applicant Alternate Address Type</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="applicantAltAddressType" name="applicantAltAddressType" type="text"
+                            value="<%= leads.applicantAltAddressType %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="applicantAltCity">Applicant Alternate City</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="applicantAltCity" name="applicantAltCity" type="text"
+                            value="<%= leads.applicantAltCity %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt6"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="applicantAltState">Applicant Alternate State</label>
+                          <input style="border-bottom: 1px solid rgba(0,
+                                          0, 0, 0.42);color: #3d3b3b;" id="applicantAltState" name="applicantAltState" type="text"
+                            value="<%= leads.applicantAltState %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="applicantAltPincode">Applicant Alternate Pincode</label>
+                          <input style="border-bottom: 1px solid rgba(0,
+                                          0, 0, 0.42);color: #3d3b3b;" id="applicantAltPincode" name="applicantAltPincode" type="text"
+                            value="<%= leads.applicantAltPincode %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="allocationDpdBucket">Allocation DPD Bucket</label>
+                          <input style="border-bottom: 1px solid rgba(0,
+                                          0, 0, 0.42);color: #3d3b3b;" id="allocationDpdBucket" name="allocationDpdBucket" type="text"
+                            value="<%= leads.DPDBucket %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="applicantCibilScore">Applicant Cibil Score</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="applicantCibilScore" name="applicantCibilScore" type="text"
+                            value="<%= leads.applicantCibilScore %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                      </div>
+
+                    <div class="row col s12 center">
+                      <a class="btn waves-light gradient-45deg-green-teal" id="addMoreButton" style="border-radius: 8px;">Show More</a>
+                    </div>
+                      <div id="addMore">
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="refRelationWithApplicant_1">Reference Relation With Applicant1</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refRelationWithApplicant_1" name="refRelationWithApplicant_1" type="text"
+                              value="<%= leads.refRelationWithApplicant_1 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="refContactNumber_1">Reference Contact Number1</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refContactNumber_1" name="refContactNumber_1" type="text"
+                              value="<%= leads.refContactNumber_1 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="refRelationWithApplicant_2">Reference Relation With Applicant2</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refRelationWithApplicant_2" name="refRelationWithApplicant_2" type="text"
+                              value="<%= leads.refRelationWithApplicant_2 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="refContactNumber_2">Reference Contact Number2</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refContactNumber_2" name="refContactNumber_2" type="text"
+                              value="<%= leads.refContactNumber_2 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="refRelationWithApplicant_3">Reference Relation With Applicant3</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refRelationWithApplicant_3" name="refRelationWithApplicant_3" type="text"
+                              value="<%= leads.refRelationWithApplicant_3 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="refContactNumber_3">Reference Contact Number3</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refContactNumber_3" name="refContactNumber_3" type="text"
+                              value="<%= leads.refContactNumber_3 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="engineNumber">Engine Number</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="engineNumber" name="engineNumber" type="text"
+                              value="<%= leads.engineNumber %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="vehicleRegistrationNumber">Vehicle Registration Number</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="vehicleRegistrationNumber" name="vehicleRegistrationNumber" type="text"
+                              value="<%= leads.vehicleRegistrationNumber %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantName">Co-Applicant Name</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantName" name="coApplicantName" type="text"
+                              value="<%= leads.coApplicantName %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantEmail">Co-Applicant Email</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantEmail" name="coApplicantEmail" type="text"
+                              value="<%= leads.coApplicantEmail %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantContactNumber">Co-Applicant Contact Number</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantContactNumber" name="coApplicantContactNumber" type="text"
+                              value="<%= leads.coApplicantContactNumber %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantDob">Co-Applicant DOB</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantDob" name="coApplicantDob" type="text"
+                              value="<%= leads.coApplicantDob %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantAddressType">Co-Applicant Address Type</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantAddressType" name="coApplicantAddressType" type="text"
+                              value="<%= leads.coApplicantAddressType %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantAddress">Co-Applicant Address</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantAddress" name="coApplicantAddress" type="text"
+                              value="<%= leads.coApplicantAddress %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantCity">Co-Applicant City</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantCity" name="coApplicantCity" type="text"
+                              value="<%= leads.coApplicantCity %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantState">Co-Applicant State</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantState" name="coApplicantState" type="text"
+                              value="<%= leads.coApplicantState %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="coApplicantPincode">Co-Applicant Pincode</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="coApplicantPincode" name="coApplicantPincode" type="text"
+                              value="<%= leads.coApplicantPincode %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="band">Band</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="band" name="band" type="text"
+                              value="<%= leads.band %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="agentId">Agent Id</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="agentId" name="agentId" type="text"
+                              value="<%= leads.agentId %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="businessName">Business Name</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="businessName" name="businessName" type="text"
+                              value="<%= leads.businessName %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="applicantAltAddress">Applicant Alternate Address</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="applicantAltAddress" name="applicantAltAddress" type="text"
+                              value="<%= leads.applicantAltAddress %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="refName_1">Reference Name1</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refName_1" name="refName_1" type="text"
+                              value="<%= leads.refName_1 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="refName_2">Reference Name2</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refName_2" name="refName_2" type="text"
+                              value="<%= leads.refName_2 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="refName_3">Reference Name3</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="refName_3" name="refName_3" type="text"
+                              value="<%= leads.refName_3 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="applicantAlternateMobile_1">Applicant Alternate Mobile1</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="applicantAlternateMobile_1" name="applicantAlternateMobile_1" type="text"
+                              value="<%= leads.applicantAlternateMobile_1 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="applicantAlternateMobile_2">Applicant Alternate Mobile2</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="applicantAlternateMobile_2" name="applicantAlternateMobile_2" type="text"
+                              value="<%= leads.applicantAlternateMobile_2 %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col m6 s12">
+                            <label for="makeAndModel">Make And Model</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="makeAndModel" name="makeAndModel" type="text"
+                              value="<%= leads.makeAndModel %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                          <div class="input-field col m6 s12">
+                            <label for="chassisNumber">Chassis Number</label>
+                            <input style="border-bottom: 1px solid rgba(0,
+                                            0, 0, 0.42);color: #3d3b3b;" id="chassisNumber" name="chassisNumber" type="text"
+                              value="<%= leads.chassisNumber %>" data-error=".errorTxt7" disabled />
+                            <small class="errorTxt7"></small>
+                          </div>
+                        </div>
+                        <div class="row col s12 center">
+                          <a class="btn waves-light gradient-45deg-green-teal" id="showLessButton" style="border-radius: 8px;">Show Less</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div id="loan" class="col s12">
+                <div id="button-trigger" class="card card-default
+                                  scrollspy" style="border-radius: 0px 0px 10px
+                                  10px;">
+                  <div class="card-content">
+                    <div class="row">
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="productType">productType</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                      0, 0.42);color: #3d3b3b;" id="productType" name="productType" type="text" data-error=".errorTxt13"
+                            value="<%= productType %>" disabled />
+                          <small class="errorTxt13"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="fi_name">Bank Name</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                      0, 0.42);color: #3d3b3b;" id="bank_name" name="bank_name" type="text" data-error=".errorTxt12"
+                            value="<%= fisName %>" disabled />
+                          <small class="errorTxt12"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="amountDue">Loan Amount</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="amountDue" name="amountDue" type="text"
+                            value="<%= leads.amountDue %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="amountOutstanding">Amount
+                            Outstanding</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="amountOutstanding" name="amountOutstanding" type="text"
+                            value="<%= leads.amountOutstanding %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="disbursementDate">Date of Loan
+                            Disbursement</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="disbursementDate" name="disbursementDate" type="text"
+                            value="<%= moment(leads.disbursementDate).format('YYYY-MM-DD')%>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="daysDue">Due Date </label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="daysDue" name="daysDue" type="text" value="<%= leads.dateOfDefault %>"
+                            data-error=".errorTxt8" disabled />
+                          <small class="errorTxt8"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="loanAccountNo">Loan Account No</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="loanAccountNo" name="loanAccountNo" type="text"
+                            value="<%= leads.loanAccountNo %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="emiStartDate">EMI Start Date</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="emiStartDate" name="emiStartDate" type="text"
+                            value="<%= moment(leads.disbursementDate).format('YYYY-MM-DD') %>" data-error=".errorTxt8" disabled />
+                          <small class="errorTxt8"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="DPDBucket">DPD Bucket</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="DPDBucket" name="DPDBucket" type="text"
+                            value="<%= leads.DPDBucket %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="penaltyAmount">Penalty Amount</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="penaltyAmount" name="penaltyAmount" type="text"
+                            value="<%= leads.penaltyAmount %>" data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="ODValue">OD Value</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="ODValue" name="ODValue" type="text" value="<%= leads.ODValue %>"
+                            data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="ODInt">OD Int</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="ODInt" name="ODInt" type="text" value="<%= leads.ODInt %>"
+                            data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col m6 s12">
+                          <label for="principalOutstandingAmount">Principal Outstanding Amount</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="principalOutstandingAmount" name="principalOutstandingAmount" type="text" value="<%= leads.principalOutstandingAmount %>"
+                            data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                        <div class="input-field col m6 s12">
+                          <label for="interestDueAmount">Interest Due Amount</label>
+                          <input style="border-bottom: 1px solid rgba(0, 0,
+                                        0, 0.42);color: #3d3b3b;" id="interestDueAmount" name="interestDueAmount" type="text" value="<%= leads.interestDueAmount %>"
+                            data-error=".errorTxt7" disabled />
+                          <small class="errorTxt7"></small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          
+            <% if ((leads.paymentStatus!='Paid' && leads.amountCollected!=leads.ODValue &&  roleName.name=='telecaller' && leads.fosId==null) || roleName.name!='telecaller') { %>
+            <div id="status" class="col s12">
+              <div id="button-trigger" class="card card-default
+                                scrollspy" style="border-radius: 0px 0px 10px
+                                10px;">
+                
+                <div class="card-content">
+                  <form id="formValidateCase" class="formValidateCase" action="/leads/saveCaseEvents" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                      <div class="row">
+                        <div class="col s12 m12 l12 mt-2 mb-1">
+                          <h6><b>
+                             Date :  <%= moment(new Date()).format('DD MMM YYYY')%></b></h6>
+                        </div>
+                      </div>
+                      <input id="leadId" name="leadId" type="hidden" value="<%= leads.loanAccountNo %>">
+                      <div class="row mt-2">
+                        <div class="col s12">
+                          <div class="input-field">
+                              <select id='dispositionId' name="dispositionId" required data-error=".errorTxt1" onchange="handleSelectStatus()">
+                                <option value="" selected disabled>Choose Call Status</option>
+                                <% Dispositions.forEach((Disposition) => { %>
+                                <option label="<%= Disposition.name %>" value="<%= Disposition.id %>"><%= Disposition.name %></option>
+                                <% }); %>
+                              </select>
+                              <label for="dispositionId">Disposition</label>
+                              <small class="errorTxt1"></small>
+                            </div>
+                          
+                      </div>
+                      </div>
+                      <div class="row mt-0">
+                        <div id="SubStatusId"></div>
+                      </div>
+                      <div class="row mt-0">
+                        <div id="statusLanguage"></div>
+                      </div>
+                      <div class="row mt-0">
+                        <div id="SubStatusFieldCapture"></div>
+                      </div>
+
+                      <div class="row mt-0">
+                        <div id="SubProbabilityCapture"></div>
+                      </div>
+                      <div class="row mt-0">
+                        <div id="SettlementDate" class="input-field col s12 m12 l12"></div>
+                      </div>
+                      <div class="row mt-0">
+                        <div id="NextAction"></div>
+                      </div>
+                      <div class="row mt-0">
+                        <div id="nextActionDate" class="input-field col s12 m12 l12"></div>
+                      </div>
+                      <div class="row mt-0">
+                        <div id="InputComment" class="input-field col s12 m12 l12 mb-1">
+                            <textarea name="comments" id="textarea1" class="materialize-textarea" data-error=".errorTxt11" required></textarea>
+                            <label for="textarea1">Comments</label>
+                            <small class="errorTxt11"></small>
+                        </div>
+                        </div>
+                        
+                        <div class="row mt-0" id="SupportiveDiv">
+                        <div class="col s12 m12 l12">
+                          <div id="view-file-input">
+                            <div class="file-field input-field">
+                              <div class="btn" style="padding: 0 15px;background-color: #ff38aa;">
+                                <i class="material-icons left">file_upload</i>
+                                <span>Supporting Document</span>
+                                <input id="supportImageFile" name="supportImageFile" type="file" multiple accept="image/*" data-error=".errorTxt12">
+                              </div>
+                              
+                              <div class="file-path-wrapper" style="padding-right: 6px;">
+                                <input class="file-path validate" type="text" multiple>  
+                              </div>
+                              <small class="errorTxt12"></small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="row">
+                        <div class="col s12 m12 l12 mt-3" style="margin-bottom: -40px; display: flex;">
+                          <!-- <a class="mb-6 btn waves-effect waves-light cyan" href="#">Save</a> -->
+                          <button class="mb-6 btn cyan darken-1 right mr-1" type="submit" id="uploadCaseEvent">
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <% }%>
+
+            <!-- <div id="script" class="col s12">
+              <div id="button-trigger" class="card card-default
+                                scrollspy" style="border-radius: 0px 0px 10px
+                                10px;">
+                <div class="card-content">
+                  <div class="row">
+                     <% script.forEach((scripts) => { %>
+                    <p class="mt-2 mb-2 center">
+                      <%=scripts.description%>
+                    </p>
+                    <% }); %>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <div id="history" class="col s12">
+              <div id="button-trigger" class="card card-default
+                                scrollspy" style="border-radius: 0px 0px 10px
+                                10px;"> 
+                 <div class="card-content">                              
+                <div class="row">              
+                  <%- include('./datatables/leadsHistory_datatables.ejs', datatable) -%>
+              </div> 
+            </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%- include('../../bottom.ejs') -%>
+
+<script>
+  var DisId={};
+  var maxLimit = '<%- JSON.stringify(leads.ODValue) %>';
+  const totalDueAmount='<%- JSON.stringify(leads.ODValue) %>';
+  const principalOutstndngAmt='<%- JSON.stringify(leads.pos) %>';
+  const amountCollect='<%- JSON.stringify(leads.amountCollected) %>'
+  var maxValue = totalDueAmount - amountCollect-1;
+  console.log('maxValue---------', maxValue);
+  console.log('totalDueAmount---------', totalDueAmount);
+  console.log('principalOutstndngAmt---------', principalOutstndngAmt);
+  const toast = '<%- JSON.stringify(toast) %>';
+  console.log('toast---------', toast);
+
+  const toastText = '<%- JSON.stringify(toastText) %>';
+  const parseToast = JSON.parse(toast);
+  const parseToastText = JSON.parse(toastText);
+
+  console.log('parseToast---------', parseToast);
+  $(document).ready(function () {
+      if (parseToast) {
+          M.toast({
+              html: parseToastText,
+              classes: 'green'
+          })
+      }
+
+      $('#uploadLeads').on('click', function () {
+        if($('#formValidateCase').valid()){
+          $('#formValidateCase').submit();
+          $('#uploadCaseEvent').text('Uploading File.....');
+          $('#uploadCaseEvent').attr('type','button');
+        }
+      });
+  });
+
+  let dispositionId;
+  let selectedLabel;
+  let newdispositionId;
+
+ //handle Sub Disposition Fields
+    const SubStatusFieldSettlement=()=>{
+      SubStatusFieldId = document.getElementById("SubStatusFieldId");
+      selectedSubStatusFieldLabel = SubStatusFieldId.options[SubStatusFieldId.selectedIndex].label;
+      if(selectedSubStatusFieldLabel=='Settlement Amount/Foreclosure Amount'){
+        document.getElementById('SettlementAmount').innerHTML =` <input placeholder="PTP Amount" type="text" id="settlementAmount" name="settlementAmount" />`;
+        document.getElementById('SettlementDate').innerHTML =`<span style="font-size: .8rem;">PTP Settlement Date-Time</span><input id="settlementDate" name="settlementDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+      }
+    }
+
+    document.getElementById('InputComment').style.marginTop ="-40px";
+
+    //handle Disposition Fields
+    const handleSelectStatus = () => {
+       document.getElementById('InputComment').style.marginTop ="-2px";
+       dispositionId = document.getElementById("dispositionId");
+       selectedLabel = dispositionId.options[dispositionId.selectedIndex].label;
+       newdispositionId = dispositionId.options[dispositionId.selectedIndex].value;
+      if(selectedLabel=='Ringing but No Response/Call Waiting' || selectedLabel=='Switched Off/Not Reachable' || selectedLabel=='Wrong Contact Number'){
+        document.getElementById('NextAction').innerHTML = `<h6 class="ml-1" id='nextLable' style="color: #9e9e9e;font-size: .8rem;margin: -13px;">Next Action</h6><div class="input-field col s4 mb-4">  
+        <label>
+        <input class="with-gap" name="nextAction" type="radio" value="callBack"/>
+        <span>Call Back</span>
+       </label>
+       </div>
+       <div class="input-field col s4 mb-4">  
+        <label>
+        <input class="with-gap" name="nextAction" type="radio" value="referenceCall"/>
+        <span>Reference Call</span>
+       </label>
+       </div>
+       <div class="input-field col s4 mb-4">  
+        <label>
+        <input class="with-gap" name="nextAction" type="radio" value="assignedToFoS"/>
+        <span>Assigned to FoS</span>
+       </label>
+       </div>`;
+       document.getElementById('nextActionDate').innerHTML =`<span style="font-size: .8rem;">Date-Time</span><input id="nextDate" name="nextDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+      }else{
+        document.getElementById('NextAction').innerHTML ='<span></span>';
+        document.getElementById('nextActionDate').innerHTML ='<span></span>';
+        document.getElementById('InputComment').style.marginTop ="-40px";
+      }
+
+      $(document).ready(function () {
+        if(selectedLabel=='Promise to Pay' || selectedLabel=='Collected' || selectedLabel=='Partially Collected'){
+        $('#SupportiveDiv').show();
+        }else{
+          $('#SupportiveDiv').hide();
+        }
+      });
+      
+
+      if(selectedLabel=='Assigned to FOS' || selectedLabel=='Broken PTP' || selectedLabel=='Denial/RTP (Refused to Pay)' || selectedLabel=='Reverted over Email/Phone'
+       || selectedLabel=='Customer Deceased' || selectedLabel=='Dispute'){
+        document.getElementById('InputComment').style.marginTop ="-30px";
+      }
+
+      if(selectedLabel=='Re-Allocated'){
+        document.getElementById('nextActionDate').innerHTML =`<span style="font-size: .8rem;">Date-Time</span><input id="nextDate" name="nextDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+        document.getElementById('InputComment').style.marginTop ="-5px";
+        document.getElementById('nextActionDate').style.marginTop ="-15px";
+      }
+
+      if(selectedLabel=='Promise to Pay' || selectedLabel=='Settlement/Foreclosure' || selectedLabel=='Partially Recovered'){
+        document.getElementById('NextAction').innerHTML = `<h6 class="ml-1" id='nextLable' style="color: #9e9e9e;font-size: .8rem;margin: -13px;">Next Action</h6><div class="input-field col s6 mb-4">  
+        <label>
+        <input class="with-gap" name="nextAction" type="checkbox" value="callBack"/>
+        <span style="margin-left: 5px;">Call Back</span>
+       </label>
+       </div>
+       <div class="input-field col s6 mb-4" style="margin-top: 0px;">
+        <span style="font-size: .8rem;">Date-Time</span><input id="nextDate" name="nextDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />
+      </div>`;
+      document.getElementById('InputComment').style.marginTop ="-56px";
+      }
+
+      if(selectedLabel=='Call Back'){
+        document.getElementById('nextActionDate').innerHTML =`<span style="font-size: .8rem;">Call Back DateTime</span><input id="nextDate" name="nextDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+        document.getElementById('InputComment').style.marginTop ="0px";
+        document.getElementById('nextActionDate').style.marginTop='-10px';
+      }
+
+      if(selectedLabel=='Legal Stage/Assigned to Lawyer'){
+        document.getElementById('nextActionDate').innerHTML =`<span style="font-size: .8rem;">Follow Up DateTime</span><input id="nextDate" name="nextDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+        document.getElementById('InputComment').style.marginTop ="0px";
+        document.getElementById('nextActionDate').style.marginTop='-10px';
+      }
+
+      if(selectedLabel=='Closed/DND (Do Not Disturb)'){
+        document.getElementById('nextActionDate').innerHTML =`<span style="font-size: .8rem;">Call Back DateTime</span><input id="nextDate" name="nextDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+        document.getElementById('nextActionDate').style.marginTop='-10px';
+        document.getElementById('InputComment').style.marginTop ="0px";
+      }
+
+      if(selectedLabel=='Promise to Pay'){
+        FindSubDisposition(newdispositionId);
+      }else{
+        document.getElementById('SubStatusId').innerHTML = '<span></span>';
+        document.getElementById('SubStatusFieldCapture').innerHTML = '<span></span>';
+      }
+
+      if(selectedLabel=='Language Not Communicable'){
+      var languages='<%- JSON.stringify(languages) %>';
+      let option3=(JSON.parse(languages)).map(language => {
+      return `<option value='${language.name}'>${language.name}</option>`;
+      }).join('');
+     console.log(option3);
+     document.getElementById('statusLanguage').innerHTML = `<div class="input-field col s12"
+        style="text-transform: capitalize !important;">
+        <select class="error" name="additionalLanguage" required
+        data-error=".errorTxt11" >
+        <option value="" disabled selected>Choose your option</option>
+        ${option3}
+        </select>
+        <label>Language</label>
+        <small class="errorTxt11"></small>
+        </div>`;
+        $('select').formSelect();
+      }else{
+        document.getElementById('statusLanguage').innerHTML = '<span></span>';
+      }
+
+      if(selectedLabel=='Dispute'){
+        DisputeSubDisposition(newdispositionId);
+      }else{
+        document.getElementById('SubStatusId').innerHTML = '<span></span>';
+        document.getElementById('SubStatusFieldCapture').innerHTML = '<span></span>';
+      }
+
+      if(selectedLabel=='Call Not Connected'){
+        DisputeSubDisposition(newdispositionId);
+      }else{
+        document.getElementById('SubStatusId').innerHTML = '<span></span>';
+        document.getElementById('SubStatusFieldCapture').innerHTML = '<span></span>';
+      }
+
+      if(selectedLabel=='Settlement/Foreclosure'){
+        document.getElementById('SubProbabilityCapture').innerHTML = '<span></span>';
+        document.getElementById('SubStatusFieldCapture').innerHTML =`<div class="input-field col s6"
+        style="text-transform: capitalize !important;">
+        <select class="error" id="SubStatusFieldId" name="additionalSettlementStatus" required
+        data-error=".errorTxt11" onchange="SubStatusFieldSettlement()" >
+        <option value="" disabled selected>Choose your option</option>
+        <option value="Settlement Amount/Foreclosure Amount" label="Settlement Amount/Foreclosure Amount">Settlement Amount/Foreclosure Amount</option>
+        </select>
+        <label>PTP (Settlement/Foreclosure) Amount Type</label>
+        <small class="errorTxt11"></small>
+        </div>
+        <div id="SettlementAmount" class="input-field col s6">
+        <input placeholder="PTP Amount" type="text" id="settlementAmount" name="settlementAmount" />
+        </div>`;
+        $('select').formSelect();
+        document.getElementById('SettlementDate').innerHTML =`<span style="font-size: .8rem;">Date-Time</span><input id="settlementDate" name="settlementDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+      }else{
+       document.getElementById('SubStatusFieldCapture').innerHTML = '<span></span>';
+       document.getElementById('SettlementDate').innerHTML ='<span></span>';
+      }
+      if(selectedLabel=='Collected'){
+        document.getElementById('SubStatusId').innerHTML =`<div class="input-field col s6"
+        style="text-transform: capitalize !important;">
+        <select class="error" id="SubStatusFieldId" name="collectedStatusAmt" required
+        data-error=".errorTxt30" onchange="SubStatusRecoveryType()" >
+        <option value="" disabled selected>Choose your option</option>
+        <option value="Total Due Amount" label="Total Due Amount">Total Due Amount</option>
+        <option value="Settlement Amount" label="Settlement Amount">Settlement Amount</option>
+        <option value="Foreclosure Amount" label="Foreclosure Amount">Foreclosure Amount</option>
+        <option value="Principal Outstanding Amount" label="Principal Outstanding Amount">Principal Outstanding Amount</option>
+        </select>
+        <label>Receipt Generation-Recovery Type</label>
+        <small class="errorTxt30"></small>
+        </div>
+        <div id="RecoveredAmount" class="input-field col s6">
+        <input placeholder="Recovered Amount" type="text" id="recoveredAmount" name="recoveredAmount" />
+        </div>`;
+        $('select').formSelect();
+        document.getElementById('SubStatusFieldCapture').innerHTML =`<div class="input-field col s6"
+        style="text-transform: capitalize !important;">
+        <span style="font-size: .8rem;">Payment Date</span><input id="recoveryDate" name="recoveryDate" type="date" min="<%= new Date(leads.createdAt).toISOString().slice(0, -14) %>" max="<%= new Date().toISOString().slice(0, -14) %>"/>
+        </div>
+        <div id="ChequeNo" class="input-field col s6">
+          <input placeholder="Ref./Cheque No" style="margin-top: 22px;" type="text" id="chequeNo" name="chequeNo" />
+        </div>`;
+      }
+      if(selectedLabel=='Partially Collected'){
+        maxLimit=maxValue
+        document.getElementById('SubStatusId').innerHTML =`<div class="input-field col s6"
+        style="text-transform: capitalize !important;">
+        <select class="error" id="SubStatusFieldId" name="collectedStatusAmt" required
+        data-error=".errorTxt11" onchange="partiallyRecoveryType()" >
+        <option value="" disabled selected>Choose your option</option>
+        <option value="Partial Amount" label="Partial Amount">Partial Amount</option>
+        </select>
+        <label>Receipt Generation-Recovery Type</label>
+        <small class="errorTxt11"></small>
+        </div>
+        <div id="RecoveredAmount" class="input-field col s6">
+        <input placeholder="Recovered Amount" type="text" id="recoveredAmount" max="${maxValue}" name="recoveredAmount"  data-error=".errorTxt2" />
+        <small class="errorTxt2"></small>
+        </div>`;
+        $('select').formSelect();
+        document.getElementById('SubStatusFieldCapture').innerHTML =`<div class="input-field col s6"
+        style="text-transform: capitalize !important;">
+        <span style="font-size: .8rem;">Payment Date</span><input id="recoveryDate" name="recoveryDate" type="date" min="<%= new Date(leads.createdAt).toISOString().slice(0, -14) %>" max="<%= new Date().toISOString().slice(0, -14) %>"/>
+        </div>
+        <div id="ChequeNo" class="input-field col s6">
+          <input placeholder="Ref./Cheque No" style="margin-top: 22px;" type="text" id="chequeNo" name="chequeNo" />
+        </div>`;
+      }
+    }
+
+    const SubStatusRecoveryType=()=>{
+      SubStatusFieldId = document.getElementById("SubStatusFieldId");
+      selectedSubStatusFieldLabel = SubStatusFieldId.options[SubStatusFieldId.selectedIndex].label;
+      newSubStatusFieldValue = SubStatusFieldId.options[SubStatusFieldId.selectedIndex].value;
+      if(selectedSubStatusFieldLabel=='Total Due Amount'){
+        maxLimit= (totalDueAmount - amountCollect);
+        document.getElementById('RecoveredAmount').innerHTML =`<input placeholder="Amount" type="text" id="ptpAmount" name="ptpAmount" max="${totalDueAmount - amountCollect}" value='${totalDueAmount - amountCollect}' readonly="readonly" />`;
+      }
+      if(selectedSubStatusFieldLabel=='Principal Outstanding Amount'){
+        maxLimit= (principalOutstndngAmt - amountCollect);
+        document.getElementById('RecoveredAmount').innerHTML =`<input placeholder="Amount" type="text" id="ptpAmount" name="ptpAmount" max="${principalOutstndngAmt - amountCollect}" value='${principalOutstndngAmt - amountCollect}' readonly="readonly"/>`;
+      }
+      if(selectedSubStatusFieldLabel=='Settlement Amount' || selectedSubStatusFieldLabel=='Foreclosure Amount'){
+        maxLimit=maxValue;
+        document.getElementById('RecoveredAmount').innerHTML =`<input placeholder="Amount" type="text" id="ptpAmount"  max="${maxValue}" name="ptpAmount" />`;
+     } 
+     document.getElementById('InputComment').style.marginTop ="-30px";
+    }
+
+    const handleSubStatusField=()=>{
+      SubStatusFieldId = document.getElementById("SubStatusFieldId");
+      selectedSubStatusFieldLabel = SubStatusFieldId.options[SubStatusFieldId.selectedIndex].label;
+      newSubStatusFieldValue = SubStatusFieldId.options[SubStatusFieldId.selectedIndex].value;
+      
+      if(selectedSubStatusFieldLabel=='Total Due Amount'){
+        maxLimit= maxValue+1;
+        document.getElementById('PTPAmount').innerHTML =`<input placeholder="Amount" type="text" id="ptpAmount" name="ptpAmount" max="${maxValue+1}" value='${totalDueAmount - amountCollect}' readonly="readonly" />`;
+        document.getElementById('PTPAmount').style =`color: rgba(0,0, 0, 0.42)`
+      }
+      if(selectedSubStatusFieldLabel=='Principal Outstanding Amount'){
+        maxLimit= maxValue+1;
+        document.getElementById('PTPAmount').innerHTML =`<input placeholder="Amount" type="text" id="ptpAmount" name="ptpAmount" max="${maxValue+1}" value='${principalOutstndngAmt - amountCollect}' readonly="readonly" />`;       
+      }
+      if(selectedSubStatusFieldLabel=='Partial Amount'){
+        maxLimit= maxValue;
+        document.getElementById('PTPAmount').innerHTML =`<input placeholder="Amount" type="text" id="ptpAmount" name="ptpAmount" max="${maxValue}"/>`;
+     } 
+    }
+
+    const handleSelectSubStatus = () => {
+      let subDispositionId = document.getElementById("subDispositionId");
+      let selSubDispotionLabel = subDispositionId.options[subDispositionId.selectedIndex].label;
+      if(selSubDispotionLabel=='Active PTP'){
+        $('#SupportiveDiv').show();
+        maxLimit= maxValue;
+        document.getElementById('radioButton').innerHTML = `<div class="input-field col s4 mt-0">  
+        <label>
+        <input class="with-gap" name="probability" type="radio" value="red"/>
+        <span style="color: red;">Less 50%</span>
+       </label>
+       </div>
+       <div class="input-field col s4 mt-0">  
+        <label>
+        <input class="with-gap" name="probability" type="radio" value="orange"/>
+        <span style="color: orange;">50% To 80%</span>
+       </label>
+       </div>
+       <div class="input-field col s4 mt-0">  
+        <label>
+        <input class="with-gap" name="probability" type="radio" value="green"/>
+        <span style="color: green;">Greater 80%</span>
+       </label>
+       </div>`;
+       document.getElementById('SubProbabilityCapture').innerHTML =`<div class="input-field col s6"
+        style="text-transform: capitalize !important;">
+        <select class="error" id="SubStatusFieldId" name="additionalStatus" required
+        data-error=".errorTxt11" onchange="handleSubStatusField()" >
+        <option value="" disabled selected>Choose your option</option>
+        <option value="Total Due Amount" label="Total Due Amount">Total Due Amount</option>
+        <option value="Principal Outstanding Amount" label="Principal Outstanding Amount">Principal Outstanding Amount</option>
+        <option value="Partial Amount" label="Partial Amount">Partial Amount</option>
+        </select>
+        <label>PTP Amount Type</label>
+        <small class="errorTxt11"></small>
+        </div>
+        <div id="PTPAmount" class="input-field col s6">
+        <input placeholder="PTP Amount" type="text" id="ptpAmount" max="${maxValue}" name="ptpAmount" />
+        </div>`;
+        $('select').formSelect();
+        document.getElementById('radioButton').style.marginTop='';
+      }else{
+        document.getElementById('SubProbabilityCapture').innerHTML = '<span></span>';
+      }
+
+      if(selSubDispotionLabel=='Future PTP'){
+        document.getElementById('radioButton').innerHTML = `<span style="font-size: .8rem;">Date-Time</span><input placeholder="Date" id="PromiseDate" name="PromiseDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+        document.getElementById('radioButton').style.marginTop='-6px';
+        document.getElementById('SubStatusFieldCapture').innerHTML = '<span></span>';
+        $('#SupportiveDiv').hide();
+      }
+
+      if(selSubDispotionLabel=='Already Paid'){
+        document.getElementById('SubStatusFieldCapture').innerHTML = `<div class="input-field col s6">
+        <input placeholder="Amount Paid" type="text" id="amountPaid" name="amountPaid" />
+        </div>
+        <div id="ChequeNo" class="input-field col s6">
+        <input placeholder="Ref/Cheque No" type="text" id="chequeNo" name="chequeNo" />
+        </div>`;
+        document.getElementById('SettlementDate').innerHTML =`<span style="font-size: .8rem;">Payment Date</span><input id="paymentDate" name="paymentDate" type="date" />`;
+      }else{
+        document.getElementById('SubStatusFieldCapture').innerHTML = '<span></span>';
+        document.getElementById('SettlementDate').innerHTML ='<span></span>';
+      }
+
+      if(selSubDispotionLabel=='Ringing but No Response/Call Waiting' || selSubDispotionLabel=='Switched Off/Not Reachable' || selSubDispotionLabel=='Number Out of Service' || selSubDispotionLabel=='Invalid/Wrong Contact Number'
+      || selSubDispotionLabel=='Incoming Facility Not Allowed' || selSubDispotionLabel=='Number Does Not Exist'){
+        document.getElementById('NextAction').innerHTML = `<h6 class="ml-1" id='nextLable' style="color: #9e9e9e;font-size: .8rem;margin: -13px;">Next Action</h6><div class="input-field col s4 mb-4">  
+        <label>
+        <input class="with-gap" name="nextAction" type="radio" value="callBack"/>
+        <span>Call Back</span>
+       </label>
+       </div>
+       <div class="input-field col s4 mb-4">  
+        <label>
+        <input class="with-gap" name="nextAction" type="radio" value="referenceCall"/>
+        <span>Reference Call</span>
+       </label>
+       </div>
+       <div class="input-field col s4 mb-4">  
+        <label>
+        <input class="with-gap" name="nextAction" type="radio" value="assignedToFoS"/>
+        <span>Assigned to FoS</span>
+       </label>
+       </div>`;
+       document.getElementById('nextActionDate').innerHTML =`<span style="font-size: .8rem;">Date-Time</span><input id="nextDate" name="nextDate" type="datetime-local" min="<%= new Date().toISOString().slice(0, -14) %>" />`;
+       document.getElementById('InputComment').style.marginTop ="13px";
+      }else{
+        document.getElementById('NextAction').innerHTML ='<span></span>';
+        document.getElementById('nextActionDate').innerHTML ='<span></span>';
+        document.getElementById('InputComment').style.marginTop ="-40px";
+      }
+    }
+
+    function FindSubDisposition(newDispositionId) {
+
+      console.log('newDispositionId :-', newDispositionId);
+
+      const data = {
+        dispositionId: newDispositionId
+      };
+
+      console.log('data :-', data);
+
+      fetch(`${baseUrl}leads/findSubDisposition`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => response.json())
+        .then(async data => {
+          console.log('Success:', data);
+          let option = await data.payload.SubDispositions.map(SubDisposition => {
+            return `<option label='${SubDisposition.name}' value='${SubDisposition.id}'>${SubDisposition.name}</option>`;
+          }).join('');
+
+        let reportHtml = `<div class="input-field col s6"
+        style="text-transform: capitalize !important;">
+        <select class="error" id="subDispositionId" name="subDispositionId" required
+        data-error=".errorTxt10" onchange="handleSelectSubStatus()" >
+        <option value="" disabled selected>Choose your option</option>
+        ${option}
+        </select>
+        <label>Sub Disposition</label>
+        <small class="errorTxt10"></small>
+        </div>
+        <div id="radioButton" class="input-field col s6">
+        <div class="input-field col s4 mt-0">  
+        <label>
+        <input class="with-gap" name="probability" type="radio" value="red"/>
+        <span style="color: red;">Less 50%</span>
+       </label>
+       </div>
+       <div class="input-field col s4 mt-0">  
+        <label>
+        <input class="with-gap" name="probability" type="radio" value="orange"/>
+        <span style="color: orange;">50% To 80%</span>
+       </label>
+       </div>
+       <div class="input-field col s4 mt-0">  
+        <label>
+        <input class="with-gap" name="probability" type="radio" value="green"/>
+        <span style="color: green;">Greater 80%</span>
+       </label>
+       </div>
+        </div>`;
+          document.getElementById('SubStatusId').innerHTML = reportHtml;
+          $('select').formSelect();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+      }
+
+    function DisputeSubDisposition(newDispositionId){
+      console.log('newDispositionId :-', newDispositionId);
+
+      const data = {
+        dispositionId: newDispositionId
+      };
+
+      console.log('data :-', data);
+
+      fetch(`${baseUrl}leads/findSubDisposition`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => response.json())
+        .then(async data => {
+          console.log('Success:', data);
+          let option = await data.payload.SubDispositions.map(SubDisposition => {
+            return `<option label='${SubDisposition.name}' value='${SubDisposition.id}'>${SubDisposition.name}</option>`;
+          }).join('');
+
+        let reportHtml = `<div class="input-field col m12 s12"
+        style="text-transform: capitalize !important;">
+        <select class="error" id="subDispositionId" name="subDispositionId" required
+        data-error=".errorTxt10" onchange="handleSelectSubStatus()" >
+        <option value="" disabled selected>Choose your option</option>
+        ${option}
+        </select>
+        <label>Sub Disposition</label>
+        <small class="errorTxt10"></small>
+        </div>`;
+          document.getElementById('SubStatusId').innerHTML = reportHtml;
+          $('select').formSelect();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+    }
+
+    $('#addMore').hide();
+    $(document).on('click','#addMoreButton', function () {
+      $('#addMore').show();
+      $('#addMoreButton').hide();
+    });
+    $(document).on('click','#showLessButton', function () {
+      $('#addMore').hide();
+      $('#addMoreButton').show();
+    });
+
+</script>
+
+ <!-- View Success Lead History -->
+ <% caseEventDetails.forEach((cE) => { %>
+  <div id="leadHistoryModal-<%-cE.id%>" class="modal modal-fixed-footer customModalLeadHistory roundCornersFloat" style="top:-3% !important;">
+    <div class="modal-content customModalContent">
+      <div class="mt-0" style="box-shadow: none;">
+        <h6 class="pb-0 mb-0"><b>Additional Information</b></h6>
+        <div class="col s12" style="margin-left: 25px;">
+          <% var aF=JSON.parse(cE.additionalField) %>
+          <%  for (i in aF) { %>
+            <% if (aF[i]!=null && aF[i]!='') { %>
+            <p class="PstyleSpace" id="addInfo"><%=i.replace(/_/g,' ')%> : <%=aF[i]%> </p>
+            <% } %>
+          <% } %>
+          
+        </div>
+      </div>
+      <div class="mt-4" style="box-shadow: none;">
+        <% if (cE.PaymentDetail!=null) { %>
+        <h6 class="pb-0 mb-0"><b>Payment Details</b></h6>
+        <div class="col s12" style="margin-left: 25px;">
+          <p class="PstyleSpace"><b>Cheque No</b> : <%-cE.PaymentDetail.chequeNo%></p>
+          <p class="PstyleSpace"><b>Amount Type</b> : <%-cE.PaymentDetail.amtType%></p>
+          <p class="PstyleSpace"><b>Payment Mode</b> : <%-cE.PaymentDetail.paymentMode%></p>
+          <p class="PstyleSpace"><b>Payment Date</b> : <%- moment(cE.PaymentDetail.recoveryDate).format('YYYY-MM-DD') %></p>
+          <p class="PstyleSpace"><b>Ref No</b> : <%-cE.PaymentDetail.refNo%></p>
+        </div>
+        <% } %>
+        <% if(cE.dispositionId=='8' || cE.dispositionId=='12' || cE.dispositionId=='22' || cE.dispositionId=='25') { %>
+          <a href="/leads/view/receipt/<%-cE.id%>" target="_blank"> View Receipt </a>
+        <% } %>
+      </div>
+      <% if (cE.supportingFile!=null) { %>
+        <div class="mt-0" style="box-shadow: none;">
+          <h6 class="pb-0 mb-0"><b>Supporting Images</b></h6>
+          <div class="col s12" style="margin-left: 16px;margin-top: 12px;">
+            <% cE.supportingFile.forEach((supportingFile) => { %>
+              <a href='<%- supportingFile.fileUrl %>' target='_blank' style="padding: 8px;"><%-supportingFile.fileName%></a>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+      <% if (cE.CheckInLocation && cE.CheckInLocation.length > 0) { %>
+          <div class="mt-0" style="box-shadow: none;">
+            <h6 class="pb-0 mb-0"><b>Checked in location : <a href='https://www.google.com/maps/@<%- cE.location %>z' target='_blank' style="padding: 8px;">Open map</a></b></h6>
+            <div class="col s12" style="margin-left: 16px;margin-top: 12px;">
+                <%- cE.location %>
+            </div>
+            </div>
+            <% } %>
+        
+        </div>
+        <div class="modal-footer customModalFooter">
+          <a class="modal-action modal-close btn-flat">Cancel</a>
+        </div>
+    </div>
+ <% }); %>
+
+<!--Add more contact details-->
+<div id="addContactInfo" class="modal  filterModal roundCornersFloat">
+  <form class="addContactInfo" id="addContactInfo" method="POST" action="/leads/leadContactUpdate">
+  <div class="modal-content">
+    <h5 class="mt-0"><b>Add Contact</b></h5>
+    <div class="row mt-2">
+      <div class="col s12">
+        <div class="input-field">
+            <select class="error" id='type' name="type" required data-error=".errorTxt41">
+              <option value="" selected disabled>Select Type</option>
+              <option value="mobile">Mobile</option>
+              <option value="address">Address</option>
+            </select>
+            <label for="type">Content Type</label>
+          </div>
+        <small class="errorTxt41"></small>
+    </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+            <div class="input-field">
+                <label for="content">Content</label>
+                <input type="text" id="content" name="content"
+                    data-error=".errorTxt42">
+                <small class="errorTxt42"></small>
+            </div>
+        </div>
+      </div>
+      <input type="hidden" id="leadId" name="leadId" value="<%= leads.loanAccountNo %>">
+    </div>
+  <div class="modal-footer">
+    <a class="modal-action modal-close btn-flat" id="input-filter">Cancel</a>
+    <button type="submit" class=" btn-flat mr-1" >Save</button>
+  </div>
+</form>
+</div>

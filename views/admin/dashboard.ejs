@@ -1,0 +1,552 @@
+<%- include('top.ejs') -%>
+  <%- include('header.ejs') -%>
+    <%- include('sidenav.ejs') -%>
+      <style>
+        @media screen and (min-width: 600px) {
+          .five-column {
+            width: 20% !important;
+          }
+        }
+
+        .card-content p.card-stats-title {
+          font-weight: 700;
+        }
+        .hero-main-label{
+          padding-left: 10px;
+          font-weight: 600;
+          font-size: 20px;
+        }
+        input[type=text]:not(.browser-default){
+          margin-left: -30px !important;
+          width: 129%;
+        }
+       #filterCss{
+         width: calc(100% -20px);;
+       }
+        /* @media only screen and (min-width: 993px){
+    .row .col.l3 {
+    right: auto;
+    left: auto;
+    width: 24%;
+    margin-left: auto;
+    }
+}   */
+      </style>
+      <script>
+        let moment2='<%= moment() %>';
+        console.log("heeeee",moment2);
+        let filterObj={
+          fromDate: '<%= moment().subtract(11,"days").format("YYYY-MM-DD") %>',
+          toDate:'<%= moment().format("YYYY-MM-DD") %>',
+          fi : '',
+          PoolId : '',
+          locationId : '',
+          teamId : '',
+        };
+        console.log("filterObj heeeee",filterObj);
+        getCollectedAmt(filterObj);
+        
+
+        filter=true;
+        // get overall Quick Snapshot data
+        $(document).ready(function () {
+        $(document).on('change','#fromDate', function () {
+        filterObj.fromDate = ($('#fromDate').val())?  $('#fromDate').val() :'';
+        filterObj.toDate = ($('#toDate').val())?  $('#toDate').val() :'';
+        filterObj.fi = ($('#fis').val())?  $('#fis').val() :'';
+        filterObj.PoolId = ($('#poolId').val())?  $('#poolId').val() :'';
+        filterObj.locationId = ($('#location').val())?  $('#location').val() :'';
+        filterObj.teamId = ($('#teamId').val())?  $('#teamId').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        filterApiNew(filterObj);
+        });
+
+        $(document).on('change','#toDate', function () {
+        filterObj.fromDate = ($('#fromDate').val())?  $('#fromDate').val() :'';
+        filterObj.toDate = ($('#toDate').val())?  $('#toDate').val() :'';
+        filterObj.fi = ($('#fis').val())?  $('#fis').val() :'';
+        filterObj.PoolId = ($('#poolId').val())?  $('#poolId').val() :'';
+        filterObj.locationId = ($('#location').val())?  $('#location').val() :'';
+        filterObj.teamId = ($('#teamId').val())?  $('#teamId').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        filterApiNew(filterObj);
+        });
+
+        $(document).on('change','#fis', function () {
+        filterObj.fromDate = ($('#fromDate').val())?  $('#fromDate').val() :'';
+        filterObj.toDate = ($('#toDate').val())?  $('#toDate').val() :'';
+        filterObj.fi = ($('#fis').val())?  $('#fis').val() :'';
+        filterObj.PoolId = ($('#poolId').val())?  $('#poolId').val() :'';
+        filterObj.locationId = ($('#location').val())?  $('#location').val() :'';
+        filterObj.teamId = ($('#teamId').val())?  $('#teamId').val() :'';
+        updatePool(filterObj.fi);
+        filterApiNew(filterObj);
+        });
+
+      
+        $(document).on('change','#poolId', function () {
+        filterObj.fromDate = ($('#fromDate').val())?  $('#fromDate').val() :'';
+        filterObj.toDate = ($('#toDate').val())?  $('#toDate').val() :'';
+        filterObj.fi = ($('#fis').val())?  $('#fis').val() :'';
+        filterObj.PoolId = ($('#poolId').val())?  $('#poolId').val() :'';
+        filterObj.locationId = ($('#location').val())?  $('#location').val() :'';
+        filterObj.teamId = ($('#teamId').val())?  $('#teamId').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        filterApiNew(filterObj);
+        });
+
+
+        $(document).on('change','#location', function () {
+        filterObj.fromDate = ($('#fromDate').val())?  $('#fromDate').val() :'';
+        filterObj.toDate = ($('#toDate').val())?  $('#toDate').val() :'';
+        filterObj.fi = ($('#fis').val())?  $('#fis').val() :'';
+        filterObj.PoolId = ($('#poolId').val())?  $('#poolId').val() :'';
+        filterObj.locationId = ($('#location').val())?  $('#location').val() :'';
+        filterObj.teamId = ($('#teamId').val())?  $('#teamId').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        filterApiNew(filterObj);
+        });
+
+   
+        $(document).on('change','#teamId', function () {
+        filterObj.fromDate = ($('#fromDate').val())?  $('#fromDate').val() :'';
+        filterObj.toDate = ($('#toDate').val())?  $('#toDate').val() :'';
+        filterObj.fi = ($('#fis').val())?  $('#fis').val() :'';
+        filterObj.PoolId = ($('#poolId').val())?  $('#poolId').val() :'';
+        filterObj.locationId = ($('#location').val())?  $('#location').val() :'';
+        filterObj.teamId = ($('#teamId').val())?  $('#teamId').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        filterApiNew(filterObj);
+        });
+
+         // Get Donut and Pie Chart
+      
+        $(document).on('change','#fromDateNew', function () {
+        filterObj.fromDate = ($('#fromDateNew').val())?  $('#fromDateNew').val() :'';
+        filterObj.toDate = ($('#toDateNew').val())?  $('#toDateNew').val() :'';
+        filterObj.fi = ($('#fisNew').val())?  $('#fisNew').val() :'';
+        filterObj.PoolId = ($('#poolIdNew').val())?  $('#poolIdNew').val() :'';
+        filterObj.locationId = ($('#locationNew').val())?  $('#locationNew').val() :'';
+        filterObj.teamId = ($('#teamIdNew').val())?  $('#teamIdNew').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        getCollectedAmt(filterObj);
+        });
+
+        $(document).on('change','#toDateNew', function () {
+        filterObj.fromDate = ($('#fromDateNew').val())?  $('#fromDateNew').val() :'';
+        filterObj.toDate = ($('#toDateNew').val())?  $('#toDateNew').val() :'';
+        filterObj.fi = ($('#fisNew').val())?  $('#fisNew').val() :'';
+        filterObj.PoolId = ($('#poolIdNew').val())?  $('#poolIdNew').val() :'';
+        filterObj.locationId = ($('#locationNew').val())?  $('#locationNew').val() :'';
+        filterObj.teamId = ($('#teamIdNew').val())?  $('#teamIdNew').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        getCollectedAmt(filterObj);
+        });
+
+        $(document).on('change','#fisNew', function () {
+        filterObj.fromDate = ($('#fromDateNew').val())?  $('#fromDateNew').val() :'<%= moment().subtract(11,"days").format("YYYY-MM-DD") %>';
+        filterObj.toDate = ($('#toDateNew').val())?  $('#toDateNew').val() :'<%= moment().format("YYYY-MM-DD") %>';
+        filterObj.fi = ($('#fisNew').val())?  $('#fisNew').val() :'';
+        filterObj.PoolId = ($('#poolIdNew').val())?  $('#poolIdNew').val() :'';
+        filterObj.locationId = ($('#locationNew').val())?  $('#locationNew').val() :'';
+        filterObj.teamId = ($('#teamIdNew').val())?  $('#teamIdNew').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        getCollectedAmt(filterObj);
+        });
+
+      
+        $(document).on('change','#poolIdNew', function () {
+        filterObj.fromDate = ($('#fromDateNew').val())?  $('#fromDateNew').val() :'<%= moment().subtract(11,"days").format("YYYY-MM-DD") %>';
+        filterObj.toDate = ($('#toDateNew').val())?  $('#toDateNew').val() :'<%= moment().format("YYYY-MM-DD") %>';
+        filterObj.fi = ($('#fis').val())?  $('#fis').val() :'';
+        filterObj.PoolId = ($('#poolIdNew').val())?  $('#poolIdNew').val() :'';
+        filterObj.locationId = ($('#locationNew').val())?  $('#locationNew').val() :'';
+        filterObj.teamId = ($('#teamIdNew').val())?  $('#teamIdNew').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        getCollectedAmt(filterObj);
+        });
+
+
+        $(document).on('change','#locationNew', function () {
+        filterObj.fromDate = ($('#fromDateNew').val())?  $('#fromDateNew').val() :'<%= moment().subtract(11,"days").format("YYYY-MM-DD") %>';
+        filterObj.toDate = ($('#toDateNew').val())?  $('#toDateNew').val() :'<%= moment().format("YYYY-MM-DD") %>';
+        filterObj.fi = ($('#fisNew').val())?  $('#fisNew').val() :'';
+        filterObj.PoolId = ($('#poolIdNew').val())?  $('#poolIdNew').val() :'';
+        filterObj.locationId = ($('#locationNew').val())?  $('#locationNew').val() :'';
+        filterObj.teamId = ($('#teamIdNew').val())?  $('#teamIdNew').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        getCollectedAmt(filterObj);
+        });
+
+   
+        $(document).on('change','#teamIdNew', function () {
+        filterObj.fromDate = ($('#fromDateNew').val())?  $('#fromDateNew').val() :'<%= moment().subtract(11,"days").format("YYYY-MM-DD") %>';
+        filterObj.toDate = ($('#toDateNew').val())?  $('#toDateNew').val() :'<%= moment().format("YYYY-MM-DD") %>';
+        filterObj.fi = ($('#fisNew').val())?  $('#fisNew').val() :'';
+        filterObj.PoolId = ($('#poolIdNew').val())?  $('#poolIdNew').val() :'';
+        filterObj.locationId = ($('#locationNew').val())?  $('#locationNew').val() :'';
+        filterObj.teamId = ($('#teamIdNew').val())?  $('#teamIdNew').val() :'';
+        console.log("\n\n\ Filter OBJ",filterObj);
+        getCollectedAmt(filterObj);
+        });
+
+        });
+
+    </script>
+      <!-- BEGIN: Page Main-->
+  <div id="main">
+   <% if(roleName.name!='admin' && roleName.name!='business_head' && roleName.name!='field_coordinator'
+   && roleName.name!='floor_manager' && roleName.name!='field_manager' && roleName.name!='telecaller'
+   && roleName.name!='team_leader'){ %>
+    <div class="row">
+      <div class="container">
+      <div class="col s12">
+        <h4 style="text-align: center;margin-top: 75px;"><b>Welcome to CLXNS</b></h4>
+        </div>
+      </div>
+    </div>
+    <% }else{%>
+          <div class="row">
+            <div class="col s12">
+              <div class="container">
+                <div class="section">
+                  <!-- card stats start -->
+                  <h5 class="hero-main-label">Quick Snapshot</h5>
+                  <div class="row">
+                    <div class="container">
+                    <div class="col s12">
+                        <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                            <div class="card-content">
+                              <div id="card-stats" class="pt-0">
+                                <div class="row" style="display: flex;">
+                                <div class="col s2 ">
+                                  <div class="input-field">
+                                    <label for="fromDate" style="font-size: 16px;">From Date</label>
+                                    <input placeholder="fromDate" class="" id="fromDate" name="fromDate" type="date" value="<%= moment().startOf('month').format("YYYY-MM-DD") %>"/>
+                                  </div>
+                                 </div>
+                                 <div class="col s2 ">
+                                  <div class="input-field">
+                                    <label for="toDate" style="font-size: 16px;">To Date</label>
+                                    <input placeholder="toDate" class="" id="toDate" name="toDate" type="date" value="<%= moment().format("YYYY-MM-DD") %>"/>
+                                  </div>
+                                 </div>
+                                 <div class="col s2 ">
+                                  <div class="input-field">
+                                  <label for="FIs" style="margin-top: -25px;">FIs</label>
+                                   <select class="select2-theme browser-default" id="fis" name="fis">
+                                    <option value="" disabled>Choose Fis</option>
+                                    <option value="" selected>All</option>
+                                    <% fis.forEach((fi) => { %>
+                                    <option value="<%=fi.id%>"><%=fi.name%></option>
+                                    <% }); %>
+                                   </select>
+                                  </div>
+                                 </div>
+                                 <div class="col s2 ">
+                                   <div class="input-field" >
+                                    <label for="Pool" style="margin-top: -25px;">Pool</label>
+                                    <select class="select2-theme browser-default" id="poolId" name="poolId">
+                                      <option value="" disabled>Choose Pool</option>
+                                      <option value="" selected>All</option>
+                                      <% pools.forEach((pool) => { %>
+                                      <option value="<%=pool.id%>"><%=pool.fileName.replace('.csv','')%></option>
+                                      <% }); %>
+                                    </select>
+                                   </div>
+                                  </div>
+                                  <div class="col s2 " style="width: 18.66667% !important;">
+                                    <div class="input-field">
+                                    <label for="Location" style="margin-top: -25px;">Location</label>
+                                     <select class="select2-theme browser-default" id="location" name="location">
+                                      <option value="" disabled>Choose Location</option>
+                                      <option value="" selected>All</option>
+                                       <% locations.forEach((location) => { %>
+                                       <option value="<%=location.id%>"><%=location.name%></option>
+                                       <% }); %>
+                                     </select>
+                                    </div>
+                                   </div>
+                                  <div class="col s2 ">
+                                   <div class="input-field">
+                                    <label for="Team" style="margin-top: -25px;">Team</label>
+                                    <select class="select2-theme browser-default" id="teamId" name="teamId">
+                                      <option value=""disabled>Choose Team</option>
+                                      <option value="" selected>All</option>
+                                      <% teams.forEach((team) => { %>
+                                      <option value="<%=team.id%>"><%=team.name%></option>
+                                      <% }); %>
+                                    </select>
+                                   </div>
+                                  </div>
+                                 </div>
+                                 <div id="card-stats" class="pt-0">
+                                  <div class="row">
+                                    <div class="col s12 m6 l3">
+                                      <div class="card padding-4 animate fadeLeft bor-top">
+                                         <div class="row">
+                                            <div class="col">
+                                              <p class="no-margin strong">Total Cases</p>
+                                               <h5 class="mb-0 color-blue" id="totalCases"><% if (totalCases > 0) { %><%= parseInt(totalCases).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                            </div>
+                                         </div>
+                                      </div>
+                                    </div>
+                                    <div class="col s12 m6 l3">
+                                      <div class="card padding-4 animate fadeLeft bor-top">
+                                         <div class="row">
+                                            <div class="col">
+                                              <p class="no-margin strong">Allocated Cases</p>
+                                               <h5 class="mb-0 color-blue" id="caseAllocate"><% if (caseAllocate > 0) { %><%= parseInt(caseAllocate).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                            </div>
+                                         </div>
+                                      </div>
+                                    </div>
+                                    <div class="col s12 m6 l3">
+                                      <div class="card padding-4 animate fadeLeft bor-top">
+                                         <div class="row">
+                                            <div class="col">
+                                              <p class="no-margin strong">Recovered Cases</p>
+                                               <h5 class="mb-0 color-blue" id="caseRecover"><% if (caseRecover > 0) { %><%= parseInt(caseRecover).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                            </div>
+                                         </div>
+                                      </div>
+                                    </div>
+                                    <div class="col s12 m6 l3">
+                                      <div class="card padding-4 animate fadeLeft bor-top">
+                                         <div class="row">
+                                            <div class="col">
+                                              <p class="no-margin strong">Pending Cases</p>
+                                               <h5 class="mb-0 color-blue" id="casePending"><% if (casePending > 0) { %><%= parseInt(casePending).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                            </div>
+                                         </div>
+                                      </div>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col s12 m6 l3">
+                                        <div class="card padding-4 animate fadeLeft bor-top">
+                                           <div class="row">
+                                              <div class="col">
+                                                <p class="no-margin strong">Total Amount </p>
+                                                 <h5 class="mb-0 color-blue" id="totalAmount"><% if (totalAmount > 0) { %><%= parseInt(totalAmount).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                              </div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                      <div class="col s12 m6 l3">
+                                        <div class="card padding-4 animate fadeLeft bor-top">
+                                           <div class="row">
+                                              <div class="col">
+                                                <p class="no-margin strong">Allocated Amount</p>
+                                                <% if(roleName.name=='team_leader' || roleName.name=='telecaller'){ %>
+                                                  <h5 class="mb-0 color-blue" id="totalAmountAllocated"><% if (totalAmount > 0) { %><%= parseInt(totalAmount).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                                <% }else{%>
+                                                  <h5 class="mb-0 color-blue" id="totalAmountAllocated"><% if (totalAmountAllocated > 0) { %><%= parseInt(totalAmountAllocated).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                                <% }%>
+                                              </div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                      <div class="col s12 m6 l3">
+                                        <div class="card padding-4 animate fadeLeft bor-top">
+                                           <div class="row">
+                                              <div class="col">
+                                                <p class="no-margin strong">Recovered Amount</p>
+                                                 <h5 class="mb-0 color-blue" id="totalAmountRecover"><% if (totalAmountRecover > 0) { %><%= parseInt(totalAmountRecover).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                              </div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                      <div class="col s12 m6 l3">
+                                        <div class="card padding-4 animate fadeLeft bor-top">
+                                           <div class="row">
+                                              <div class="col">
+                                                <p class="no-margin strong">Pending Amount</p>
+                                                 <h5 class="mb-0 color-blue" id="amountPending"><% if (amountPending > 0) { %><%= parseInt(amountPending).toLocaleString() %><% } else{ %> <%= 0 %> <% }%></h5>
+                                              </div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                      </div>
+                                  </div>
+                               
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                  <!--card stats end-->
+                </div>
+                  <!--card stats end-->
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
+                <div class="container">
+                  <div class="section">
+                    <h5 class="hero-main-label">Collection Summary</h5>
+                    <!-- graph stats start -->
+                     <!--chart dashboard start-->
+                  <div id="chart-dashboard">
+                    <div class="row">
+                      <div class="container">
+                      <div class="col s12 m12 l12" style="margin-top: 15px;">
+                        <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                          <div class="card-content">
+                            <div class="row" style="display: flex;">
+                              <!-- <div class="col s2" style="margin-top:5px;">
+                              </div> -->
+                              <div class="col s2 ">
+                                <div class="input-field">
+                                  <label for="fromDate" style="font-size: 16px;">From Date</label>
+                                  <input placeholder="fromDate" class="" id="fromDateNew" name="fromDate" type="date" value="<%= moment().subtract(11,"days").format("YYYY-MM-DD") %>"/>
+                                </div>
+                               </div>
+                               <div class="col s2 ">
+                                <div class="input-field">
+                                  <label for="toDate" style="font-size: 16px;">To Date</label>
+                                  <input placeholder="toDate" class="" id="toDateNew" name="toDate" type="date" value="<%= moment().format("YYYY-MM-DD") %>"/>
+                                </div>
+                               </div>
+                               <div class="col s2 ">
+                                <div class="input-field">
+                                 <label for="FIs" style="margin-top: -25px;">FIs</label>
+                                 <select class="select2-theme browser-default" id="fisNew" name="fis">
+                                  <option value="" disabled>Choose FIs</option>
+                                  <option value="" selected>All</option>
+                                  <% fis.forEach((fi) => { %>
+                                  <option value="<%=fi.id%>"><%=fi.name%></option>
+                                  <% }); %>
+                                 </select>
+                                </div>
+                               </div>
+                               <div class="col s2">
+                                 <div class="input-field">
+                                  <label for="Pool" style="margin-top: -25px;">Pool</label>
+                                  <select class="select2-theme browser-default" id="poolIdNew" name="poolId">
+                                    <option value="" disabled>Choose Pool</option>
+                                    <option value="" selected>All</option>
+                                    <% pools.forEach((pool) => { %>
+                                    <option value="<%=pool.id%>"><%=pool.fileName.replace('.csv','')%></option>
+                                    <% }); %>
+                                  </select>
+                                 </div>
+                                </div>
+                                <div class="col s2" style="width: 18.66667% !important;">
+                                 <div class="input-field">
+                                  <label for="Location" style="margin-top: -25px;">Location</label>
+                                  <select class="select2-theme browser-default" id="locationNew" name="location">
+                                    <option value="" disabled>Choose Location</option>
+                                    <option value="" selected>All</option>
+                                    <% locations.forEach((location) => { %>
+                                    <option value="<%=location.id%>"><%=location.name%></option>
+                                    <% }); %>
+                                  </select>
+                                 </div>
+                                </div>
+                                <div class="col s2">
+                                 <div class="input-field">
+                                  <label for="Team" style="margin-top: -25px;">Team</label>
+                                  <select class="select2-theme browser-default" id="teamIdNew" name="teamId">
+                                    <option value="" disabled>Choose Team</option>
+                                    <option value="" selected>All</option>
+                                    <% teams.forEach((team) => { %>
+                                    <option value="<%=team.id%>"><%=team.name%></option>
+                                    <% }); %>
+                                  </select>
+                                 </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 25px;">
+                              <div class="col s8 m8 l8">
+                              <div class="trending-line-chart-wrapper">
+                                <canvas id="dashbord-line-chart" height="250" width="392"></canvas>
+                              </div>
+                              </div>
+                              <div class="col s4 m4 l4">
+                                  <div style="text-align: center;">Total Cases: <span id="caseCnt">0</span></div> 
+                                  <div class="sample-chart-wrapper"><canvas id="doughnut-chart-lead" height="400"></canvas></div>
+                              </div>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  <!--chart dashboard end-->
+                    <!--graph stats end-->
+                  </div>
+                </div>
+              </div>
+          </div>
+          <% }%>
+        </div>
+      <!-- END: Page Main-->
+<script>
+
+  function filterApiNew(filterObj) {
+  
+  console.log("\n\n\ Filter OBJ2",filterObj);
+  const data = {
+    filterData: filterObj,
+  };
+  
+  console.log('data body: ', data);
+  
+    fetch(`${baseUrl}dashboard/filterData`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(response => response.json())
+      .then(data => {
+        console.log('Success Data:', data);
+        $("#totalCases").html(data.data.totalCases.toLocaleString());
+        $("#caseAllocate").html(data.data.caseAllocate.toLocaleString());
+        $("#caseRecover").html(data.data.caseRecover.toLocaleString());
+        $("#casePending").html(data.data.casePending.toLocaleString());
+        $("#totalAmount").html(parseInt(data.data.totalAmount).toLocaleString());
+        $("#totalAmountAllocated").html(parseInt(data.data.totalAmountAllocated).toLocaleString());
+        $("#totalAmountRecover").html(parseInt(data.data.totalAmountRecover).toLocaleString());
+        $("#amountPending").html(data.data.amountPending.toLocaleString());
+        
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  
+    }
+
+    function updatePool(fiId){ 
+      console.log("fiId--->"+fiId);
+      
+      const data = {isFiSelect: true, FIId: fiId}
+      fetch(`${baseUrl}reports/getPool`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(response => response.json())
+      .then(data => {
+        let poolArr = data.data.poolsArr;
+        let poolArrHtml = "";
+        poolArr.forEach(e => {
+          poolArrHtml+="<option value='"+e.id+"'>"+e.name+"</option>";
+        });
+       document.getElementById('poolId').innerHTML = poolArrHtml;
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+   
+</script>
+<!-- Theme Customizer -->
+<%- include('bottom.ejs') -%>

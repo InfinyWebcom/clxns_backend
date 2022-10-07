@@ -1,0 +1,138 @@
+<script>
+  const columnNamesTelecallers = '<%- JSON.stringify(datatableTelecallers.columns) %>';
+  const apiUrlTelecallers = '<%- JSON.parse(JSON.stringify(datatableTelecallers.apiUrl)) %>';
+  const campaignId = '<%- datatableTelecallers.id ? datatableTelecallers.id : null %>';
+  let myTableTelecallers
+  let filterObjTelecallers = {};
+
+  $(document).ready(() => {
+
+    myTableTelecallers = $('#exampleTelecallers').DataTable({
+      bLengthChange: false,
+      bInfo: false,
+      paging: true,
+      ordering: false,
+      pageLength: 50,
+      searching:  (IsSearch=='campaignDetails' ? false : true),
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: `${baseUrl}${apiUrlTelecallers}`,
+        type: 'POST',
+        datatype: 'JSON',
+        data: function (data) {
+          data.id = campaignId;
+          data.filterObjTelecallers = filterObjTelecallers;
+        }
+      },
+      'columns': JSON.parse(columnNamesTelecallers),
+      // select: { style: 'multi' }
+    });
+
+  });
+
+  function action(actionUrl, userId, teamId) {
+
+    console.log('action :-', actionUrl, userId, teamId);
+
+    const data = {
+      actionUrl: actionUrl,
+      userId: userId,
+      teamId: teamId,
+    };
+
+    fetch(`${baseUrl}${actionUrl}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        $('#exampleLeads').DataTable().ajax.reload(null, false);
+        $('#exampleTelecallers').DataTable().ajax.reload(null, false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
+
+  document.getElementById('actionButton').addEventListener('click', function () {
+
+    const data = myTableTelecallers.rows('.selected').data();
+
+    let selectedItems = [];
+    data.map(item => {
+      selectedItems.push(item)
+    });
+    console.log('rows ASD :-', selectedItems);
+
+  });
+
+  function checkboxFunc(data) {
+    console.log('checkbox :-', data);
+  }
+
+
+
+  function removeFromCampaign(userId, campaignName) {
+
+    console.log("removeFromCampaign", campaignName);
+
+     outerUserId = userId
+     outercampaignName = campaignName
+
+    // const data = {
+    //   userId: userId,
+    //   campaignName: campaignName
+    // };
+
+    // fetch(`${baseUrl}campaign/removeFromCampaign`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(data)
+    // }).then(response => response.json()).then(data => {
+    //     $('#exampleLeads').DataTable().ajax.reload(null, false);
+    //     $('#exampleTelecallers').DataTable().ajax.reload(null, false);
+    // }).catch(error => {
+    //   console.error("Error:", error);
+    // });
+
+  }
+
+  function confirmRemoveTelecaller() {
+    console.log("confirmRemoveTelecaller", outerUserId);
+    console.log("confirmRemoveTelecaller", outercampaignName);
+
+    const data = {
+      userId: outerUserId,
+      campaignName: outercampaignName
+    };
+
+    fetch(`${baseUrl}campaign/removeFromCampaign`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    }).then(response => response.json()).then(data => {
+        // $('#exampleLeads').DataTable().ajax.reload(null, false);
+        // $('#exampleTelecallers').DataTable().ajax.reload(null, false);
+        location.reload()
+    }).catch(error => {
+      console.error("Error:", error);
+    });
+  }
+</script>
+
+<div class="section section-data-tables">
+  <div class="col s12">
+    <table id="exampleTelecallers" class="display responsive nowrap" style="width:100%">
+    </table>
+  </div>
+</div>

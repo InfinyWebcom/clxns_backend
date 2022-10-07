@@ -1,0 +1,38 @@
+// CLIENT EXAMPLE
+.customer-website {
+    height: rem(335);
+    .simplebar-content {
+        width: 88%;
+        margin: 0 auto;
+    }
+    .simplebar-track{
+        &::before{
+            content: "";
+            @include centerer(true, false);
+            background: $color-light-gray-400;
+            border-radius: 7px;
+            height: 100%;
+            width: 2px;
+        }
+        &.simplebar-vertical{
+            height: calc(100% - 20px);
+
+        }
+        .simplebar-scrollbar.simplebar-visible:before{
+            opacity: 1;
+            border-radius: 0;
+        }
+    }
+    &-item{
+        box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.08);
+        &:hover{
+            .item-description{
+                opacity: .9;
+            }
+        }
+    }
+    .item-description{
+        @extend .transition-default;
+        opacity: 0;
+    }
+}

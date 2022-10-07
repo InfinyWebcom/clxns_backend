@@ -1,0 +1,59 @@
+/**! ----- Blog Page Spacing ---- **/
+
+.blog-details {
+
+    .article-content,
+    .comment-content {
+        a {
+            @extend %color-primary;
+
+        }
+
+        p {
+            margin-bottom: rem(25);
+
+            + {
+
+                h1,
+                h2,
+                h3,
+                h4,
+                h5,
+                h6 {
+                    margin-top: rem(40);
+                }
+            }
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin-top: rem(25);
+            margin-bottom: rem(20);
+            font-weight: 500;
+        }
+
+        img {
+            border-radius: 5px;
+            margin-bottom: rem(15);
+        }
+
+        .post-thumbnail {
+            margin-top: rem(40);
+        }
+
+        code {
+            display: block;
+            padding: 11px 22px;
+            border: 1px solid darken($color: $border-on-light-standard, $amount: 5);
+            border-radius: 4px;
+            background-color: transparent;
+            margin-top: rem(5);
+            margin-bottom: rem(5);
+            color: darken($color: $color-gray-400, $amount: 20);
+        }
+    }
+}

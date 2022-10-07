@@ -1,0 +1,16 @@
+/**!---======================================================================
+    This Part of code is for our WordPress theme which will be released soon.
+    If you're planning to convert this template into WordPress this styling might help you since we have followed the standard WP blog rules.
+    And If you don't need you can delete them.  
+======================================================================---**/
+/**! ----- Blog Page Spacing ---- **/
+
+.blog-details {
+    .article-content,
+    .comment-content {
+        .wp-caption-text {
+            font-size: rem(15);
+            font-style: italic;
+        }
+    }
+}

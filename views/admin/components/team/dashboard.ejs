@@ -1,0 +1,359 @@
+<style>
+    input[type=text]:not(.browser-default){
+        margin-left: 10px !important;
+        width: 80%;
+      }
+</style>
+<div id="main">
+    <div class="row">
+      <div class="col s12">
+        <div class="container">
+          <div class="section">
+            <!-- card stats start -->
+            <h5 class="hero-main-label">Quick Snapshot</h5>
+            <div class="row">
+              <div class="container">
+              <div class="col s12">
+                  <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                      <div class="card-content">
+                        <div id="card-stats" class="pt-0">
+                          <div class="row">
+                          <div class="col s3 ">
+                            <div class="input-field">
+                              <input type="text" name="dates" placeholder="Date-Range" />
+                            </div>
+                           </div>
+                           <div class="col s3 ">
+                            <div class="input-field">
+                             <select class="select2-theme browser-default" id="fis" name="fis">
+                              <option value="" selected disabled>Choose FI</option>
+                              <% fis.forEach((fi) => { %>
+                              <option value="<%=fi.id%>"><%=fi.name%></option>
+                              <% }); %>
+                             </select>
+                            </div>
+                           </div>
+                           <div class="col s3 ">
+                             <div class="input-field">
+                              <select class="select2-theme browser-default" id="poolId" name="poolId">
+                                <option value="" selected disabled>Choose Pool</option>
+                                <% pools.forEach((pool) => { %>
+                                <option value="<%=pool.id%>"><%=pool.bankName%></option>
+                                <% }); %>
+                              </select>
+                             </div>
+                            </div>
+                            <div class="col s3 ">
+                             <div class="input-field">
+                              <select class="select2-theme browser-default" id="teamId" name="teamId">
+                                <option value="" selected disabled>Choose Team</option>
+                                <% teams.forEach((team) => { %>
+                                <option value="<%=team.id%>"><%=team.name%></option>
+                                <% }); %>
+                              </select>
+                             </div>
+                            </div>
+                           </div>
+                           <div id="card-stats" class="pt-0">
+                            <div class="row">
+                              <div class="col s12 m6 l3">
+                                <div class="card padding-4 animate fadeLeft bor-top">
+                                   <div class="row">
+                                      <div class="col">
+                                        <p class="no-margin strong">Total Cases</p>
+                                         <h5 class="mb-0 color-blue" id="totalCases"><%=totalCases.toLocaleString()%></h5>
+                                      </div>
+                                   </div>
+                                </div>
+                              </div>
+                              <div class="col s12 m6 l3">
+                                <div class="card padding-4 animate fadeLeft bor-top">
+                                   <div class="row">
+                                      <div class="col">
+                                        <p class="no-margin strong">Allocated Cases</p>
+                                         <h5 class="mb-0 color-blue" id="caseAllocate"><%=caseAllocate.toLocaleString()%></h5>
+                                      </div>
+                                   </div>
+                                </div>
+                              </div>
+                              <div class="col s12 m6 l3">
+                                <div class="card padding-4 animate fadeLeft bor-top">
+                                   <div class="row">
+                                      <div class="col">
+                                        <p class="no-margin strong">Recovered Cases</p>
+                                         <h5 class="mb-0 color-blue" id="caseRecover"><%=caseRecover.toLocaleString()%></h5>
+                                      </div>
+                                   </div>
+                                </div>
+                              </div>
+                              <div class="col s12 m6 l3">
+                                <div class="card padding-4 animate fadeLeft bor-top">
+                                   <div class="row">
+                                      <div class="col">
+                                        <p class="no-margin strong">Pending Cases</p>
+                                         <h5 class="mb-0 color-blue" id="casePending"><%=casePending.toLocaleString()%></h5>
+                                      </div>
+                                   </div>
+                                </div>
+                              </div>
+                              </div>
+                              <div class="row">
+                                <div class="col s12 m6 l3">
+                                  <div class="card padding-4 animate fadeLeft bor-top">
+                                     <div class="row">
+                                        <div class="col">
+                                          <p class="no-margin strong">Total Amount </p>
+                                           <h5 class="mb-0 color-blue" id="totalAmount"><%=totalAmount.toLocaleString()%></h5>
+                                        </div>
+                                     </div>
+                                  </div>
+                                </div>
+                                <div class="col s12 m6 l3">
+                                  <div class="card padding-4 animate fadeLeft bor-top">
+                                     <div class="row">
+                                        <div class="col">
+                                          <p class="no-margin strong">Allocated Amount</p>
+                                           <h5 class="mb-0 color-blue" id="totalAmountAllocated"><%=totalAmount.toLocaleString()%></h5>
+                                        </div>
+                                     </div>
+                                  </div>
+                                </div>
+                                <div class="col s12 m6 l3">
+                                  <div class="card padding-4 animate fadeLeft bor-top">
+                                     <div class="row">
+                                        <div class="col">
+                                          <p class="no-margin strong">Recovered Amount</p>
+                                           <h5 class="mb-0 color-blue" id="totalAmountRecover"><%=totalAmountRecover.toLocaleString()%></h5>
+                                        </div>
+                                     </div>
+                                  </div>
+                                </div>
+                                <div class="col s12 m6 l3">
+                                  <div class="card padding-4 animate fadeLeft bor-top">
+                                     <div class="row">
+                                        <div class="col">
+                                          <p class="no-margin strong">Pending Amount</p>
+                                           <h5 class="mb-0 color-blue" id="amountPending"><%=amountPending.toLocaleString()%></h5>
+                                        </div>
+                                     </div>
+                                  </div>
+                                </div>
+                                </div>
+                            </div>
+                         
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              </div>
+          </div>
+            <!--card stats end-->
+          </div>
+          <!-- <div class="section">
+            <h5 class="hero-main-label">Performance</h5>
+            <div class="row">
+              <div class="container">
+                <div class="col s12">
+                  <div id="button-trigger" class="card roundCorners card-default scrollspy">
+                    <div class="card-content" style="padding: 0px; margin-bottom: -30px">
+                      <ul class="tabs" style="border-radius: 10px 10px 0px
+                              0px;display: flex;">
+                        <li class="tab col m6" style="text-transform:
+                    capitalize;"><a class="active" href="#Overall">Overall</a></li>
+                        <li class="tab col m6" style="text-transform:
+                    capitalize;"><a class="active" href="#Today">Today's Snapshot</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div id="Overall" class="col s12">
+                  <div id="button-trigger" class="card card-default
+                                scrollspy" style="border-radius: 0px 0px 10px
+                                10px;">
+                    <div class="card-content">
+                        <div class="row">
+                          <div class="col s12 m6 l4">
+                            <div
+                              class="card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text animate fadeLeft">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">insert_drive_file</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">Cases allocated</p>
+                                    <h5 class="mb-0 white-text">690</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col s12 m6 l4">
+                            <div class="card gradient-45deg-red-pink gradient-shadow min-height-100 white-text animate fadeLeft">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">contacts</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">Cases Collected</p>
+                                    <h5 class="mb-0 white-text">1885</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col s12 m6 l4">
+                            <div class="card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text animate fadeRight">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">folder_shared</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">Cases Pending </p>
+                                    <h5 class="mb-0 white-text">80</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         
+                        </div>
+                        <div class="row">
+                          <div class="col s12 m6 l4">
+                            <div
+                              class="card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text animate fadeLeft">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">insert_drive_file</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">Amount Allocated</p>
+                                    <h5 class="mb-0 white-text">6900</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col s12 m6 l4">
+                            <div class="card gradient-45deg-red-pink gradient-shadow min-height-100 white-text animate fadeLeft">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">contacts</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">Amount Collected</p>
+                                    <h5 class="mb-0 white-text">18850</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col s12 m6 l4">
+                            <div class="card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text animate fadeRight">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">folder_shared</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">Amount Pending</p>
+                                    <h5 class="mb-0 white-text">8066</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         
+                        </div>
+
+                      
+                    </div>
+                  </div>
+                </div>
+
+                <div id="Today" class="col s12">
+                  <div id="button-trigger" class="card card-default
+                                scrollspy" style="border-radius: 0px 0px 10px
+                                10px;">
+                    <div class="card-content">
+                        <div class="row">
+                          <div class="col s12 m6 l3">
+                            <div
+                              class="card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text animate fadeLeft">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">insert_drive_file</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">Cases Collected </p>
+                                    <h5 class="mb-0 white-text">690</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col s12 m6 l3">
+                            <div class="card gradient-45deg-red-pink gradient-shadow min-height-100 white-text animate fadeLeft">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">contacts</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">Amount Collected</p>
+                                    <h5 class="mb-0 white-text">1885</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col s12 m6 l3">
+                            <div class="card gradient-45deg-amber-amber gradient-shadow min-height-100 white-text animate fadeRight">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">folder_shared</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">PTP generated Today (Count)</p>
+                                    <h5 class="mb-0 white-text">80%</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col s12 m6 l3">
+                            <div
+                              class="card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text animate fadeLeft">
+                              <div class="padding-4">
+                                <div class="row">
+                                  <div class="col s7 m7 l4">
+                                    <i class="material-icons background-round mt-5">insert_drive_file</i>
+                                  </div>
+                                  <div class="col s5 m5 right-align l8">
+                                    <p class="no-margin">PTP generated Today (value)</p>
+                                    <h5 class="mb-0 white-text">690</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>

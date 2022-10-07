@@ -1,0 +1,85 @@
+
+<% if( datatable.url && datatable.url=='campaign') { %>
+    <div id="activeFilterModal" class="modal customModal  roundCornersFloat">
+      <div class="modal-content mb-0">
+        <h5 class="mt-0"><b>Filter</b></h5>
+        <div class="">
+          <div class="modal-section row mt-2">
+            <div class="col  m12 l12">
+              <div class="input-field">
+                <label for="description">Name</label>
+                <input type="text" id="campaignActiveDesc" name="description">
+              </div>
+            </div>
+            <div class="col  m6 l6">
+              <div class="input-field">
+                <label for="from_date" class="active" style="transform:translateY(-14px) scale(.8);">Start Date:</label>
+                <input class="datepicker" type="text" id="campaignActiveStartDate" name="from_date">
+              </div>
+            </div>
+            <div class="col  m6 l6">
+              <div class="input-field">
+                <label for="to_date" class="active" style="transform:translateY(-14px) scale(.8);">End Date:</label>
+                <input class="datepicker" type="text" id="campaignActiveEndDate" name="to_date">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid rgba(0, 0, 0, .1);">
+        <button class="modal-close btn-flat">Close</button>
+        <button class="modal-close btn-flat" onclick="clearActiveCampFilter()">Clear</button>
+        <button class="modal-close btn-flat mr-1" onclick="applyActiveCampFilter()">Apply</button>
+      </div>
+    </div>
+
+    <div id="completeFilterModal" class="modal   roundCornersFloat">
+      <div class="modal-content mb-0">
+        <h5 class="mt-0"><b>Filter</b></h5>
+        <div class="">
+          <div class="modal-section row mt-2">
+            <div class="col  m12 l12">
+              <div class="input-field">
+                <label for="description">Name</label>
+                <input type="text" id="campaignCompletedDesc" name="description">
+              </div>
+            </div>
+            <div class="col  m6 l6">
+              <div class="input-field">
+                <label for="from_date" class="active" style="transform:translateY(-14px) scale(.8);">Start Date:</label>
+                <input class="datepicker" type="text" id="campaignCompletedStartDate" name="from_date">
+              </div>
+            </div>
+            <div class="col  m6 l6">
+              <div class="input-field">
+                <label for="to_date" class="active" style="transform:translateY(-14px) scale(.8);">End Date:</label>
+                <input class="datepicker" type="text" id="campaignCompletedEndDate" name="to_date">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid rgba(0, 0, 0, .1);">
+        <button class="modal-close btn-flat">Close</button>
+        <button class="modal-close btn-flat" onclick="clearCompletedCampFilter()">Clear</button>
+        <button class="modal-close btn-flat mr-1" onclick="applyCompletedCampFilter()">Apply</button>
+      </div>
+    </div>
+
+
+    <!-- confirm modal -->
+    
+<div id="confirmModal" class="modal modal-fixed-footer customModal roundCornersFloat" style="height: 200px; width: 600px;">
+  <div class="modal-content customModalContent">
+    <h5 class="mt-0"><b>Confirm Action</b></h5>
+    <br>
+    <h6 id="deleteTextMsg"><%= deleteText %></h6>
+    <!-- <h6><%= deleteText && deleteText != '' ? deleteText : 'Are you aure you want to delete this?' %></h6> -->
+  </div>
+  <div class="modal-footer customModalFooter">
+    <a onclick="closeConfirmModal()" class="modal-action modal-close btn-flat">No</a>
+    <a onclick="confirmDelete()" class="modal-action modal-close btn-flat mr-1">Yes</a>
+  </div>
+</div>
+    <% } %>
+    

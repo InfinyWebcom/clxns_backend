@@ -1,0 +1,440 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<script>
+    
+    const handleSelectRole = () => {
+
+        let roleId = document.getElementById('roleId');
+        let selectedLabel = roleId.options[roleId.selectedIndex].label;
+
+        if (selectedLabel == 'Telecaller') {
+            document.getElementById('for-telecaller').style.display = 'block';
+            document.getElementById('for-fos').style.display = 'none';
+        } else if (selectedLabel == 'FOS') {
+            document.getElementById('for-fos').style.display = 'block';
+            document.getElementById('for-telecaller').style.display = 'none';
+        } else {
+            document.getElementById('for-fos').style.display = 'none';
+            document.getElementById('for-telecaller').style.display = 'none';
+        }
+
+    }
+
+    const myForm = document.getElementById("myForm")
+    myForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        console.log('Form hass been submitted');
+    });
+
+</script>
+
+<script>
+    const validRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    const validateFields = async (e) => {
+        let data = {};
+
+        if (e.target.name == 'email') {
+            data.email = e.target.value
+        }
+        if (e.target.name == 'phone') {
+            data.phone = e.target.value
+        }
+
+        const response = await fetch(
+            `${baseUrl}user/validateFields`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        const myJson = await response.json();
+        console.log('JSON :-', myJson);
+
+        if (e.target.name == 'email') {
+            if (validRegex.test(e.target.value) == false) {
+                document.getElementById('emailError').innerHTML = 'This email id invalid';
+                document.getElementById("addUser").disabled = true;
+            } else if (myJson.isExist) {
+                console.log('isExits :- TRUE');
+                document.getElementById('emailError').innerHTML = 'This email id already exists';
+                document.getElementById("addUser").disabled = true;
+            } else {
+                console.log('isExits :- FALSE');
+                document.getElementById('emailError').innerHTML = '';
+                document.getElementById("addUser").disabled = false;
+            }
+        }
+
+        if (e.target.name == 'phone') {
+           if (myJson.isExist) {
+                console.log('isExits :- TRUE');
+                document.getElementById('phoneError').innerHTML = 'This phone number already exists';
+                document.getElementById("addUser").disabled = true;
+            } else {
+                console.log('isExits :- FALSE');
+                document.getElementById('phoneError').innerHTML = '';
+                document.getElementById("addUser").disabled = false;
+            }
+        }
+
+    }
+
+const toast = '<%- JSON.stringify(toast) %>';
+  const toastText = '<%- JSON.stringify(toastText) %>';
+  const toastColor = '<%- JSON.stringify(toastColor) %>';
+  const parseToast = JSON.parse(toast);
+  const parseToastText = JSON.parse(toastText);
+  const parseToastColor = JSON.parse(toastColor);
+
+  $(document).ready(function () {
+      if (parseToast) {
+          M.toast({
+              html: parseToastText,
+              classes: parseToastColor
+          })
+      }
+  });
+</script>
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>Edit User</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            <!-- <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+                            </li> -->
+                            <li class="breadcrumb-item"><a href="/user">Users</a>
+                            </li>
+                            <li class="breadcrumb-item active">Edit User
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <div class="section section-data-tables">
+                    <div class="card roundCorners">
+                        <div class="card-content">
+                            <p class="caption mb-0">
+                                CLXNS User Manager allows you to create various user types having specific
+                                read/edit/write access or an access to specific module.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical section">
+                    <div class="row">
+                        <div class="col l4 s12">
+                            <div class="card-panel roundCorners">
+                                <ul class="tabs">
+                                    <li class="tab">
+                                        <a href="#general">
+                                            <i class="material-icons">brightness_low</i>
+                                            <span>General</span>
+                                        </a>
+                                    </li>
+                                    <li class="tab">
+                                        <a href="#change-password">
+                                            <i class="material-icons">lock_open</i>
+                                            <span>Change Password</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col l8 s12">
+                            <div id="general">
+                                <form class="validateAddUser" id="myForm" method="POST" action="/user/edit">
+
+                                    <div class="card-panel roundCorners">
+
+                                        <div class="row">
+
+                                            <input type="hidden" name="id" value="<%= user.id %>" />
+
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="firstName">First name</label>
+                                                        <input type="text" id="firstName" name="firstName"
+                                                            value="<%= user.firstName %>" data-error=".errorTxt1">
+                                                        <small class="errorTxt1"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="lastName">Last name</label>
+                                                        <input type="text" id="lastName" name="lastName"
+                                                            value="<%= user.lastName %>" data-error=".errorTxt2">
+                                                        <small class="errorTxt2"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="email">E-mail</label>
+                                                        <input id="email" type="text" name="email"
+                                                            value="<%= user.email %>" data-error=".errorTxt4" onblur=""
+                                                            onkeyup="validateFields(event)">
+                                                        <small class="errorTxt4"></small>
+                                                        <small class="">
+                                                            <div id="emailError"
+                                                                style="font-size: .8rem; position: relative; color: #ff4081;">
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="phone">Phone</label>
+                                                        <input type="number" id="phone" name="phone" required
+                                                        value="<%= user.phone %>" data-error=".errorTxt5"
+                                                            data-error=".errorTxt4" onkeyup="validateFields(event)">
+                                                        <small class="errorTxt4"></small>
+                                                        <small class="">
+                                                            <div id="phoneError"
+                                                                style="font-size: .8rem; position: relative; color: #ff4081;">
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="input-field col m6 s12">
+                                                    <label for="dob">DOB</label>
+                                                    <input class="" type="date" id="dob" name="dob" value="<%= user.dob %>" data-error=".errorTxt10" required>
+                                                    <small class="errorTxt10"></small>
+                                                </div>
+                                                <div class="input-field col m6 s12"
+                                                    style="text-transform: capitalize !important;">
+                                                    <select class="error" id="roleId" name="roleId"
+                                                        data-error=".errorTxt9" required onchange="handleSelectRole()">
+                                                        
+                                                        
+                                                        <% roles.forEach(function(role) {  %>
+                                                            <% if(role.id != user.roles.id) {  %>
+                                                                <option label="<%= role.name %>" value="<%= role.id %>"><%= role.name %></option>
+                                                            <% } else { %>
+                                                                <option value="<%= user.roles.id %>" selected><%= user.roles.name %></option>
+                                                            <% }  %>
+                                                        <% }); %>
+
+                                                    </select>
+                                                    <label>Role</label>
+                                                    <small class="errorTxt9"></small>
+                                                </div>
+                                            </div>
+
+                                            <style>
+                                                .not-fos {
+                                                    display: none;
+                                                }
+                                            </style>
+
+                                            <!-- FOS -->
+                                            <div id="for-fos" class="<%= user.roles.name == 'FOS' ? 'fos' : 'not-fos' %>">
+                                                <div class="row">
+                                                    <div class="input-field col s6" style="margin-top: 25px;">
+                                                        <label for="expertise">Expertise</label>
+                                                        <input type="text" id="expertise" name="expertise"  value="<%= user.expertise %>"
+                                                            data-error=".errorTxt8">
+                                                        <small class="errorTxt8"></small>
+                                                    </div>
+                                                    <div class="input-field col s6">
+                                                        <span>Skill Level (<%= user.skillLevel %>)</span>
+                                                        <p class="range-field">
+                                                            <input value="<%= user.skillLevel %>" type="range" name="skillLevel" id="skillLevel" min="0" max="10" />
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col s6">
+                                                        <div class="input-field">
+                                                            <label for="experience">Product Experience</label>
+                                                            <input type="number" id="experienceFOS" name="experienceFOS" value="<%= user.experience %>"
+                                                                data-error=".errorTxt5">
+                                                            <small class="errorTxt5"></small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col s6">
+                                                        <div class="input-field">
+                                                            <label for="pincode">Pincode</label>
+                                                            <input type="number" id="pincode" name="pincode" value="<%= user.pincode %>"
+                                                                data-error=".errorTxt5">
+                                                            <small class="errorTxt5"></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <style>
+                                                .not-telecaller {
+                                                    display: none;
+                                                }
+                                            </style>
+
+                                            <!-- TELECALLER -->
+                                            <div id="for-telecaller" class="<%= user.roles.name == 'Telecaller' ? 'telecaller' : 'not-telecaller' %>">
+                                                <div class="row">
+                                                    <div class="col s6">
+                                                        <div class="input-field">
+                                                            <label for="experience">Product Experience</label>
+                                                            <input type="number" id="experienceTelecaller" name="experienceTelecaller" value="<%= user.experience %>"
+                                                                data-error=".errorTxt5">
+                                                            <small class="errorTxt5"></small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col s6">
+                                                        <div class="input-field">
+                                                            <label for="dpdExperience">DPD Experience</label>
+                                                            <input type="number" id="dpdExperience" name="dpdExperience" value="<%= user.dpdExperience %>"
+                                                                data-error=".errorTxt5">
+                                                            <small class="errorTxt5"></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col s12">
+                                                        <label for="language">language</label>
+                                                        <div class="input-field mt-0">
+                                                            <select class="error" id="language" name="language"
+                                                                data-error=".errorTxt6" required>
+                                                                <% let userlanguages = [{ "value": "English", name: "English" }, { "value": "Hindi", name: "Hindi" }]; %>
+                                                                
+                                                                <% userlanguages.forEach(function(userlanguage){  %>
+                                                                <% let selected = (user.language == userlanguage.value) ? "selected" : "" %>
+                                                                <option value="<%= userlanguage.value %>" <%= selected %>><%= userlanguage.name %></option>
+                                                                <% }); %>
+    
+                                                            </select>
+                                                            <small class="errorTxt6"></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <label for="location">Location</label>
+                                                    <div class="input-field mt-0">
+                                                        <select class="error" id="location" name="location"
+                                                            data-error=".errorTxt6" required>
+                                                            <% let userLocations = [{ "value": "Delhi", name: "Delhi" }, { "value": "Mumbai", name: "Mumbai" }, { "value": "Bangalore", name: "Bangalore" }]; %>
+                                                            <% userLocations.forEach(function(userLocation){  %>
+                                                           
+                                                            <% let selected = (user.location == userLocation.value) ? "selected" : "" %>
+                                                            <option value="<%= userLocation.value %>" <%= selected %>><%= userLocation.name %></option>
+                                                            <% }); %>
+
+                                                        </select>
+                                                        <small class="errorTxt6"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <div class="input-field">
+                                                        <label for="address">Address</label>
+                                                        <input type="text" id="address" name="address"
+                                                            value="<%= user.address %>" data-error=".errorTxt7">
+                                                        <small class="errorTxt7"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col s12 display-flex justify-content-end form-action">
+                                                    <button type="submit"
+                                                        class="btn blue darken-1 waves-effect waves-light mr-2"
+                                                        id="addUser">
+                                                        Save Changes
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                </form>
+                            </div>
+                        </div>
+                        <div id="change-password">
+                            <div class="card-panel roundCorners">
+                                <form class="validatePassword" id="myForm" method="POST" action="/user/updateUserPassword" >
+                                    <div class="row">
+                                        <input type="hidden" name="id" value="<%= user.id %>" />
+
+                                        <div class="col s12">
+                                            <div class="input-field">
+                                                <input id="password" name="password" type="password"
+                                                    data-error=".errorTxt10">
+                                                <label for="password">New Password</label>
+                                                <small class="errorTxt10"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col s12">
+                                            <div class="input-field">
+                                                <input id="repswd" type="password" name="repswd"
+                                                    data-error=".errorTxt11">
+                                                <label for="repswd">Confirm New Password</label>
+                                                <small class="errorTxt11"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col s12 display-flex justify-content-end form-action">
+                                            <button type="submit"
+                                                class="btn blue darken-1 waves-effect waves-light mr-1">
+                                                Save changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </section>
+        </div>
+        <div class="content-overlay"></div>
+    </div>
+</div>
+</div>
+
+<%- include('../../bottom.ejs') -%>

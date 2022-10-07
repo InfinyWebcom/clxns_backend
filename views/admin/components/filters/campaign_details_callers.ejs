@@ -1,0 +1,55 @@
+<script>
+    
+</script>
+
+<div id="telefilterModal" class="modal modal-fixed-footer telefilterModal roundCornersFloat">
+<div class="modal-content">
+    <h5 class="mt-0"><b>Filter</b></h5>
+
+    <div class="col s12">
+        <div class="modal-section row mt-2">
+            <div class="input-field">
+                <label for="amountMore">Name</label>
+                <input type="text" id="name" name="name" placeholder="">
+            </div>
+        </div>
+    </div>
+    
+    <div class="col s12" style="padding: 0px;">
+        <div class="modal-section row mt-2">
+            <div class="col s6 m6 l6 input-field">
+                <select id="teamFIlter" name="teamFIlter" onchange="fetchMembers()">
+                    <option value="" disabled selected>Select team</option>
+                    
+                </select>
+            </div>
+            <div class="col s6 m6 l6 input-field">
+                <select id="roleFilter" name="roleFilter" onchange="fetchMembers()">
+                    <option value="" disabled selected>Select Role</option>
+                    
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col s12" style="padding: 0px;">
+        <div class="modal-section row mt-2">
+            <div class="col s6 m6 l6 input-field mt-0">
+                <select id="langFilter" name="langFilter" onchange="fetchMembers()">
+                    <option value="" disabled selected>Select Language</option>
+                    
+                </select>
+            </div>
+            <div class="col s6 m6 l6 input-field mt-0">
+                <select id="expFilter" name="expFilter" onchange="fetchMembers()">
+                    <option value="" disabled selected>Select Experience</option>            
+                </select>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="modal-close btn-flat mr-1" onclick="applyTeleFIlter()">Apply</button>
+</div>
+</div>

@@ -1,0 +1,163 @@
+/**! ----- Roadmap v4 ---- **/
+.roadmap--v4 {
+    .roadmap-items {
+        position: relative;
+
+        &:before {
+            content: "";
+        }
+    }
+
+    .roadmap-item {
+        margin-bottom: rem(30);
+        flex: 100%;
+
+        @include rtl {
+            margin-right: -1px;
+        }
+
+        @media only screen and (min-width: 480px) {
+            flex: 50%;
+
+        }
+
+        @include breakpoint-min(lg) {
+            flex: 25%;
+        }
+    }
+
+    .timeline-content {
+        position: relative;
+
+        p {
+            line-height: 1.9;
+        }
+    }
+
+    .content-body {
+        position: relative;
+        @extend .transition-default;
+
+        &:after {
+            content: "";
+            position: absolute;
+            @include arrow(top, 10, rgb(255, 255, 255));
+            top: -10px;
+        }
+    }
+
+    .timeline-line {
+        position: absolute;
+        #{$left}: 0;
+        top: rem(-38);
+        width: 100%;
+        height: 2px;
+        background: white;
+
+        @include breakpoint-min(lg) {
+            top: rem(-50);
+        }
+
+        &:before,
+        &:after {
+            content: "";
+            @include centerer(false, true);
+            border-radius: rem(100);
+            #{$left}: 30px;
+        }
+    }
+
+    .roadmap-item {
+        &:first-child {
+            .timeline-line {
+                background-image: linear-gradient(90deg, #FFFFFF 0, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.15) 38px, rgba(255, 255, 255, 0.15) 100%);
+
+                &:before {
+                    #{$left}: 24px;
+                }
+
+                &:after {
+                    #{$left}: 4px;
+                }
+            }
+        }
+
+        &:not(:first-child) {
+            .content-body {
+                margin-#{$left}: rem(10);
+            }
+        }
+
+        &:not(:last-child) {
+            .content-body {
+                margin-#{$right}: rem(10);
+            }
+        }
+    }
+
+    .roadmap-item--past {
+        .timeline-line {
+            &:before {
+                height: rem(10);
+                width: rem(10);
+                background: white;
+            }
+        }
+
+        .content-body {
+            &:hover {
+                transform: translateY(-5px);
+            }
+        }
+    }
+
+    .roadmap-item--current {
+        .timeline-line {
+            background: transparent;
+            background-image: linear-gradient(90deg, #FFFFFF 40px, rgba(255, 255, 255, 0) 40px, rgba(255, 255, 255, 0.15) 40px, rgba(255, 255, 255, 0.15) 100%);
+
+            @include rtl {
+                background-image: linear-gradient(-90deg, #FFFFFF 40px, rgba(255, 255, 255, 0) 40px, rgba(255, 255, 255, 0.15) 40px, rgba(255, 255, 255, 0.15) 100%);
+            }
+
+            &:before {
+                height: rem(16);
+                width: rem(16);
+                @extend %bg-primary;
+                box-shadow: 0 0 0 1px #fff;
+                z-index: 1;
+            }
+
+            &:after {
+                height: rem(8);
+                width: rem(8);
+                #{$left}: 34px;
+                background: #fff;
+                z-index: 2;
+            }
+        }
+
+        .content-body {
+            &:hover {
+                transform: translateY(-5px);
+            }
+        }
+    }
+
+    .roadmap-item--future {
+        .timeline-line {
+            opacity: .15;
+
+            &:before {
+                height: rem(10);
+                width: rem(10);
+                background: white;
+            }
+        }
+
+        .timeline-info,
+        .content-body {
+            opacity: .15;
+        }
+    }
+}

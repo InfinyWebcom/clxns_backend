@@ -1,0 +1,101 @@
+<%- include('../../../top.ejs') -%> <%- include('../../../header.ejs') -%> <%-
+include('../../../sidenav.ejs') -%>
+<style>
+  .sub-row td{
+    width: 25% !important;
+  }
+
+  td, th {
+    padding: 10px !important;
+  }
+</style>
+<div id="main">
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue"></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col s10 m6 l6">
+            <h5 class="breadcrumbs-title mt-0 mb-0" style="text-transform: capitalize;"><span>Permissions for <%= role.name %></span></h5>
+            <ol class="breadcrumbs mb-0">
+              <!-- <li class="breadcrumb-item"><a href="/dashboard">Home</a></li> -->
+              <li class="breadcrumb-item">
+                <a href="/permissions">Permissions</a>
+              </li>
+              <li class="breadcrumb-item active">View Permissions</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <div class="section section-data-tables">
+          <div class="card roundCorners" style="margin-top: 50px;">
+            <div class="card-content">
+              <p class="caption mb-0">
+                The following permissions are assigned for <%= role.name.replace('_',' ').toLowerCase()
+                .split(' ').map((roleNam)=> {return roleNam[0].toLowerCase() + roleNam.substr(1);})
+                .join(" ") %> %> :
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="card roundCorners">
+        <div class="card-content">
+          <h4 class="card-title">Modules</h4>
+          <form id="accountForm"action="/permissions/roles/view/<%= role.id%>" method="post">
+            <table style="border-collapse: unset;">
+              <% ModulesArray.forEach(function(Modules){ %>
+                <tr>
+                  <td colspan="6" style="text-transform:capitalize"><%= Modules.module %><hr></td>
+                </tr>
+                <tr class="sub-row">
+                  <% Modules.actions.forEach(function(action){ %>
+                    <td>
+                      <label>
+                        <input type="checkbox" name="moduleId[]" value="<%= action.id %>" <% if (action.isCheck) { %>checked <% } %>/>
+                        <span><%= action.name %></span>
+                      </label>
+                    </td>
+                    <% }); %>
+                  </tr>
+                <% }); %>
+            </table>
+            <div class="row">
+              <div class="input-field col s12">
+                <a
+                  class="
+                    btn
+                    waves-effect waves-light
+                    gradient-45deg-purple-deep-orange
+                    float-right
+                  "
+                  href="/permissions"
+                  >Cancel</a
+                >
+                <button
+                  class="btn cyan waves-effect waves-light right mr-2"
+                  type="submit"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../../bottom.ejs') -%>

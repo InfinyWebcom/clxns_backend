@@ -1,0 +1,514 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+        <style>
+            /* .dataTables_wrapper {
+              clear: none !important;
+            } */
+            #main .section-data-tables .dataTables_wrapper table.dataTable tbody {
+              height: auto !important;
+            }
+
+            .boxShadow{
+                box-shadow: 0 2px 2px 0 rgb(0 0 0 / 9%), -1px 0px 0px -2px rgb(0 0 0 / 0%), 0 1px 5px 0 rgb(0 0 0 / 0%) !important;
+            }
+
+            .filter-icon{
+              letter-spacing: 0px;
+              padding: 0 14px;
+              font-size: 15px;
+              border-radius: 8px;
+              box-shadow: none;
+              line-height: 32px;
+              display: inline-block;
+              height: 32px;
+              margin-right: 5px;
+              margin-bottom: 5px;
+              margin-top: 3px;
+              background-color: orange !important;
+              letter-spacing: 0.5px;
+              color:white;
+          
+            }
+            /* #example tr td {
+              text-transform: capitalize;
+            } */
+          </style>
+          
+            <script>
+                const toast = '<%- JSON.stringify(toast) %>';
+                const toastText = '<%- JSON.stringify(toastText) %>';
+                const toastColor = '<%- JSON.stringify(toastColor) %>';
+                const parseToast = JSON.parse(toast);
+                const parseToastText = JSON.parse(toastText);
+                const parseToastColor = JSON.parse(toastColor);
+
+                $(document).ready(function () {
+                    if (parseToast) {
+                        M.toast({
+                            html: parseToastText,
+                            classes: parseToastColor
+                        })
+                    }
+                });
+
+                $(document).on('click', '[href="#confirmModal"]', function () {
+                    // const modalMsg = document.querySelector('#confirmModal > div.modal-content.customModalContent > h6');
+                    var msg = $(this).data('msg') || '';
+                    console.log('campign document msg----------', msg);
+                    // modalMsg.textContent = msg;
+                    if (msg != "") {
+                        $('#confirmModal > div.modal-content.customModalContent > h6').text(msg);
+                    }
+                });
+            </script>
+
+            <div id="main">
+                <div class="row">
+                    <div class="content-wrapper-before gradient-45deg-indigo-light-blue"></div>
+                    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col s10 m6 l6">
+                                    <h5 class="breadcrumbs-title mt-0 mb-0"><span>
+                                            <%= pageHeading %>
+                                        </span></h5>
+                                    <ol class="breadcrumbs mb-0">
+                                        <li class="breadcrumb-item">
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                <% if(addUrl.includes('leads/addLeads') && datatable.filter !=undefined &&
+                                    datatable.isFilter=='false' ) { %>
+                                    <div class="col s2 m6 l6">
+                                        <a class="btn-floating waves-effect waves-light amber darken-4 accent-2 z-depth-4 modal-trigger"
+                                            href="#filterModalNew" style="margin-left: 200px;">
+                                            <i class="material-icons activator">filter_list</i>
+                                        </a>
+                                        <a class="btn waves-effect waves-light gradient-45deg-green-teal right modal-trigger"
+                                            href="#allocateModal">
+                                            <span class="hide-on-small-onl">Assign to campaign</span>
+                                            <i class="material-icons right">add</i>
+                                        </a>
+                                    </div>
+                                    <% }; %>
+
+                                        <% if(permissionsList.includes('add') &&
+                                            !(addUrl.includes('customer/addCustomer')) &&
+                                            !(addUrl.includes('leads/addLeads')) && !(addUrl.includes('audit/add'))) {
+                                            %>
+                                            <div class="col s2 m6 l6">
+                                                <a class="btn waves-effect waves-light breadcrumbs-btn right gradient-45deg-green-teal adduser"
+                                                    href="<%= addUrl %>">
+                                                    <i class="material-icons hide-on-med-and-up">settings</i>
+                                                    <span class="hide-on-small-onl">
+                                                        <%= addButtonName %>
+                                                    </span>
+                                                    <i class="material-icons right">add</i>
+                                                </a>
+                                            </div>
+                                            <% }; %>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col s12">
+                        <div class="container">
+                            <div class="section section-data-tables">
+                                <div class="row">
+                                    <div class="col s12 m12 l12">
+                                        <div id="button-trigger" class="card roundCorners card-default scrollspy ">
+                                            <% if( datatable.url && datatable.url=='campaign' ) { %>
+                                                <div class="card-content boxShadow" style="padding: 0px; margin-bottom: -10px;">
+                                                    <ul class="tabs" style="border-radius: 10px 10px 0px 0px !important;">
+                                                        <li class="tab col m6"><a href="#active">Active</a></li>
+                                                        <li class="tab col m6"><a href="#completed">Completed</a></li>
+                                                    </ul>
+                                                </div>
+                                                <% }; %>
+                                                    <div class="card-content">
+                                                        <div class="row">
+                                                            <div class="col s12 p-0">
+                                                                <div id="active" class="col s12">
+                                                                    <div id="button-trigger" class="scrollspy"
+                                                                        style="border-radius: 0px 0px 10px 10px;">
+                                                                        <div class="card-content p-0">
+                                                                            <div class="row">
+                                                                                <div class="col s12 right">
+                                                                                    <a class="btn-small modal-trigger filter-icon mb-1 right mr-2"
+                                                                                        href="#activeFilterModal">
+                                                                                        <i class="material-icons left"
+                                                                                            style="margin-right: 5px; ">filter_list</i>
+                                                                                        Filter
+                                                                                    </a>
+                                                                                </div>
+                                                                                <div class="col s12 ">
+                                                                                    <table id="active-table" class="display responsive nowrap" style="min-height: 0px!important;width:100%"></table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="completed" class="col s12">
+                                                                    <div id="button-trigger" class="scrollspy"
+                                                                        style="border-radius: 0px 0px 10px 10px;">
+                                                                        <div class="card-content p-0">
+                                                                            <div class="row">
+                                                                                <div class="col s12 right">
+                                                                                    <a class="btn-small modal-trigger filter-icon mb-1 right mr-2"
+                                                                                        href="#completeFilterModal">
+                                                                                        <i class="material-icons left"
+                                                                                            style="margin-right: 5px; ">filter_list</i>
+                                                                                        Filter
+                                                                                    </a>
+                                                                                </div>
+                                                                                <div class="col s12 ">
+                                                                                    <table id="complete-table" class="display responsive nowrap" style="min-height:0px!important;width:100%"></table>
+                                                                                </div>
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+<script>
+    const columnNames = '<%- JSON.stringify(datatable.columns) %>';
+    const apiUrl = '<%- JSON.parse(JSON.stringify(datatable.apiUrl)) %>';
+    const Id = '<%- datatable.id ? datatable.id : null %>';
+    const IsSearch = '<%- JSON.parse(JSON.stringify(url)) %>';
+    console.log('\n\n Issearch',IsSearch);
+    let activeTable
+    let completeTable
+    let filterObj = {};
+    let filterObjNew = {};
+    let telecallerArray = [];
+    let filterTeam;
+    let teamId = '';
+    
+    const columnNamesCompleted = '<%- JSON.stringify(completedDatatable.columns) %>';
+    const apiUrlCompleted = '<%- JSON.parse(JSON.stringify(completedDatatable.apiUrl)) %>';
+
+    $(document).ready(() => {
+        activeTable = $('#active-table').DataTable({
+        bLengthChange: false,
+        bInfo: false,
+        paging: true,
+        ordering: false,
+        pageLength: 10,
+        searching:  (IsSearch=='permissions' || IsSearch=='leadSuccessTable' || IsSearch=='users' || IsSearch=='campaign' || IsSearch=='campaignDetails' ? false : true),
+        serverSide: true,
+        processing: true,
+        ajax: {
+          url: `${baseUrl}${apiUrl}`,
+          type: 'POST',
+          datatype: 'JSON',
+          data: function (data) {
+            data.id = Id;
+            data.filterObj = filterObj;
+            data.filterObjNew={tableName: "Active"}//filterObjNew;
+            data.filterTeam = filterTeam
+          }
+        },
+        'columns': JSON.parse(columnNames),
+        // select: { style: 'multi' }
+      });
+
+      completeTable = $('#complete-table').DataTable({
+        bLengthChange: false,
+        bInfo: false,
+        paging: true,
+        ordering: false,
+        pageLength: 10,
+        searching:  (IsSearch=='permissions' || IsSearch=='leadSuccessTable' || IsSearch=='users' || IsSearch=='campaign' || IsSearch=='campaignDetails' ? false : true),
+        serverSide: true,
+        processing: true,
+        ajax: {
+          url: `${baseUrl}${apiUrlCompleted}`,
+          type: 'POST',
+          datatype: 'JSON',
+          data: function (data) {
+            data.id = Id;
+            data.filterObj = filterObj;
+            data.filterObjNew={tableName: "Completed"}//filterObjNew;
+            data.filterTeam = filterTeam
+          }
+        },
+        'columns': JSON.parse(columnNamesCompleted),
+        // select: { style: 'multi' }
+      });
+  
+    });
+  
+    let outerActionUrl = '';
+    let outerUserId = '';
+    let outerTeamId = '';
+  
+    function action(actionUrl, userId, teamId) {
+  
+      console.log('action :-', actionUrl, userId, teamId);
+  
+      if (actionUrl.indexOf('delete') >= 0 || actionUrl.indexOf('remove') >= 0 || actionUrl.indexOf('status') >= 0) {
+        document.getElementById('confirmModal').style.display = 'block';
+  
+        outerActionUrl = actionUrl
+        outerUserId = userId
+        outerTeamId = teamId
+  
+      } else {
+  
+        
+        const data = {
+          actionUrl: actionUrl,
+          userId: userId,
+          teamId: teamId,
+        };
+  
+        fetch(`${baseUrl}${actionUrl}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data);
+            // $('#example').DataTable().ajax.reload(null, false);
+            $('#active-table').DataTable().ajax.reload(null, false);
+            $('#complete-table').DataTable().ajax.reload(null, false);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      }
+  
+      // var deleteMessage = $(this).data('msg');
+      // console.error('deleteMessage:---', deleteMessage);
+  
+      // if (typeof $(this).data('msg') !== 'undefined') {
+      //   $('#confirmModal > div.modal-content.customModalContent > h6').text(deleteMessage);
+      // }
+  
+    }
+  
+    var obj = {}
+    $(function() { 
+     //campaign active filter
+     $("#campaignActiveDesc").on("change",function(){
+       var selected = $(this).val();
+ 
+       console.log('auditDescription :-', selected);
+       obj.searchValue = selected
+       filterObj = obj
+     });
+     
+     $("#campaignActiveStartDate").on("change",function(){
+       var selected = $(this).val();
+       console.log('campaignActiveStartDate :-', selected);
+
+       obj.from_date= selected
+       filterObj = obj
+     });
+ 
+     $("#campaignActiveEndDate").on("change",function(){
+       var selected = $(this).val();
+ 
+       obj.to_date = selected
+       filterObj = obj
+     });
+
+     //campaign completed filter
+     $("#campaignCompletedDesc").on("change",function(){
+       var selected = $(this).val();
+ 
+       console.log('auditDescription :-', selected);
+       obj.searchValue = selected
+       filterObj = obj
+     });
+     
+     $("#campaignCompletedStartDate").on("change",function(){
+       var selected = $(this).val();
+       console.log('campaignCompletedStartDate :-', selected);
+
+       obj.from_date= selected
+       filterObj = obj
+     });
+ 
+     $("#campaignCompletedEndDate").on("change",function(){
+       var selected = $(this).val();
+ 
+       obj.to_date = selected
+       filterObj = obj
+      }); 
+    });
+
+    function clearActiveCampFilter() {
+      console.log('clearActiveCampFilter :-', filterObj);
+
+      filterObj = {}
+      obj = {}
+
+      $("#campaignActiveDesc").val("")
+      $("#campaignActiveStartDate").val("")
+      $("#campaignActiveEndDate").val("")
+
+      $("#active-table").DataTable().ajax.reload(null, false);
+    }
+
+    function applyActiveCampFilter() {
+      console.log('applyActiveCampFilter :-', filterObj);
+
+      $("#active-table").DataTable().ajax.reload(null, false);
+    }
+
+    function clearCompletedCampFilter() {
+      console.log('clearCompletedCampFilter :-', filterObj);
+
+      filterObj = {}
+      obj = {}
+
+      $("#campaignCompletedDesc").val("")
+      $("#campaignCompletedStartDate").val("")
+      $("#campaignCompletedEndDate").val("")
+
+      $("#complete-table").DataTable().ajax.reload(null, false);
+    }
+    
+    function applyCompletedCampFilter() {
+      console.log('applyCompletedCampFilter :-', filterObj);
+
+      $("#complete-table").DataTable().ajax.reload(null, false);
+    }
+
+    function confirmDelete() {
+      console.log('confirmDelete view list---');
+      
+      const data = {
+        actionUrl: outerActionUrl,
+        userId: outerUserId,
+        teamId: outerTeamId,
+      };
+  
+      fetch(`${baseUrl}${outerActionUrl}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+        //   $('#example').DataTable().ajax.reload(null, false);
+          $('#active-table').DataTable().ajax.reload(null, false);
+          $('#complete-table').DataTable().ajax.reload(null, false);
+          document.getElementById('confirmModal').style.display = 'none';
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+  
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').style.display = 'none';
+    }
+  
+    document.getElementById('actionButton').addEventListener('click', function () {
+  
+      const data = completeTable.rows('.selected').data();
+  
+      let selectedItems = [];
+      data.map(item => {
+        selectedItems.push(item)
+      });
+      console.log('rows ASD :-', selectedItems);
+  
+    });
+  
+    function checkboxFunc(data, userId) {
+      console.log('checkbox :-', data, userId, Id);
+      if (telecallerArray.indexOf(userId) < 0) {
+        telecallerArray.push(userId);
+      }
+      console.log('checkboxArray :-', telecallerArray);
+    }
+  
+    // function addTellecaller() {
+    //   let telecallerUrl = 'campaign/addToTelecaller';
+    //   console.log("addTellecaller action :-", telecallerUrl, Id);
+  
+    //   console.log("list action filterTeam :-", filterTeam);
+  
+    //   const data = {
+    //     actionUrl: telecallerUrl,
+    //     teamId: filterTeam,
+    //     campaignId: Id
+    //   };
+
+    //   fetch(`${baseUrl}${telecallerUrl}`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify(data)
+    //   })
+    //   .then(response => response.json())
+    //   .then(data => {
+
+    //     // $("#example").DataTable().ajax.reload(null, false);
+    //     $('#active-table').DataTable().ajax.reload(null, false);
+    //     $('#complete-table').DataTable().ajax.reload(null, false);
+    //     // location.reload();
+    //   })
+    //   .catch(error => {
+    //     console.error("Error:", error);
+    //   });
+    // }
+  
+    function fetchMembers() {
+      console.log("fetchMembers teamId *-----");
+  
+      var teamId = document.getElementById("TeamMemberId").value;
+      console.log("teamLeader teamId *-----", teamId);
+  
+      filterTeam = teamId
+    //   $('#example').DataTable().ajax.reload(null, false); 
+      $('#active-table').DataTable().ajax.reload(null, false);
+      $('#complete-table').DataTable().ajax.reload(null, false);    
+      /*
+      const data = {
+        teamId: teamId
+      };
+  
+      fetch(`${baseUrl}team/getTeamMembers`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      }).then(response => response.json()).then(data => {
+        console.log("getTeamMembers Success: -----", data);
+  
+        $('#example').DataTable().ajax.reload(data.data.members, false);      
+      
+      }).catch(error => {
+        console.error("Error:", error);
+      });*/
+    }
+  </script>
+<%- include('../../components/filters/campaign.ejs') -%>  
+<%- include('../../bottom.ejs') -%>

@@ -1,0 +1,132 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<style>
+  .btn {
+    background-color: #27c783;
+  }
+
+  .btn:hover {
+    background-color: #27c783;
+  }
+
+  .card-alert {
+    background-color: #ee485a;
+  }
+</style>
+<div id="main">
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col s10 m6 l6">
+            <h5 class="breadcrumbs-title mt-0 mb-0"><span>Add Leads</span></h5>
+            <ol class="breadcrumbs mb-0">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+              </li>
+              <li class="breadcrumb-item"><a href="/leads">Leads</a>
+              </li>
+              <li class="breadcrumb-item active">Add Leads
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <div class="section section-data-tables">
+          <div class="card roundCorners">
+            <div class="card-content">
+              <p class="caption mb-0">
+                Upload the collection pool received from financial institutions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <div id="Form-advance" class="card card card-default scrollspy roundCorners">
+          <div class="card-content">
+            <form id="formValidateLeads" action="/leads/uploadLeads" method="post" enctype="multipart/form-data">
+
+              <div class="row m-0">
+                <div class="input-field col m6 s12" style="text-transform: capitalize !important;">
+                  <select class="error" id="campaignId" name="campaignId"
+                  data-error=".errorTxt9" required>
+                      <option value="" disabled selected>Choose your option</option>
+                      <% campaigns.forEach((campaign) => { %>
+                        <option value="<%= campaign.id %>"><%= campaign.name %></option>
+                      <% }); %>
+                  </select>
+                  <label>Campaigns</label>
+                  <small class="errorTxt9"></small>
+              </div>
+              <div class="input-field col m6 s12">
+                <label for="end_date" style="font-size: 16px;">Campaign End Date</label>
+                <input placeholder="Date" class="" id="end_date" name="end_date" type="date" data-error=".errorTxt4" />
+                <small class="errorTxt4"></small>
+              </div>
+              </div>
+
+              <div class="row m-0 mt-2">
+                <div id="view-file-input">
+                  <div class="file-field input-field">
+                    <div class="btn" style="padding: 0 15px; ">
+                      <i class="material-icons left">file_upload</i>
+                      <span>Upload CSV</span>
+                      <input id="leads_csv" name="leads_csv" type="file" accept='.csv'>
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text">  
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="input-field">
+                  <button class="btn blue darken-1 right mr-1" type="submit" id="uploadLeads">
+                    Save
+                  </button>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const toast = '<%- JSON.stringify(toast) %>';
+  const toastText = '<%- JSON.stringify(toastText) %>';
+  const parseToast = JSON.parse(toast);
+  const parseToastText = JSON.parse(toastText);
+
+  $(document).ready(function () {
+      if (parseToast) {
+          M.toast({
+              html: parseToastText,
+              classes: 'green'
+          })
+      }
+  });
+</script>
+
+
+<%- include('../../bottom.ejs') -%>

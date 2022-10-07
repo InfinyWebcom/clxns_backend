@@ -1,0 +1,30 @@
+/**! ----- Breadcrumb ---- **/
+.breadcrumb--v1 {
+    position: relative;
+    .breadcrumb {
+        @extend %color-primary;
+        padding: 0;
+        margin: 0;
+
+        a {
+            @extend %color-primary;
+        }
+
+        .breadcrumb-item {
+            margin: 0;
+            padding-#{$right}: rem(15);
+
+            +.breadcrumb-item {
+                &::before {
+                    padding-#{$right}: rem(15);
+                    content: ">";
+                    color: $color-gray-300;
+                }
+            }
+
+            &.active {
+                color: $color-gray-400;
+            }
+        }
+    }
+}

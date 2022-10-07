@@ -1,0 +1,196 @@
+<aside class="sidenav-main nav-expanded nav-lock nav-collapsible sidenav-light sidenav-active-square">
+
+  <div class="brand-sidebar">
+    <h1 class="logo-wrapper"><a class="brand-logo darken-1" href="/dashboard"><img class="hide-on-med-and-down"
+          src="/img/brand-logo-white.png" alt="materialize logo" /><img
+          class="show-on-medium-and-down hide-on-med-and-up" src="/img/brand-logo-white.png"
+          alt="materialize logo" /><span class="logo-text hide-on-med-and-down"></span></a>
+          <!-- <a class="navbar-toggler"
+        href="#"><i class="material-icons">radio_button_checked</i></a> -->
+      </h1>
+  </div>
+
+  <ul class="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out"
+    data-menu="menu-navigation" data-collapsible="menu-accordion" style="transform: translateX(0px);">
+    <% if (roleName!='FiName') { %>
+    <li class="<% if(url=='dashboard'){ %> active <% } %> bold">
+      <a class=" waves-effect waves-cyan <% if(url=='dashboard'){ %> active gradient-45deg-green-teal <% } %> "
+        href="/dashboard"><i class="material-icons">settings_input_svideo</i><span class="menu-title"
+          data-i18n="Dashboard">Dashboard</span></a>
+    </li>
+    <% } %>
+
+    <% if (permissions.includes('sourcing')) { %>
+    <li class="<% if(url.includes(`sourcing`)){ %> active <% } %> bold">
+      <a class="waves-effect waves-cyan <% if(url.includes(`sourcing`)){ %> active gradient-45deg-green-teal <% } %>"
+        href="/sourcing"><i class="material-icons">assignment_return</i><span class="menu-title"
+          data-i18n="Mail">Sourcing</span></a>
+    </li>
+    <% } %>
+    <% if (permissions.includes('leads') && (roleName.name !='telecaller' && roleName.name !='field_manager' && roleName.name !='field_coordinator' )) { %>
+    <li class="bold <% if(url.includes(`leads`)){ %>active open<% } %>" href="JavaScript:void(0)" tabindex="0">
+      <a class="collapsible-header">
+        <i class="material-icons">assignment</i>
+        <span class="menu-title">Leads</span>
+      </a>
+      <div class="collapsible-body" style="<% if(url.includes(`newLeads`)){ %> display: block; <% } %>;<% if(url.includes(`assignLeads`)){ %> display: block; <% } %>;">
+        <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+          <li>
+            <a href="/leads/newLeads"
+              class="<% if(url.includes(`newLeads`)){ %> active gradient-45deg-green-teal <% } %>">
+              <i class="material-icons">radio_button_unchecked</i>
+              <span>Fresh</span>
+            </a>
+          </li>
+          <li>
+            <a href="/leads/assignLeads"
+              class="<% if(url.includes(`assignLeads`)){ %> active gradient-45deg-green-teal <% } %>">
+              <i class="material-icons">radio_button_unchecked</i>
+              <span>All</span>
+            </a>
+          </li>
+          <!-- <% if (roleName.name=='admin') { %>
+          <li>
+            <a href="/leads/archiveLeads"
+              class="<% if(url.includes(`archiveLeads`)){ %> active gradient-45deg-green-teal <% } %>">
+              <i class="material-icons">radio_button_unchecked</i>
+              <span>Archived</span>
+            </a>
+          </li>
+         <% } %> -->
+        </ul>
+      </div>
+    </li>
+    <% } %>
+
+    <% if (permissions.includes('leads') &&  (roleName.name=='telecaller' || roleName.name=='field_manager' || roleName.name=='field_coordinator')) { %>
+      <li class="<% if(url.includes(`leads`)){ %> active <% } %> bold">
+        <a class="waves-effect waves-cyan <% if(url.includes(`leads`)){ %> active gradient-45deg-green-teal <% } %>"
+          href="/leads/assignLeads"><i class="material-icons">assignment</i><span class="menu-title"
+            data-i18n="Mail">Leads</span></a>
+      </li>
+    <% } %>
+
+    <!-- <% if (permissions.includes('leads') &&  (roleName.name=='field_manager' || roleName.name=='field_coordinator')) { %>
+      <li class="<% if(url.includes(`leads`)){ %> active <% } %> bold">
+        <a class="waves-effect waves-cyan <% if(url.includes(`newLeads`)){ %> active gradient-45deg-green-teal <% } %>"
+          href="/leads/newLeads"><i class="material-icons">assignment</i><span class="menu-title"
+            data-i18n="Mail">Leads</span></a>
+      </li>
+    <% } %> -->
+    
+
+    <!-- <% if (permissions.includes('campaigns')) { %>
+    <li class="<% if(url.includes(`campaign`)){ %> active <% } %> bold">
+      <a class="waves-effect waves-cyan <% if(url.includes(`campaign`)){ %> active gradient-45deg-green-teal <% } %>"
+        href="/campaign">
+        <i class="material-icons">settings_applications</i>
+        <span class="menu-title" data-i18n="Mail">Campaigns</span>
+      </a>
+    </li>
+    <% } %> -->
+
+    <% if (permissions.includes('reports') || roleName=='FiName') { %>
+    <li class="<% if(url.includes(`reports`)){ %> active <% } %> bold">
+      <a class="waves-effect waves-cyan <% if(url.includes(`reports`)){ %> active gradient-45deg-green-teal <% } %>"
+        href="/reports">
+        <i class="material-icons">pie_chart_outlined</i>
+        <span class="menu-title" data-i18n="Mail">Reports</span>
+      </a>
+    </li>
+    <% } %>
+
+    <% if (permissions.includes('users')) { %>
+    <li class="<% if(url.includes(`users`)){ %> active <% } %> bold">
+      <a class="waves-effect waves-cyan <% if(url.includes(`user`)){ %> active gradient-45deg-green-teal <% } %>"
+        href="/user"><i class="material-icons">face</i><span class="menu-title" data-i18n="Mail">User Management</span></a>
+    </li>
+    <% } %>
+
+    <% if (permissions.includes('teams')) { %>
+    <li class="<% if(url.includes(`team`)){ %> active <% } %> bold">
+      <a class="waves-effect waves-cyan <% if(url.includes(`team`)){ %> active gradient-45deg-green-teal <% } %>"
+        href="/team">
+        <i class="material-icons">supervisor_account</i>
+        <span class="menu-title" data-i18n="Mail">Team Management</span>
+      </a>
+    </li>
+    <% } %>
+
+    <!-- <% if (permissions.includes('customers')) { %>
+    <li class="<% if(url.includes(`customer`)){ %> active <% } %> bold">
+      <a class="waves-effect waves-cyan <% if(url.includes(`customer`)){ %> active gradient-45deg-green-teal <% } %>"
+        href="/customer">
+        <i class="material-icons">business_center</i>
+        <span class="menu-title" data-i18n="Mail">Customers</span>
+      </a>
+    </li>
+    <% } %> -->
+
+    <% if (permissions.includes('masterdata')) { %>
+    <li class="bold <% if(url.includes(`masterData`)){ %>active open<% } %>" href="JavaScript:void(0)" tabindex="0">
+      <a class="collapsible-header">
+        <i class="material-icons">account_balance</i>
+        <span class="menu-title">Master Data</span>
+      </a>
+      <div class="collapsible-body" style="<% if(url.includes(`fis`)){ %> display: block; <% } %>;<% if(url.includes(`locations`)){ %> display: block; <% } %>;<% if(url.includes(`pincodes`)){ %> display: block; <% } %>;<% if(url.includes(`dispositions`)){ %> display: block; <% } %>">
+        <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+          <li>
+            <a href="/masterData/fis"
+              class="<% if(url.includes(`fis`)){ %> active gradient-45deg-green-teal <% } %>">
+              <i class="material-icons">radio_button_unchecked</i>
+              <span>FIs</span>
+            </a>
+          </li>
+          <li>
+            <a href="/masterData/locations"
+              class="<% if(url.includes(`locations`)){ %> active gradient-45deg-green-teal <% } %>">
+              <i class="material-icons">radio_button_unchecked</i>
+              <span>Operating Location</span>
+            </a>
+          </li>
+          <li>
+            <a href="/masterData/pincodes"
+              class="<% if(url.includes(`pincodes`)){ %> active gradient-45deg-green-teal <% } %>">
+              <i class="material-icons">radio_button_unchecked</i>
+              <span>Pincode</span>
+            </a>
+          </li>
+          <li>
+            <a href="/masterData/dispositions"
+              class="<% if(url.includes(`dispositions`)){ %> active gradient-45deg-green-teal <% } %>">
+              <i class="material-icons">radio_button_unchecked</i>
+              <span>Dispositions</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <% } %>
+
+    <% if (permissions.includes('permissions') && roleName.name=='admin') { %>
+    <li class="<% if(url.includes(`permissions`)){ %> active <% } %> bold">
+      <a class="waves-effect waves-cyan <% if(url.includes(`permissions`)){ %> active gradient-45deg-green-teal <% } %>"
+        href="/permissions">
+        <i class="material-icons">lock</i>
+        <span class="menu-title" data-i18n="Mail">Roles & Permissions</span>
+      </a>
+    </li>
+    <% } %>
+
+    <!-- audit trail -->
+    <% if (permissions.includes('audits')) { %>
+      <li class="<% if(url.includes(`audits`)){ %> active <% } %> bold">
+        <a class="waves-effect waves-cyan <% if(url.includes(`audit`)){ %> active gradient-45deg-green-teal <% } %>"
+          href="/audit">
+          <i class="material-icons">list</i>
+          <span class="menu-title" data-i18n="Mail">Audit Trails</span>
+        </a>
+      </li>
+    <% } %>
+  </ul>
+
+  <div class="navigation-background"></div><a
+    class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only"
+    href="#" data-target="slide-out"><i class="material-icons">menu</i></a>
+</aside>

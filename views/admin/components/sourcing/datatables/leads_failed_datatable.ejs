@@ -1,0 +1,75 @@
+<style>
+  #main .section-data-tables .dataTables_wrapper table.dataTable tbody {
+  height: auto !important;
+}
+</style>
+<script>
+  const columnNamesLeadFailed = '<%- JSON.stringify(datatableFailedLeads.columns) %>';
+  const apiUrlLeadFailed = '<%- JSON.parse(JSON.stringify(datatableFailedLeads.apiUrlFailedLeads)) %>';
+
+  let myTableLeadFailed;
+  let filterObjLeadFailed = {};
+
+  $(document).ready(() => {
+
+    myTableLeadFailed = $('#exampleLeadFailed').DataTable({
+      bLengthChange: false,
+      bInfo: false,
+      paging: true,
+      ordering: false,
+      pageLength: 10,
+      searching: false,
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: `${baseUrl}${apiUrlLeadFailed}`,
+        type: 'POST',
+        datatype: 'JSON',
+        data: function (data) {
+          
+        }
+      },
+      'columns': JSON.parse(columnNamesLeadFailed),
+      // select: { style: 'multi' }
+    });
+
+  });
+
+  function action(actionUrl, userId, teamId) {
+
+    console.log('action :-', actionUrl, userId, teamId);
+
+    const data = {
+      actionUrl: actionUrl,
+      userId: userId,
+      teamId: teamId,
+    };
+
+    fetch(`${baseUrl}${actionUrl}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        $('#exampleLeads').DataTable().ajax.reload(null, false);
+        $('#exampleTelecallers').DataTable().ajax.reload(null, false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
+
+
+</script>
+
+<div class="section section-data-tables">
+  <div class="col s12">
+    <table id="exampleLeadFailed" class="display responsive nowrap" style="width:100%">
+    </table>
+  </div>
+</div>

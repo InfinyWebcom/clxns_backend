@@ -1,0 +1,609 @@
+/**! ========= Core Style/Style Reset for carosuel arrow  ========= **/
+.slick-disabled {
+    cursor: not-allowed;
+}
+
+/**! ----- Carosuel arrow ---- **/
+.carosuel-arrow {
+    background: transparent;
+    height: rem(50);
+    width: rem(50);
+    border-radius: 100px;
+    border-width: 1px;
+    border-style: solid;
+    @extend %btn-border-color-primary;
+    @extend %color-primary;
+    font-size: rem(20);
+    z-index: 1;
+    @include centerer(true, false);
+
+
+    .section--light & {
+        border-color: $color-gray-200;
+        color: $color-gray-400 !important;
+    }
+
+    .section--dark & {
+        border-color: $color-gray-400;
+        color: $color-gray-400 !important;
+    }
+
+    .icon {
+        line-height: rem(50);
+
+        @include rtl {
+            transform: scaleX(-1);
+        }
+
+    }
+
+    &[aria-disabled="true"] {
+        cursor: not-allowed;
+        opacity: .3;
+    }
+}
+
+/**! ----- Style for vertical arrow---- **/
+
+.carosuel-arrow--vertical {
+    @include breakpoint-min (md) {
+        @include centerer(false, true);
+    }
+
+    &.carosuel-arrow--next {
+        @include breakpoint-min (md) {
+            margin-top: 65px;
+        }
+
+        @include breakpoint-max (md) {
+            margin-#{$left}: 30px;
+        }
+    }
+
+    &.carosuel-arrow--prev {
+        @include breakpoint-max (md) {
+            margin-#{$left}: -30px;
+
+        }
+    }
+}
+
+/**! ----- Style for horizontal arrow---- **/
+.carosuel-arrow--horizontal {
+    bottom: rem(-65);
+
+    @include breakpoint-min (lg) {
+        bottom: rem(-20);
+
+    }
+
+    &.carosuel-arrow--next {
+        margin-#{$left}: 30px;
+
+        @include breakpoint-min (md) {
+            margin-#{$left}: 35px;
+
+        }
+    }
+
+    &.carosuel-arrow--prev {
+        margin-#{$left}: -30px;
+
+        @include breakpoint-min (md) {
+            margin-#{$left}: -35px;
+
+        }
+    }
+}
+/**! ========= Carosuel Slider V1 ========= **/
+.carosuel-slider--v1 {
+    .slide {
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    .slick-dots {
+        list-style: none;
+        margin-bottom: 0;
+        // margin-left: rem(100);
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        left: 10%;
+        
+        button {
+            font-size: 0;
+            height: rem(13);
+            width: rem(13);
+            border-radius: rem(100);
+            margin: 7px;
+            background: rgba(#000, .1);
+            @extend .transition-default;
+        }
+
+        .slick-active {
+            button {
+                @extend %bg-primary;
+            }
+        }
+    }
+}
+
+
+
+/**! ========= Carosuel Slider v2 ========= **/
+.carosuel-slider--v2 {
+    .carosuel-triangle {   
+        border: 1px solid $color-gray-200;
+        color: $color-gray-200;
+        &:hover{
+            color: $color-white;
+        }
+ 
+        @include breakpoint-min(md) {
+            #{$right}: rem(-24);
+        }
+    }    
+}
+/**! ========= Carosuel Slider V3 ========= **/
+
+/**! ----- Carosuel Slider V2 and V3 Arrow ---- **/
+.carosuel-triangle {
+    @include centerer (true, false);
+    height: rem(48);
+    width: rem(48);
+    background: white;
+    border-radius: rem(100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: rem(16);
+    border: 1px solid $color-light-gray-400;
+    color: #D6E0EE;
+    @extend .transition-default;
+    bottom: rem(-68);
+
+    @include breakpoint-min(md) {
+        @include centerer (false, true);
+        #{$right}: rem(-100);
+        #{$left}: auto;
+    }
+
+    &--prev {
+        @include breakpoint-max(md) {
+            margin-#{$left}: rem(-29);
+        }
+
+        @include breakpoint-min(md) {
+            margin-top: rem(-29);
+        }
+    }
+
+    &--next {
+        @include breakpoint-max(md) {
+            margin-#{$left}: rem(29);
+        }
+
+        @include breakpoint-min(md) {
+            margin-top: rem(29);
+        }
+
+        i {
+            margin-top: rem(2);
+        }
+    }
+
+    &:hover {
+        @extend %bg-primary;
+        border-color: transparent;
+        color: #fff;
+    }
+}
+
+/**! ----- Testimonial Style Adjustment with Carosuel Slider V2 ---- **/
+.testimonials--v2 {
+    .testimonial__quote {
+        font-size: rem(60);
+        line-height: normal;
+    }
+
+    .blockquote {
+        line-height: rem(36);
+    }
+
+    .client-name {
+        margin-bottom: rem(5);
+    }
+
+    .testimonials__pattern {
+        top: rem(-120);
+        left: rem(-50);
+    }
+}
+
+/**! ========= Carosuel Slider V3 ========= **/
+.carosuel-slider--v3 {
+    .slick-list {
+        overflow: initial;
+    }
+
+    .slide {
+        margin-#{$right}: rem(30);
+        @extend .transition-default;
+
+        .card-body,
+        .card-footer {
+            opacity: .3;
+            @extend .transition-default;
+        }
+
+        &.slick-active {
+
+            .card-body,
+            .card-footer {
+                opacity: 1;
+            }
+        }
+
+        &.slick-current+.slide {
+            .card {
+                @include breakpoint-min (md) {
+                    box-shadow: 0 20px 30px 0 rgba(0, 0, 0, 0.15), 0 0 0 5px $color-coral;
+                }
+            }
+
+        }
+    }
+
+}
+
+/**! ----- Carosuel Slider V3 Arrow ---- **/
+.carosuel-cursor {
+    font-size: rem(24);
+    opacity: .8;
+    @extend .transition-default;
+    background: transparent;
+    position: absolute;
+    color: white;
+    top: -50px;
+
+    &--dark {
+        color: white;
+        color: $color-gray-400;
+
+        i {
+            &:hover {
+                @extend %color-primary;
+            }
+        }
+
+    }
+
+    @include breakpoint-min(md) {
+        top: rem(-100);
+        font-size: rem(18);
+    }
+
+
+    &.carosuel-arrow--prev {
+        @include breakpoint-min(md) {
+            #{$right}: 40px;
+
+        }
+
+        @media only screen and (min-width: 1600px) {
+            #{$right}: -16%;
+        }
+
+        @media only screen and (min-width: 1900px) {
+            #{$right}: -24%;
+        }
+    }
+
+    &.carosuel-arrow--next {
+        #{$right}: 0;
+
+        @include breakpoint-min(md) {
+            @media only screen and (min-width: 1600px) {
+                #{$right}: calc(-15% - 50px);
+            }
+
+            @media only screen and (min-width: 1900px) {
+                #{$right}: calc(-23% - 50px);
+            }
+
+        }
+
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+
+/**! ----- Features V1 Style Adjustment with Carosuel Slider V3 ---- **/
+.features--v1 {
+    .mask {
+        position: absolute;
+        #{$left}: -100%;
+        width: 100%;
+
+        &--top {
+            top: -30px;
+        }
+
+        &--bottom {
+            bottom: -70px;
+        }
+
+        &--full {
+            width: 200%;
+            bottom: -70px;
+            #{$left}: 0;
+        }
+    }
+
+    .section-title {
+        position: relative;
+        z-index: 1;
+
+        &:before {
+            content: "";
+            position: absolute;
+            #{$left}: -50px;
+            top: -100px;
+            height: rem(250);
+            width: rem(250);
+            border-radius: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+
+            @media only screen and (max-width: 767px) {
+                @include centerer (true, false);
+                top: -70px;
+                height: rem(200);
+                width: rem(200);
+
+            }
+        }
+    }
+}
+
+
+/**! ========= Carosuel Slider V4 ========= **/
+.carosuel-slider--v4 {
+    .slide {
+        margin-#{$right}: 15px;
+        margin-#{$left}: 15px;
+        padding-bottom: rem(30);
+    }
+}
+
+/**! ----- Carosuel Slider V4 Arrow ---- **/
+.carosuel-slider--v4 {
+    .carosuel-cursor {
+        &.carosuel-arrow--prev {
+            #{$left}: rem(15);
+
+            @include breakpoint-min(md) {
+                #{$left}: auto;
+                #{$right}: rem(50) !important;
+            }
+        }
+
+        &.carosuel-arrow--next {
+            #{$right}: rem(15) !important;
+        }
+    }
+
+}
+
+/**! ========= Carosuel Slider V5 ========= **/
+.carosuel-slider--v5 {
+    @extend .testimonials--v2;
+
+    .slick-dots {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        @include centerer(true, false);
+        bottom: rem(10);
+
+        button {
+            font-size: 0;
+            height: rem(13);
+            width: rem(13);
+            border-radius: rem(100);
+            margin: 7px;
+            background: $color-green;
+            @extend .transition-default;
+        }
+
+        .slick-active {
+            button {
+
+                background: white;
+                box-shadow: 0 0 0 3px $color-green;
+
+            }
+        }
+    }
+}
+
+/**! ----- Upcoming Events V1 Style Adjustment with Carosuel Slider V5 ---- **/
+.upcoming-events--v1 {
+    .slide {
+        picture {
+            height: rem(255);
+
+            img {
+                height: 100%;
+            }
+        }
+    }
+}
+
+
+/**! ========= Carosuel Slider V6 ========= **/
+.carosuel-slider--v6 {
+    position: relative;
+
+    &::before {
+        @include breakpoint-min (md) {
+            content: "";
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            #{$left}: 21%;
+
+            background: linear-gradient(-225deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+
+            .section--darkblue & {
+                background: linear-gradient(-225deg, rgba(33, 35, 227, 0) 0%, #3232C7 50%, rgba(33, 35, 227, 0) 100%);
+            }
+
+            .section--dark & {
+                background: linear-gradient(-225deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+            }
+
+        }
+
+        @include breakpoint-min (lg) {
+            #{$left}: 17.9%;
+        }
+
+        @include breakpoint-min (xl) {
+            #{$left}: 23%;
+        }
+
+    }
+
+
+    .decor {
+        position: absolute;
+        @include pos-abs (50%, auto, auto, 140px);
+
+        @include breakpoint-min (lg) {
+            #{$left}: 161px;
+
+        }
+
+        @include breakpoint-min (xl) {
+            #{$left}: 185px;
+        }
+
+        &:after {
+            animation: none;
+        }
+
+    }
+
+    .slide {
+        &__title {
+            white-space: nowrap;
+        }
+
+        @include breakpoint-min (md) {
+            @media only screen and (max-width: 1450px) {
+                p {
+                    margin-#{$right}: 8%;
+                }
+
+            }
+        }
+
+        ul {
+            li {
+                p {
+                    padding-bottom: 8px;
+                }
+            }
+        }
+
+        &:last-child {
+            opacity: 1;
+            transition: opacity .3s;
+
+        }
+    }
+
+    .slick-slide {
+        opacity: .2;
+        transition: opacity .3s;
+
+    }
+
+    .slick-current,
+    .slick-current+.slick-active {
+        opacity: 1;
+        transition: opacity .3s;
+    }
+}
+
+/**! ----- Carosuel Slider V6 Arrow ---- **/
+.carosuel-slider--v6 .carosuel-arrow {
+    @include breakpoint-min (md) {
+        #{$left}: 96.5%;
+        top: 40%;
+        transform: translate(0, -40%);
+    }
+
+    @include breakpoint-min (xl) {
+        #{$left}: 96%;
+        top: 40%;
+        transform: translate(0, -40%);
+    }
+
+    @media only screen and (min-width: 1450px) {
+        #{$left}: 107%;
+    }
+
+    @include breakpoint-max (md) {
+        bottom: rem(-60);
+    }
+}
+
+/**! ----- Roadmap V1 Style Adjustment with Carosuel Slider V2 ---- **/
+.roadmap__year {
+    @include breakpoint-max (xl) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: rem(40);
+    }
+
+    @include breakpoint-max (sm) {
+        margin-top: rem(30);
+    }
+
+    li {
+        opacity: .15;
+        @extend .transition-default;
+
+        &.active {
+            opacity: 1;
+        }
+
+        @include breakpoint-min (xl) {
+            writing-mode: vertical-rl;
+            transform: scale(-1);
+            padding-top: rem(30);
+            padding-bottom: rem(30);
+        }
+
+        @include breakpoint-max (xl) {
+            padding-right: rem(20);
+            padding-left: rem(20);
+        }
+
+        @include breakpoint-max (sm) {
+            font-size: rem(30);
+        }
+    }
+}

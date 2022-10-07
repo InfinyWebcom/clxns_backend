@@ -1,0 +1,96 @@
+// MODIFIERS:
+// documents--light
+
+.documents {
+    &--v1 {
+        .card {
+            max-width: 270px;
+            .section--darkblue &{
+                background: rgba($color-white, .05);
+            }
+            .section--dark &{
+                background: $color-dark-600;
+            }        
+
+            @include breakpoint-max(sm) {
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+            img {
+                max-width: 110px;
+            }
+
+            .card-download {
+                opacity: 0;
+                visibility: hidden;
+                @extend .transition-default;
+                border-radius: 5px;
+                border: 0;
+                .section--darkblue &{
+                    background: #2d308e;
+                }
+                .section--dark &{
+                    background: $color-dark-600;
+                    box-shadow: 0 0 0 1px #191B28;
+                }        
+
+                a {
+                    height: rem(48);
+                    width: rem(48);
+                    border-radius: 100px;
+                    margin: 3px;
+                    @extend .transition-default;
+                    position: relative;
+
+                    span {
+                        line-height: rem(48);
+                    }
+
+                    &:nth-child(4n+1) {
+                        background: #5e65e8;
+                    }
+
+                    &:nth-child(4n+2) {
+                        background: #cd3b5a;
+
+                    }
+
+                    &:nth-child(4n+3) {
+                        background: #c1772f;
+
+                    }
+
+                    &:nth-child(4n+4) {
+                        background: #6c8ee1;
+
+                    }
+
+                    &:hover {
+                        box-shadow: 0 5px 35px 5px rgba(#000, .15);
+                        color: $color-white;
+                        transform: translateY(-5px);
+                    }
+
+                }
+            }
+            
+
+            &:hover {
+                .card-download {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+        }
+        &.documents--light{
+            .card {
+                .card-download {
+                    background: $color-white;
+                }
+            }
+
+        }
+    }
+}
+

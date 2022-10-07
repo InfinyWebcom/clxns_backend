@@ -1,0 +1,125 @@
+<%- include('../../../top.ejs') -%>
+<%- include('../../../header.ejs') -%>
+<%- include('../../../sidenav.ejs') -%>
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>Edit Role</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            <!-- <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+                            </li> -->
+                            <li class="breadcrumb-item"><a href="/permissions">Permissions</a>
+                            </li>
+                            <li class="breadcrumb-item active">Edit Role
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <div class="section section-data-tables">
+                    <div class="card roundCorners" style="margin-top: 50px;">
+                        <div class="card-content">
+                            <p class="caption mb-0">
+                                Edit a role here and assign permissions to various modules.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical section">
+                    <div class="row">
+                        <div class="col l12 s12">
+                            <div id="general">
+                                <form class="validateAddRole" id="validateAddRole" method="POST" action="/permissions/roles/edit/<%= role.id%>">
+                                    <div class="card-panel roundCorners">
+                                        <div class="row">
+
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="name">Role Name</label>
+                                                        <input type="text" id="name" name="name" value="<%= role.name %>"
+                                                            data-error=".errorTxt1">
+                                                        <small class="errorTxt1"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="name">Display Name</label>
+                                                        <input type="text" id="displayName" name="displayName"
+                                                            data-error=".errorTxt2" value="<%= role.displayName %>">
+                                                        <small class="errorTxt2"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <label for="name">Level</label>
+                                                    <div class="input-field mt-0"  style="text-transform: capitalize !important;">
+                                                        <% var levels = ['1','2','3','4']; %>
+                                                        <select class="error" id="level" name="level" required
+                                                            data-error=".errorTxt3">
+                                                            <% levels.forEach((level) => { %>
+                                                            <option value="<%=level%>"<% if (level == role.level) { %>selected
+                                                                <% } %>><%=level%></option>
+                                                            <% }); %>
+                                                        </select>
+                                                        <small class="errorTxt3"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s6">
+                                                    <label for="type">Type</label>
+                                                    <div class="input-field mt-0"  style="text-transform: capitalize !important;">
+                                                        <% var types = ['backoffice','field']; %>
+                                                        <select class="error" id="type" name="type" required
+                                                            data-error=".errorTxt4">
+                                                            <% types.forEach((type) => { %>
+                                                            <option value="<%=type%>"<% if (type == role.type) { %>selected
+                                                                <% } %>><%=type%></option>
+                                                            <% }); %>
+                                                        </select>
+                                                        <small class="errorTxt4"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="input-field col s12">
+                                                <a class="
+                                                        btn
+                                                        waves-effect waves-light
+                                                        gradient-45deg-purple-deep-orange
+                                                        float-right
+                                                      " href="/permissions">Cancel</a>
+                                                      <button class="btn cyan waves-effect waves-light right mr-2" type="submit" 
+                                    > Save</button>
+                                              </div>
+                                            </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../../bottom.ejs') -%>

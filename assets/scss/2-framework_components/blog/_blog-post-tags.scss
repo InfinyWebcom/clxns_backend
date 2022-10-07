@@ -1,0 +1,14 @@
+.tags-links {
+    text-align: center;
+
+    a {
+        margin-right: rem(3);
+        @extend %color-primary;
+
+        &:not(:last-child) {
+            &:after {
+                content: ",";
+            }
+        }
+    }
+}

@@ -1,0 +1,85 @@
+.background-holder {
+  @include pos-abs(0, auto, auto, 0);
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  @include rtl {
+    transform: scaleX(-1);
+  }
+}
+
+.background {
+
+  &--cover {
+    background-size: cover;
+  }
+
+  &--contain {
+    background-size: contain;
+  }
+
+  &--auto {
+    background-size: auto;
+  }
+
+  &--center {
+    background-position: center;
+  }
+
+  &--top {
+    background-position: top;
+  }
+
+  &--bottom {
+    background-position: bottom;
+  }
+
+  &--left {
+    background-position: left;
+  }
+
+  &--right {
+    background-position: right;
+  }
+
+  &--top--left {
+    background-position: top left;
+  }
+
+  &--top--right {
+    background-position: top right;
+  }
+
+  &--bottom--left {
+    background-position: bottom left;
+  }
+
+  &--bottom--right {
+    background-position: bottom right;
+  }
+
+  &--repeat {
+    background-repeat: repeat !important;
+  }
+}
+
+.svg-shape {
+  @include pos-abs(auto, 0px, -2px, 0px);
+
+  &--top {
+    @include pos-abs(-2px, auto, auto, 0px);
+  }
+
+  &--top--right {
+    @include pos-abs(-2px, 0px, auto, auto);
+  }
+
+}
+
+[class*="svg-shape"] {
+  @include rtl {
+    transform: scaleX(-1);
+  }
+}

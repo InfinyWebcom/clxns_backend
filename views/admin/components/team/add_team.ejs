@@ -1,0 +1,240 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<script>
+    var loadFile = function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var profileImg = document.getElementById('profileImg');
+            profileImg.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+</script>
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <!-- Search for small screen-->
+            <div class="container">
+                <div class="row">
+                    <div class="col s10 m6 l6">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>Create a Team</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            <!-- <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+                            </li> -->
+                            <li class="breadcrumb-item"><a href="/team">Teams</a>
+                            </li>
+                            <li class="breadcrumb-item active">Create a Team
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <div class="section section-data-tables">
+                    <div class="card roundCorners">
+                        <div class="card-content">
+                            <p class="caption mb-0">
+                                The team leader will be displayed as per the operating location.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical mt-1 section">
+                    <div class="row">
+                        <div class="col l12 s12">
+                            <div id="general">
+                                <form class="validateAddTeam" id="validateAddTeam" method="POST" action="/team/addTeam">
+
+                                    <div class="card-panel roundCorners">
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        <label for="name">Team Name</label>
+                                                        <input type="text" id="name" name="name"
+                                                            data-error=".errorTxt1">
+                                                        <small class="errorTxt1">
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col s6">
+                                                    <div class="input-field">
+                                                        
+                                                        <div class="input-field mt-0">
+                                                            <select class="error" id="location" name="location" required
+                                                                value="<%= (form && form.location) ? form.location : '' %>"
+                                                                data-error=".errorTxt2">
+                                                                <option value="" disabled selected>Choose Operating Location
+                                                                </option>
+                                                                <% locations.forEach((location) => { %>
+                                                                  <option value="<%= location.id %>"><%= location.name %></option>
+                                                                  <% }); %>
+                                                            </select>
+                                                            <small class="errorTxt2"></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <div class="input-field">
+                                                        <label for="description">Description</label>
+                                                        <input type="text" id="description" name="description"
+                                                            data-error=".errorTxt3">
+                                                        <small class="errorTxt3">
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <label for="teamLeaderId">Team Leader</label>
+
+                                                    <div class="input-field mt-0">
+                                                        
+                                                        <select class="error" id="teamLeaderId" name="teamLeaderId" required
+                                                            data-error=".errorTxt4">
+                                                            <option value="" disabled selected>Choose Team Leader</option>
+                                                            <% for (var i = 0; i < users.length; i++) { %>
+                                                                <option value="<%=users[i].id%>"> <%=users[i].firstName%> <%=users[i].lastName%> (<%=users[i].employeeId%>)</option>
+                                                            <% } %>
+                                                        </select>
+                                                        <small class="errorTxt4">
+                                                        </small>
+                                                    </div>
+                                                    <div class="row mt-4 mb-3">
+                                                        <div id="teamLeaderData"></div>
+                                                    </div>
+                                                </div>                                                
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col s12 display-flex justify-content-end form-action">
+                                                    <button type="submit"
+                                                        class="btn blue darken-1 waves-effect waves-light mr-2" id="addUser">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </section>
+        </div>
+        <div class="content-overlay"></div>
+    </div>
+</div>
+</div>
+
+<script>
+    var users = '<%- JSON.stringify(users) %>';
+    var userArr = JSON.parse(users)
+    // to show name team leader as per select location
+    /*
+    $("#location").change(function(){
+        var filterUserArr = []
+
+        var locationId = this.value;
+
+        alert(locationId); 
+
+        for (const userdata of userArr) {
+            console.log('location userdata -----', userdata)
+
+            let ind = userdata.operLocations.findIndex((e) => e.locationId == locationId);
+            console.log('location ind -----', ind)
+            if (ind > -1) {
+                filterUserArr.push(userdata)
+            }            
+        }
+        console.log('location filterUserArr -----', filterUserArr)
+
+        let chipsHtml = '<option value="" disabled selected>Choose Team Leader</option>'
+
+        filterUserArr.forEach(userValue => {
+            let roleType=(userValue.roleId==3) ? ' (Team Leader)' : ' (Field Coordinator)';
+            chipsHtml +='<option value="' + userValue.id + '">' + userValue.firstName + ' ' + userValue.lastName + roleType+ '</option>';
+        });
+        console.log('location chipsHtml -----', chipsHtml)
+
+        document.getElementById('teamLeaderId').innerHTML = chipsHtml;
+        $('select#teamLeaderId').formSelect();
+    })*/
+   // to show no of fos,no of telecallers and name of team
+    $("#teamLeaderId").change(function(){
+        var teamLeaderId = this.value;
+        console.log('handleSelectLeader teamLeaderId -----', teamLeaderId)
+
+        const data = {
+            teamLeaderId: teamLeaderId
+        };
+        console.log('handleSelectLeader baseUrl -----', baseUrl)
+
+        fetch(`${baseUrl}team/getLeaderTeams`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.json()).then(data => {
+            
+            console.log('data:', data.data);
+
+            var chipsHtml = '';
+            console.log('data.data.teams.length:', data.data.teams.length);
+            if (data.data.teams.length > 0) {
+                chipsHtml = '<div class="col s4 m4 l4">' +
+                '<p class="m-0"><b>Name Of team</b></p>' +                                                          
+                '</div>' +
+
+                '<div class="col s4 m4 l4">' +
+                '<p class="m-0"><b>No of telecallers</b></p>' +     
+                '</div>' +
+
+                '<div class="col s4 m4 l4">' +
+                '<p class="m-0"><b>No of FOS</b></p>' +                                                           
+                '</div>' +
+
+                '<div id="teamLeaderData"></div>'
+
+                data.data.teams.forEach((team) => {
+                    chipsHtml += '<div class="col s4 m4 l4">'  +                                                     
+                        '<h6 class="mt-2" value="' +  team.id + '">' + team.name + '</h6>' + 
+                    '</div>' +
+                    '<div class="col s4 m4 l4"> ' +         
+                        '<h6 class="mt-2">' + team.teleCount + '</h6>' +
+                    '</div>' +
+                    '<div class="col s4 m4 l4">' +
+                        '<h6 class="mt-2">' + team.fosCount + '</h6>' +
+                    '</div>'
+                });
+            }
+            document.getElementById('teamLeaderData').innerHTML = chipsHtml;
+        }).catch(error => {
+            console.log('Error:', error);
+            
+        });
+    });
+</script>
+
+<%- include('../../bottom.ejs') -%>

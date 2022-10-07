@@ -1,0 +1,36 @@
+// MARKUP:
+
+// <div class="list-group">
+// <a href="#" class="list-group-item list-group-item-action"><span>...</span></a>
+// <a href="#" class="list-group-item list-group-item-action"><span>...</span></a>
+// <a href="#" class="list-group-item list-group-item-action"><span>...</span></a>
+// </div>
+
+/**! ----- Learn (used in home cloud storage)  ---- **/
+.list-group-item {
+    padding-top: rem(15);
+    padding-bottom: rem(15);
+    border-color: $border-on-light-standard;
+    @extend .transition-default;
+
+    &-action {
+        color: $color-dark-700;
+    }
+
+}
+
+a {
+    &.list-group-item {
+        &:hover {
+            @extend %color-primary;
+            opacity: 1 !important;
+        }
+
+        &.active,
+        &:focus {
+            background: $color-light-gray-200;
+            @extend %color-primary;
+            border-color: $border-on-light-standard;
+        }
+    }
+}

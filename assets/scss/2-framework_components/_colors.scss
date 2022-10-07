@@ -1,0 +1,525 @@
+/**! ----- Theme Common colors (Also Used as extend in SCSS ) ---- **/
+// bg primary
+%bg-primary {
+    background: $color-primary;
+}
+
+// color primary
+%color-primary {
+    color: $color-primary;
+}
+
+// fill primary
+%fill-primary {
+    fill: $color-primary;
+}
+
+// Border color:
+// btn border color
+%btn-border-color-primary {
+    border-color: $color-primary;
+}
+
+// Dynamic border color which should be work with any background
+%border-color {
+    border-color: $border-on-light-bg;
+
+    &.bg-color--primary,
+    .bg-color--primary & {
+        border-color: $border-on-primary-bg;
+
+        .bg-color--primary-light--1 & {
+            border-color: $border-on-primary-bg;
+        }
+    }
+
+    &.bg-color--primary-light--1,
+    .bg-color--primary-light--1 & {
+        .bg-color--primary & {
+            border-color: $border-on-light-bg;
+        }
+    }
+
+    &.section--darkblue,
+    .section--darkblue & {
+        border-color: $border-on-darkblue-bg;
+    }
+
+    &.section--dark,
+    .section--dark & {
+        border-color: $border-on-dark-bg;
+    }
+}
+
+// COLORS:
+// IF THE SECTION IS DARK/ BLACK PLACE "section--dark" CLASS IN THE SECTION TAG.
+// IF THE SECTION IS DARK BLUE PLACE "section--darkblue" CLASS IN THE SECTION TAG.
+// EXAMPLE:
+// <section class="section--dark">...</section>     
+// <section class="section--darkblue">...</section>     
+// IT'S NOT MANDATORY TO PLACE THOSE CLASSES IF YOU USE A GRADIENT COLOR AS THE SECTION BACKGROUND.
+/**! ----- Base color with the theme (Light theme, Dark theme, Darkblue theme) ---- **/
+.section--dark,
+.section--darkblue {
+    color: $color-white;
+}
+
+/**! ----- Base Font Color ---- **/
+%heading-text-color {
+    color: $color-dark-700;
+
+    // heading colors for dark and dark blue section / area
+    [class*='bg-gradient'] &,
+    .bg-color--primary &,
+    .section--darkblue &,
+    .section--dark & {
+        &:not([class*='text-color-']):not([class*='color-']) {
+            color: $color-white
+        }
+    }
+
+    // heading color fro white section / area
+    .bg-white & {
+        &:not([class*='text-color-']):not([class*='color-']) {
+            color: $color-dark-700;
+        }
+    }
+}
+
+%body-text-color {
+    color: $color-gray-400;
+
+    // Paragraph colors for dark section 
+    .section--dark & {
+        &:not([class*='text-color-']):not([class*='color-']) {
+            color: $color-gray-300;
+        }
+    }
+
+    // Paragraph colors for primary bg color section 
+    [class*='bg-gradient'] &,
+    .bg-color--primary & {
+        &:not([class*='text-color-']):not([class*='color-']) {
+            color: $color-white;
+        }
+    }
+
+    // Paragraph colors for white section 
+    .bg-white & {
+        &:not([class*='text-color-']):not([class*='color-']) {
+            color: $color-gray-400;
+        }
+    }
+
+    &:not([class*='opacity-']) {
+
+        [class*='bg-gradient'] &,
+        .bg-color--primary & {
+            opacity: .8;
+        }
+    }
+
+    .bg-white & {
+        opacity: 1 !important;
+    }
+
+    // Paragraph colors for darkblue section 
+    .section--darkblue & {
+        &:not([class*='text-color-']):not([class*='color-']) {
+            color: $color-blue-400;
+        }
+    }
+}
+
+/**! ----- Color Helper ---- **/
+.text-color--200 {
+    color: $color-gray-200;
+
+    .section--darkblue & {
+        color: $color-blue-200;
+    }
+}
+
+.text-color--300 {
+    color: $color-gray-300;
+
+    .section--darkblue & {
+        color: $color-blue-300;
+    }
+}
+
+.text-color--400 {
+    color: $color-gray-400;
+
+    .section--darkblue & {
+        color: $color-blue-400;
+    }
+}
+
+.text-color--500 {
+    .section--darkblue & {
+        color: $color-blue-500;
+    }
+}
+
+.text-color--700 {
+    color: $color-dark-700;
+}
+
+// CTA text color
+.text-color--cta {
+    // &--1 {
+    //     color: $cta-color;
+    // }
+
+    &--2 {
+        color: $cta-color-2;
+    }
+
+    &--3 {
+        color: $cta-color-3;
+    }
+
+    &--4 {
+        color: $cta-color-4;
+    }
+
+    &--5 {
+        color: $cta-color-5;
+    }
+}
+
+
+// ALL OTHER COLOR HELPER CLASSES. 
+.color--primary {
+    @extend %color-primary;
+}
+
+.color--white {
+    color: $color-white !important;
+}
+
+.color--orange {
+    color: $color-orange !important;
+}
+
+.color--coral {
+    color: $color-coral !important;
+}
+
+.color--green {
+    color: $color-green !important;
+}
+
+/**! ----- input placeholder color ---- **/
+input,
+textarea,
+.form-control {
+    color: $color-dark-700;
+
+    .section--dark & {
+        color: white;
+    }
+
+    &:focus {
+        color: $color-dark-700;
+
+        .section--dark & {
+            color: white;
+            box-shadow: inset 0 0 0px 2px rgba($color-white, .1);
+        }
+    }
+
+    @include input-placeholder {
+        font-weight: 500;
+        color: $color-gray-400;
+
+        // color for darkblue input field
+        .form--darkblue & {
+            color: $color-blue-500;
+        }
+    }
+}
+
+// BACKGROUND COLORS
+/**! ----- Theme Appearance Background ---- **/
+#{$theme-light} {
+    .main {
+        background: $color-white;
+    }
+}
+
+#{$theme-dark} {
+    background: #181923;
+}
+
+#{$theme-darkblue} {
+    background: #121a70;
+}
+
+
+
+
+/**! ----- Background Color Helper ---- **/
+.bg-color--primary {
+    @extend %bg-primary;
+}
+
+// Dynamic color which fits with our given theme colors
+.bg-color--primary-light--1 {
+    background: $color-blue-100;
+}
+
+// bg dark
+.bg-color--dark {
+    &--1 {
+        background: $color-dark-500;
+    }
+
+    &--2 {
+        background: $color-dark-600;
+    }
+
+    &--3 {
+        background: $color-dark-700;
+    }
+}
+
+// bg dark blue
+.bg-color--darkblue--1 {
+    background: $color-darkblue-400;
+}
+
+.bg-color--green {
+    background: $color-green;
+}
+
+.bg-color--purple {
+    background: $color-purple;
+}
+
+// bg-color--primary-light--1
+.bg-gradient-primary--1 {
+    background: linear-gradient(to top, rgba($color-blue-100, 0) 0%, $color-blue-100 100%);
+}
+
+/**! ----- Background Color with Alpha/ Opacity ---- **/
+// color settings for primary bg
+[class*="bg-color--primary-opacity-"] {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        @extend %bg-primary;
+    }
+
+    &.rounded--full {
+        &::before {
+            @extend .rounded--full;
+        }
+    }
+}
+
+.bg-color {
+    &--transparent {
+        background: transparent;
+    }
+
+    &--primary-opacity {
+        &--05 {
+            &::before {
+                opacity: .05;
+            }
+        }
+
+        &--10 {
+            &::before {
+                opacity: .10;
+            }
+        }
+
+        &--15 {
+            &::before {
+                opacity: .15;
+            }
+        }
+
+        &--20 {
+            &::before {
+                opacity: .20;
+            }
+        }
+    }
+
+    &--blue-opacity {
+        &--10 {
+            background: rgba($color-blue, .10);
+        }
+
+        &--15 {
+            background: rgba($color-blue, .15);
+        }
+
+        &--20 {
+            background: rgba($color-blue, .20);
+        }
+    }
+
+    &--black-opacity {
+        &--10 {
+            background: rgba($color-black, .10);
+        }
+
+        &--15 {
+            background: rgba($color-black, .15);
+        }
+
+        &--20 {
+            background: rgba($color-black, .20);
+        }
+
+        background: rgba($color-black, .1);
+    }
+
+    &--white {
+        background: $color-white;
+    }
+
+    &--white {
+
+        &-opacity {
+            &--05 {
+                background: rgba($color-white, .05);
+            }
+
+            &--10 {
+                background: rgba($color-white, .10);
+            }
+
+            &--15 {
+                background: rgba($color-white, .15);
+            }
+
+            &--20 {
+                background: rgba($color-white, .20);
+            }
+        }
+    }
+}
+
+/**! ----- Gradient Background (Used with preset theme bg also)---- **/
+.bg-gradient--1 {
+    background: $gradient-1;
+    background-size: 105% 105%;
+}
+
+.bg-gradient--2 {
+    background: $gradient-2;
+    background-size: 105% 105%;
+}
+
+.bg-gradient--3 {
+    background: $gradient-3;
+    background-size: 105% 105%;
+}
+
+.bg-gradient--4 {
+    background: $gradient-4;
+    background-size: 105% 105%;
+}
+
+.bg-gradient--5 {
+    background: $gradient-5;
+    background-size: 105% 105%;
+}
+
+.bg-gradient--6 {
+    background: $gradient-6;
+    background-size: 105% 105%;
+}
+
+.bg-gradient--7 {
+    background: $gradient-7;
+    background-size: 105% 105%;
+}
+
+.bg-gradient--8 {
+    background: $gradient-8;
+    background-size: 105% 105%;
+}
+
+/**! ----- Darkblue Gradient Background ---- **/
+.bg-gradient--darkblue {
+    &--1 {
+        background: $gradient-darkblue-1;
+        background-size: 105% 105%;
+    }
+
+    &--2 {
+        background: $gradient-darkblue-2;
+        background-size: 105% 105%;
+    }
+
+    &--3 {
+        background: $gradient-darkblue-3;
+        background-size: 105% 105%;
+    }
+
+    &--4 {
+        background: $gradient-darkblue-4;
+        background-size: 105% 105%;
+    }
+
+    &--5 {
+        background: $gradient-darkblue-5;
+        background-size: 105% 105%;
+    }
+
+    &--6 {
+        background: $gradient-darkblue-6;
+        background-size: 105% 105%;
+    }
+}
+
+/**! ----- Purple Gradient Background ---- **/
+.bg-gradient-purple--1 {
+    background: $gradient-purple-1;
+    background-size: 105% 105%;
+}
+
+/**! ----- SVG fill Color ---- **/
+.fill--primary {
+
+    rect,
+    path,
+    polygon,
+    circle {
+        @extend %fill-primary;
+    }
+}
+
+.fill--white {
+
+    rect,
+    path,
+    polygon,
+    circle {
+        fill: $color-white;
+    }
+}
+
+// Dynamic fill bg which fits with our given theme colors
+.fill-primary-light--1 {
+
+    rect,
+    path,
+    polygon,
+    circle {
+        fill: $color-blue-100;
+    }
+}

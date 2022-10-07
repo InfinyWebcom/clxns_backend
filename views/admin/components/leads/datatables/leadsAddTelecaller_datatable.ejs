@@ -1,0 +1,110 @@
+<style>
+  /* .dataTables_wrapper {
+    clear: none !important;
+  } */
+  #main .section-data-tables .dataTables_wrapper table.dataTable tbody {
+    height: auto !important;
+  }
+
+#tableLeadAddTelecaller_filter{
+  display: none !important;
+}
+
+#tableLeadAddTelecaller > tbody > tr > td:nth-child(6){
+  display: block !important;
+}
+#tableLeadAddTelecaller_wrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr > th:nth-child(6){
+  display: block !important;
+}
+/* #tableLeadAddTelecaller_wrapper > div.dataTables_scroll > div.dataTables_scrollBody{
+  position: relative !important;
+  overflow: auto !important;
+  width: 105% !important;
+} */
+
+  .filter-icon{
+    letter-spacing: 0px;
+    padding: 0 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    box-shadow: none;
+    line-height: 32px;
+    display: inline-block;
+    height: 32px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+    background-color: orange !important;
+    letter-spacing: 0.5px;
+    color:white;
+
+  }
+</style>
+
+<script>
+  var columnNamesLeadAddTelecaller = '<%- JSON.stringify(datatableAddTelecallers.columns) %>';
+  console.log('\n\n Issearch',columnNamesLeadAddTelecaller);
+  var apiUrlLeadAddTelecaller = '<%- JSON.parse(JSON.stringify(datatableAddTelecallers.apiUrl)) %>';
+  var Id3 = '<%- datatableAddTelecallers.id ? datatableAddTelecallers.id : null %>';
+  var IsSearchLeadTelecaller = '<%- JSON.parse(JSON.stringify(datatableAddTelecallers.url)) %>';
+  console.log('\n\n Issearch',IsSearch);
+  let myTableLeadAddTelecaller;
+  var filterObjTelecaller = {};
+  $(document).ready(() => {
+    myTableLeadAddTelecaller = $('#tableLeadAddTelecaller').DataTable({
+      sScrollX: '100%',
+      bLengthChange: false,
+      bInfo: false,
+      paging: false,
+      ordering: false,
+      pageLength: 50,
+      searching : true,
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: `${baseUrl}${apiUrlLeadAddTelecaller}`,
+        type: 'POST',
+        datatype: 'JSON',
+        data: function (data) {
+          data.filterObj = filterObjTelecaller;
+        }
+      },
+      'columns': JSON.parse(columnNamesLeadAddTelecaller),
+    });
+
+  });
+
+  function checkboxFunc(data, userId) {
+    console.log('checkbox :-', data, userId, Id);
+    if (telecallerArray.indexOf(userId) < 0) {
+      telecallerArray.push(userId);
+    }
+    console.log('checkboxArray :-', telecallerArray);
+  }
+
+</script>
+
+<div class="col s12">
+  <div class="container">
+    <div class="section section-data-tables">
+      <div class="row">
+        <div class="col s12 m12 l12">
+          <!-- <div id="button-trigger" class="card roundCorners card-default
+            scrollspy">
+            <div class="card-content">
+              <div class="row">
+                <div class="col s12"> -->
+                  <table id="tableLeadAddTelecaller" class="display responsive
+                                    nowrap" style="min-height: 0px
+                                    !important;width:100%">
+                  </table>
+                <!-- </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

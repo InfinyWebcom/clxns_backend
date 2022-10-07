@@ -1,0 +1,116 @@
+<style>
+  /* .dataTables_wrapper {
+    clear: none !important;
+  } */
+  #main .section-data-tables .dataTables_wrapper table.dataTable tbody {
+    height: auto !important;
+  }
+
+  #tableLeadHistory > tbody > tr > td:nth-child(4){
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    word-break: normal !important;
+    width: auto !important;
+  }
+
+  #tableLeadHistory > tbody > tr > td:nth-child(2){
+    max-width: 400px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    overflow: hidden;
+  }
+
+  #tableLeadHistory_wrapper > div.dataTables_scroll > div.dataTables_scrollHead{
+    overflow: hidden !important;
+    position: relative !important;
+    border: 0px !important;
+    width: 100% !important;
+  }
+
+  .filter-icon{
+    letter-spacing: 0px;
+    padding: 0 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    box-shadow: none;
+    line-height: 32px;
+    display: inline-block;
+    height: 32px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+    background-color: orange !important;
+    letter-spacing: 0.5px;
+    color:white;
+
+  }
+</style>
+
+<script>
+  const columnNames = '<%- JSON.stringify(datatable.columns) %>';
+  const apiUrl = '<%- JSON.parse(JSON.stringify(datatable.apiUrl)) %>';
+  const Id2 = '<%- datatable.id ? datatable.id : null %>';
+  console.log('\n\n Id2',Id2);
+  const IsSearch = '<%- JSON.parse(JSON.stringify(url)) %>';
+  console.log('\n\n Issearch',IsSearch);
+  let myTableLeadHistory
+  let filterObjNew = {};
+  $(document).ready(() => {
+
+    myTableLeadHistory = $('#tableLeadHistory').DataTable({
+      bLengthChange: false,
+      bInfo: false,
+      paging: true,
+      responsive:false,
+      fixedHeader: true,
+      ordering: false,
+      pageLength: 10,
+      searching : false,
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: `${baseUrl}${apiUrl}`,
+        type: 'POST',
+        datatype: 'JSON',
+        data: function (data) {
+          data.id=Id2;
+          data.filterObj = filterObjNew;
+        }
+      },
+      'columns': JSON.parse(columnNames),
+      'columnDefs': [
+         { "width": "20%", "targets": 0 },
+         { "width": "40%", "targets": 1 },
+         { "width": "20%", "targets": 2 },
+         { "width": "20%", "targets": 3 }
+      ]
+    });
+
+  });
+
+  function checkboxFunc(data, userId) {
+    console.log('checkbox :-', data, userId, Id);
+    if (telecallerArray.indexOf(userId) < 0) {
+      telecallerArray.push(userId);
+    }
+    console.log('checkboxArray :-', telecallerArray);
+  }
+
+</script>
+
+<div class="col s12">
+  <div class="container">
+    <div class="section section-data-tables">
+      <div class="row">
+        <div class="col s12 m12 l12">
+            <table id="tableLeadHistory" class="display responsive nowrap" style="min-height: 0px !important;width:100%">
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

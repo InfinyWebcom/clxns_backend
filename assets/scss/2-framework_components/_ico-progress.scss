@@ -1,0 +1,310 @@
+.ico-progress {
+    .ico-progress-bar {
+        width: 100%;
+        height: rem(32);
+        background: rgba($color-black, .15);
+        overflow: hidden;
+
+        @include breakpoint-min(sm) {
+            height: rem(40);
+        }
+
+
+        &__inner {
+            height: rem(22);
+            margin-#{$left}: rem(6);
+            position: relative;
+            overflow: hidden;
+
+            @include breakpoint-min(sm) {
+                height: rem(28);
+
+            }
+
+            &:before {
+                content: '';
+                display: block;
+                width: 80px;
+                height: 100%;
+                opacity: .3;
+                position: absolute;
+                pointer-events: none;
+                top: 0;
+                #{$left}: 0;
+                background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 1%, rgba(255, 255, 255, 0.6) 30%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0.85) 70%, rgba(255, 255, 255, 0.85) 71%, rgba(255, 255, 255, 0) 100%);
+                opacity: .1;
+                transform: skew(-10deg, 0deg);
+                animation: Lightmove 4s infinite;
+                transition: .25s ease;
+
+                @include rtl {
+                    transform: skew(10deg, 0deg);
+                }
+            }
+        }
+
+
+    }
+
+    .countdown {
+        padding-#{$left}: 0;
+        list-style: none;
+        margin-bottom: 0;
+
+        li {
+            &:not(:last-child) {
+                .countdown__count {
+                    &:after {
+                        content: ":";
+                        opacity: .2;
+                    }
+                }
+            }
+        }
+
+        &__count {
+            transform: translateZ(0);
+        }
+    }
+
+    // ico progress V1
+    &--v1 {
+        .countdown {
+            li {
+                &:not(:last-child) {
+                    .countdown__count {
+                        &:after {
+                            margin-#{$left}: rem(20);
+
+                            @include breakpoint-min(sm) {
+                                margin-#{$left}: rem(30);
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ico progress V2
+    &--v2 {
+        .ico-progress-bar {
+            height: rem(22);
+
+            &__inner {
+                height: rem(22);
+                margin-#{$left}: 0;
+            }
+        }
+
+        .ico-progress__stages {
+            position: relative;
+            margin-bottom: 25px;
+            z-index: 1;
+            position: absolute;
+            bottom: 22px;
+
+            &:after,
+            &:before {
+                content: "";
+                position: absolute;
+                height: 22px;
+                width: 1px;
+                #{$left}: 0;
+
+            }
+
+            &:after {
+                bottom: -25px;
+                @extend %bg-primary;
+            }
+
+            &:before {
+                bottom: -47px;
+                background: #2a2c3a;
+            }
+
+            &:first-child {
+                text-align: $left;
+            }
+
+            &:last-child {
+                text-align: $right;
+                transform: translateX(-100%);
+
+                &:after,
+                &:before {
+                    #{$left}: auto;
+                    #{$right}: 0;
+                }
+            }
+
+            span {
+                @include breakpoint-max(sm) {
+                    font-size: rem(13);
+                }
+            }
+
+            p {
+                font-size: rem(15);
+
+                @include breakpoint-min(md) {
+                    font-size: rem(20);
+                }
+
+                span {
+                    font-size: rem(13);
+
+                    @include breakpoint-min(md) {
+                        font-size: rem(16);
+                    }
+                }
+            }
+
+        }
+
+        .pricing-info {
+            .pricing-info-item {
+                padding: 25px 45px;
+                position: relative;
+
+                span {
+                    margin-bottom: rem(5);
+                }
+
+                p,
+                .discount {
+                    color: $color-gray-400;
+                }
+
+                &--active {
+                    @include breakpoint-max(md) {
+                        border-top-left-radius: rem(10);
+                        border-top-right-radius: rem(10);
+                        margin-bottom: rem(30);
+                    }
+
+                    border: 5px solid lighten($color-dark-500, $amount: 7);
+
+                    @include breakpoint-min(md) {
+                        border-top-left-radius: rem(10);
+                        border-bottom-left-radius: rem(10);
+                    }
+
+                    p,
+                    .discount {
+                        color: $color-white;
+                    }
+                }
+
+                &:not(:first-child) {
+                    &.pricing-info-item--active {
+                        border-radius: rem(10);
+
+                    }
+                }
+
+                &:not(:last-child) {
+                    &.pricing-info-item--active {
+                        @include breakpoint-max(md) {
+                            padding-bottom: 0;
+                        }
+
+                        @include breakpoint-max(md) {
+                            border-bottom: 0;
+                        }
+
+                        @include breakpoint-min(md) {
+                            border-#{$right}: 0;
+                        }
+
+                        &:after,
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            background: lighten($color-dark-500, $amount: 7);
+
+                            @include breakpoint-max(md) {
+                                width: 52%;
+                                height: 6px;
+                                bottom: -25px;
+                            }
+
+                            @include breakpoint-max(sm) {
+                                bottom: -20px;
+
+                            }
+
+                            @include breakpoint-min(md) {
+                                #{$right}: -25px;
+                                height: 54%;
+                                width: 6px;
+                            }
+                        }
+
+                        &:before {
+                            @include breakpoint-max(md) {
+                                #{$left}: -5px;
+                                transform: skewY(10deg);
+
+                                @include rtl {
+                                    transform: skewY(-10deg);
+                                }
+
+
+                            }
+
+                            @include breakpoint-min(md) {
+                                bottom: -5px;
+                                transform: skew(-30deg);
+
+                                @include rtl {
+                                    transform: skew(30deg);
+                                }
+                            }
+                        }
+
+                        &:after {
+                            @include breakpoint-max(md) {
+                                #{$right}: -5px;
+                                transform: skewY(-10deg);
+
+                                @include rtl {
+                                    transform: skewY(10deg);
+                                }
+                            }
+
+                            @include breakpoint-min(md) {
+                                top: -5px;
+                                transform: skew(30deg);
+
+                                @include rtl {
+                                    transform: skew(-30deg);
+                                }
+
+                            }
+                        }
+
+
+                    }
+                }
+
+            }
+        }
+
+        .countdown {
+            li {
+                &:not(:last-child) {
+                    .countdown__count {
+                        &:after {
+                            margin-#{$left}: rem(10);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+}

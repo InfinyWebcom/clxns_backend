@@ -1,0 +1,233 @@
+/**! ----- Form General Styling ---- **/
+.form {
+    input {
+        height: auto;
+        position: relative;
+        font-size: 16px;
+    }
+
+    textarea {
+        padding-top: rem(20);
+        font-size: 16px;
+
+    }
+
+    .btn {
+        z-index: 99;
+
+        .icon-arrow-right {
+            padding: 0;
+        }
+    }
+
+    .input-group {
+        input {
+            .section--dark & {
+                // background: rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        &--rounded {
+            input {
+                border-top-left-radius: 100px !important;
+                border-bottom-left-radius: 100px !important;
+                #{$left}: 15px;
+            }
+
+            .btn {
+                #{$right}: 15px;
+            }
+        }
+    }
+}
+
+.form-control {
+    padding: rem(15) rem(20);
+    border-color: $color-light-gray-400;
+    border-radius: rem(5);
+    @include rtl{
+        border-radius: rem(0) rem(5) rem(5) rem(0)!important;
+    }
+    &:focus {
+        box-shadow: inset 0 0 0px 2px $color-light-gray-400;
+        border-color: $color-light-gray-400;
+
+    }
+}
+
+/**! ----- Form V1 ---- **/
+.form--v1 {
+    .form {
+        flex: 1;
+
+        input {
+            border: none;
+        }
+    }
+}
+
+/**! ----- Form V2 ---- **/
+.form--v2 {
+    .form {
+        input {
+            #{$left}: 2px;
+        }
+
+        .btn {
+            #{$right}: 2px;
+            padding-left: rem(25);
+            padding-right: rem(25);
+            font-size: rem(24);
+        }
+
+        .btn__text {
+
+            i {
+                padding: 0;
+
+                @include rtl {
+                    transform: translateX(0) rotate(-180deg);
+                }
+            }
+        }
+    }
+}
+
+/**! ----- form V3 ---- **/
+.form--v3 {
+    @extend .form--v2;
+
+    input.form-control {
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
+    .btn {
+        box-shadow: inset 0 0 0 4px #fff;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        @include rtl{
+            border-radius: rem(5) rem(0) rem(0) rem(5)!important;
+        }
+    
+    }
+}
+
+/**! ----- form V4 ---- **/
+.form--v4 {
+    .form {
+        padding: 4px;
+    }
+
+    .input-group {
+        border-radius: 3px;
+        border: 5px solid #fff;
+
+        input {
+            box-shadow: none;
+            border: none;
+            border-radius: 1px;
+        }
+    }
+
+    .btn {
+        border-radius: 0;
+    }
+}
+
+/**! ----- form V8 ---- **/
+.form--v5 {
+    position: relative;
+    z-index: 2;
+
+    &:after,
+    &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.20);
+        border-radius: rem(10);
+        z-index: -1;
+    }
+
+    &:before {
+        top: rem(12);
+        transform: scaleX(.95);
+    }
+
+    &:after {
+        top: rem(24);
+        transform: scaleX(.9);
+    }
+
+    .form-control {
+        padding: rem(12) rem(20);
+    }
+
+    .form-group {
+        margin-bottom: rem(30);
+    }
+
+    .form__label {
+        margin-bottom: rem(15);
+    }
+
+    .btn {
+        padding-right: rem(40);
+        padding-left: rem(40);
+    }
+}
+
+/**! ----- form V6 ---- **/
+.form--v6 {
+
+    [class*="bg-color"],
+    [class*="bg-gradient"] {
+        position: absolute;
+        height: 100%;
+        width: 1000%;
+        #{$left}: -100%;
+        top: 0;
+        bottom: 0;
+
+        @include breakpoint-min(lg) {
+            #{$left}: 0;
+        }
+    }
+}
+
+/**! ----- form V7 ---- **/
+.form--v7 {
+    @extend .form--v4;
+
+    .input-group {
+        border: none;
+    }
+
+    .btn {
+        border-radius: rem(5);
+        padding-right: rem(30);
+        padding-left: rem(30);
+    }
+}
+/**! ----- form V8 ---- **/
+.form--v8 {
+    position: relative;
+    &:after{
+        content: "";
+        @include pos-abs(auto, 0, -5px, 0);
+        @extend %bg-primary;
+        width: 100%;
+        height: 5px;
+    }
+}
+
+/**! ----- Blog widget search ---- **/
+
+.widget_search {
+    @extend .form--v7;
+}

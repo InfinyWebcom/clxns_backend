@@ -1,0 +1,32 @@
+.blog-details {
+    blockquote {
+        padding-#{$left}: 65px;
+        position: relative;
+        z-index: 1;
+        margin-bottom: rem(40);
+        p {
+            font-size: rem(20);
+            margin-bottom: rem(6);
+            font-style: italic;
+
+            &:before {
+                content: "";
+                position: absolute;
+                height: 50px;
+                width: 50px;
+                left: 0;
+                top: 0;
+                background: url(.././img/layout/quote.svg) no-repeat;
+                z-index: -1;
+                @include rtl {
+                    transform: rotateY(180deg);
+                }
+            }
+        }
+        cite {
+            font-style: normal;
+            font-size: rem(17)
+        }
+
+    }
+}

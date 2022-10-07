@@ -1,0 +1,80 @@
+<!-- BEGIN VENDOR JS-->
+<!-- BEGIN VENDOR JS-->
+<!-- BEGIN PAGE VENDOR JS-->
+<link rel="stylesheet" href="/app-assets/vendors/noUiSlider/nouislider.min.css" type="text/css">
+<!-- <script src="/app-assets/vendors/chartjs/chart.min.js"></script> -->
+<script src="/app-assets/vendors/chartist-js/chartist.min.js"></script>
+<!-- <script src="/app-assets/vendors/chartist-js/chartist-plugin-tooltip.js"></script> -->
+<script src="/app-assets/vendors/chartist-js/chartist-plugin-fill-donut.min.js"></script>
+<script src="/app-assets/vendors/dropify/js/dropify.min.js"></script>
+
+<!-- END PAGE VENDOR JS-->
+<!-- BEGIN PAGE VENDOR JS-->
+<!-- END PAGE VENDOR JS-->
+<!-- BEGIN THEME  JS-->
+<!-- END THEME  JS-->
+<!-- BEGIN PAGE LEVEL JS-->
+<!-- <script src="/app-assets/js/scripts/dashboard-modern.js"></script> -->
+<script src="/app-assets/js/scripts/intro.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN PAGE VALIDATION JS-->
+<script src="/app-assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+<script src="/app-assets/js/scripts/form-validation.js"></script>
+<!-- END PAGE VALIDATION JS-->
+  <!-- BEGIN PAGE VENDOR JS-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.js" integrity="sha512-ZK6m9vADamSl5fxBPtXw6ho6A4TuX89HUbcfvxa2v2NYNT/7l8yFGJ3JlXyMN4hlNbz0il4k6DvqbIW5CCwqkw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/app-assets/vendors/sparkline/jquery.sparkline.min.js"></script>
+  <script src="/app-assets/vendors/chartjs/chart.min.js"></script>
+  <script src="/app-assets/vendors/noUiSlider/nouislider.js"></script>
+  <script src="/app-assets/js/scripts/charts-chartjs.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- END PAGE VENDOR JS-->
+
+<script src="/app-assets/js/vendors.min.js"></script>
+<script src="/app-assets/vendors/select2/select2.full.min.js"></script>
+<script src="/app-assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+<!-- <script src="/app-assets/js/plugins.js"></script> -->
+<script src="/app-assets/js/search.js"></script>
+<script src="/app-assets/js/custom/custom-script.js"></script>
+<script src="/app-assets/js/scripts/page-account-settings.js"></script>
+
+<script src="/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js"></script>
+<script src="/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<% if (!url.includes(`sourcing`)) { %>
+<script src="/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js"></script>
+<% } %>
+<script src="/app-assets/vendors/data-tables/js/dataTables.select.min.js"></script>
+
+ <!-- BEGIN PAGE LEVEL JS-->
+ <script src="/app-assets/js/scripts/dashboard-analytics.js"></script>
+ <script src="/app-assets/vendors/dropify/js/dropify.min.js"></script>
+ <script src="/app-assets/js/scripts/form-file-uploads.min.js"></script>
+ <!-- END PAGE LEVEL JS-->
+ <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+ <script>
+    $(function() {
+        setTimeout(function() {
+            $(document).find('.document-before-load-spinner').hide();
+        },100);
+      });
+ </script>
+ <%if(url.includes(`assignLeads`) || url.includes(`newLeads`)){%>
+  <script>
+    var select = $("select#TeamListId");
+    // initialize
+    select.formSelect();
+    console.log(select);
+
+    $(select).on("change", function(e) {
+      teamNameId = $(this).val();
+      console.log("\n\nteamNameId", teamNameId);
+      myTable.search(teamNameId).draw();
+    });
+  </script>
+  
+  <%}%>

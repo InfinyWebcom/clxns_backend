@@ -1,0 +1,128 @@
+.process {
+    &--v1 {
+
+        .process__circle {
+            @include breakpoint-max(xl) {
+                width: rem(510);
+            }    
+        }
+
+        .process__circle--mobile {
+            position: relative;
+
+            &::before {
+                content: '';
+                @include centerer;
+                height: rem(460);
+                width: rem(460);
+                border-radius: 100%;
+                border: 1.2px dashed rgba($color-white, .05);
+
+            }
+
+            &::after {
+                content: '';
+                @include centerer;
+                height: rem(350);
+                width: rem(350);
+                border-radius: 100%;
+                border: 1.2px dashed rgba($color-white, .08);
+            }
+
+            .mobile-logo {
+                height: rem(250);
+                width: rem(250);
+                border-radius: 100%;
+                box-shadow: 0 0px 90px 20px rgba(0, 0, 0, 0.05) inset;
+                border: 1.2px dashed rgba($color-white, .15);
+
+
+            }
+        }
+
+        .options {
+            @include breakpoint-max(sm) {
+                &::before {
+                    content: "";
+                    height: 100%;
+                    width: 1px;
+                    background: rgba(255, 255, 255, 0.04);
+                    position: absolute;
+                    #{$left}: 27px;
+                    top: 0;
+                }
+            }
+
+            .option {
+                position: relative;
+
+                @include breakpoint-min(lg) {
+                    min-width: 224px;
+                    &:nth-child(1) {
+                        top: 102px;
+                    }
+
+                    &:nth-child(2) {
+                        top: 70px;
+                    }
+
+                    &:nth-child(3) {
+                        top: 36px;
+                    }
+
+                }
+                @include breakpoint-min(xl) {
+                    &:nth-child(1) {
+                        top: 60px;
+                    }
+
+                    &:nth-child(2) {
+                        top: 73px;
+                    }
+
+                    &:nth-child(3) {
+                        top: 88px;
+                    }
+                }
+            }
+
+            h3 {
+                line-height: rem(28);
+            }
+
+            .decor {
+                @include breakpoint-min(lg) {
+                    top: -25px;
+
+                }
+            }
+
+            &--left {
+                .decor {
+                    @include breakpoint-max(sm) {
+                        #{$left}: -30px;
+                    }
+
+                    @include breakpoint-min(sm) {
+                        #{$right}: -30px;
+                    }
+
+                    @include breakpoint-min(lg) {
+                        #{$right}: -8px;
+                    }
+                }
+            }
+
+            &--right {
+                .decor {
+                    #{$left}: -30px;
+
+                    @include breakpoint-min(lg) {
+                        #{$left}: -8px;
+                    }
+                }
+            }
+
+        }
+    }
+}

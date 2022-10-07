@@ -1,0 +1,12 @@
+// Box layout width Variable
+// =============================================================
+$box-layout-width:                                                            1366px;
+
+
+/*---- Boxed Layout Init----*/
+
+body.boxed-layout {
+    .main, .navbar {
+        max-width: $box-layout-width;
+    }
+}

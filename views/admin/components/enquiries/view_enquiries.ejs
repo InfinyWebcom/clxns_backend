@@ -1,0 +1,107 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<!-- BEGIN: Page Main-->
+<div id="main">
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <!-- Search for small screen-->
+      <div class="container">
+        <div class="row">
+          <div class="col s10 m6 l6">
+            <h5 class="breadcrumbs-title mt-0 mb-0"><span>View Enquiries</span></h5>
+            <ol class="breadcrumbs mb-0">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+              </li>
+              <li class="breadcrumb-item"><a href="/enquiries">Enquiries</a>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <div id="Form-advance" class="card card card-default scrollspy">
+        <div class="card-content">
+          <h4 class="card-title">Enquiries Details</h4>
+          <form id="formValidateEnquiries" action="/enquiries/edit/<%= Contacts.id%>" method="post">
+            <div class="row">
+              <div class="input-field col m6 s12">
+                <label for="first_name">First Name</label>
+                <input id="first_name" name="first_name" type="text" value="<%= Contacts.first_name%>" data-error=".errorTxt1"/>
+                <small class="errorTxt1"></small>
+              </div>
+              <div class="input-field col m6 s12">
+                <label for="last_name">Last Name</label>
+                <input id="last_name" name="last_name" type="text" value="<%= Contacts.last_name%>" data-error=".errorTxt2"/>
+                <small class="errorTxt2"></small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col m6 s12">
+                <label for="organisation">Organisation</label>
+                <input id="organisation" name="organisation" type="text" value="<%= Contacts.organisation%>" data-error=".errorTxt3"/>
+                <small class="errorTxt3"></small>
+              </div>
+              <div class="input-field col m6 s12">
+                <label for="designation">Designation</label>
+                <input id="designation" name="designation" type="text" value="<%= Contacts.designation%>" data-error=".errorTxt4"/>
+                <small class="errorTxt4"></small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="email" name="email" type="email" value="<%= Contacts.email%>"/>
+                <label for="email">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col m6 s12">
+                <select id="subject" name="subject" required>
+                  <option value="<%= Contacts.subject%>" selected
+                    ><%= Contacts.subject%></option
+                  >
+                  <option value="Partnerships">Partnerships</option>
+                  <option value="Job Application">Job Application</option>
+                  <option value="General enquiry">General enquiry</option>
+                </select>
+              </div>
+              <div class="input-field col m6 s12">
+                <input id="phone" name="phone" type="text" maxlength="10" value="<%= Contacts.phone%>"/>
+                <label for="phone">Phone(Number Only)</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <textarea
+                  id="message"
+                  name="message"
+                  class="materialize-textarea"
+                ><%= Contacts.message%></textarea>
+                <label for="message">Message</label>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <a
+                    class="btn waves-effect waves-light gradient-45deg-purple-deep-orange float-right" href="/enquiries"
+                    >Cancel</a
+                  >
+                  <button class="btn cyan waves-effect waves-light right mr-2" type="submit" 
+                  > Save</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END: Page Main-->
+<!-- Theme Customizer -->
+<%- include('../../bottom.ejs') -%>

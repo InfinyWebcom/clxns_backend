@@ -1,0 +1,2418 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<style>
+  .customDatatable .card {
+    box-shadow: none;
+  }
+
+  table.scroll tbody {
+    height: 100px !important;
+    overflow-y: scroll !important;
+    overflow-x: scroll !important;
+}
+
+  .customDatatable .card .card-content .row .col {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  #doughnut-chart-lead{
+    display: block;
+    box-sizing: border-box;
+    height: 400px !important;
+    width: 311px !important;
+  }
+
+  .btn {
+    background-color: #f55c54;
+    padding: 0 14px;
+    border-radius: 8px;
+  }
+
+  .btn:hover {
+    background-color: #f55c54;
+    padding: 0 14px;
+    border-radius: 8px;
+  }
+  .tabs .tab a {
+    text-transform: capitalize !important;
+    font-size: 17px;
+  }
+  .customModal {
+    top: 0% !important;
+    margin-left: 400px !important;
+  }
+  .dateDisplay{
+    display: block;
+    position: absolute;
+  }
+</style>
+
+<script>
+  let moment2='<%= moment() %>';
+  let cuurentMonth='<%= moment().format("MM") %>';
+  let date,next;
+  if(cuurentMonth < 4){
+    date='<%= moment().subtract(1,"year").format("YYYY") %>';
+    next='<%= moment().format("YYYY") %>';
+  }else{
+    date=new Date().getFullYear();
+    next=new Date().getFullYear() + 1;
+  }
+  console.log("date ,next ",date,next);
+  let filterObj={
+    fromDate: '<%= moment().subtract(11,"days").format("YYYY-MM-DD") %>',
+    toDate:'<%= moment().format("YYYY-MM-DD") %>',
+    fi : '',
+    PoolId : '',
+    locationId : '',
+    teamId : '',
+  };
+  console.log("filterObj",filterObj);
+  getCollectedAmt(filterObj);
+  
+  // let date =  new Date().getFullYear();
+  // let next=  new Date().getFullYear() + 1;
+  filter=true;
+ // Get FIs Chart Bydefault current year
+  let filterObjFIs={
+    fromYear: date,
+    toYear:next,
+  };
+  getFICount(filterObjFIs);
+
+  // Get portfolio Chart Bydefault current year
+  let filterObjPortfolio={
+    fromYear: date,
+    toYear:next,
+    fi : '',
+    locationId : '',
+    teamId : '',
+    productId : '',
+    dpdId : '',
+  };
+  console.log("filterObjPortfolio",filterObjPortfolio);
+  getPortfolioAnalysis(filterObjPortfolio);
+
+  // Get Overall Collection Chart Bydefault current year
+  let filterObjOverall={
+    fromYear: date,
+    toYear:next,
+    fi : '',
+    PoolId : '',
+    locationId : '',
+    teamId : '',
+    productId :'',
+    dpdId :''
+  };
+  console.log("filterOverall",filterObjOverall);
+  getOverallCollection(filterObjOverall);
+
+   // Get Collection Efficiency Chart Bydefault current year
+  let filterObjEfficiency={
+    fromYear: date,
+    toYear:next,
+    fi : '',
+    PoolId : '',
+    locationId : '',
+    teamId : '',
+  };
+  console.log("filterObjEfficiency",filterObjEfficiency);
+  getCollectionEfficiency(filterObjEfficiency);
+
+  // Get getAgent Bydefault data
+  let filterObjAgent={
+    fromDate: `<%= moment().startOf('month').format("YYYY-MM-DD") %>`,
+    toDate:'<%= moment().format("YYYY-MM-DD") %>',
+  };
+  console.log("filterObjAgent",filterObjAgent);
+  getAgent(filterObjAgent);
+
+  // Get getAgentProductivity Bydefault data
+  let filterObjAgentProduct={
+    fromYear: date,
+    toYear:next,
+  };
+  console.log("filterObjAgentProductivity",filterObjAgentProduct);
+  getAgentProductivity(filterObjAgentProduct);
+
+  $(document).ready(function () {
+
+   // Get FIs Filters Chart
+
+  $(document).on('change','#yearRangeFI', function () {
+  let yearPeriod=($('#yearRangeFI').val())?  $('#yearRangeFI').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjFIs.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjFIs.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  console.log("\n\n\ Filter OBJ",filterObjFIs);
+  getFICount(filterObjFIs);
+  });
+
+   // Get portfolio Filters Chart
+
+  $(document).on('change','#portfolioYear', function () {
+  let yearPeriod=($('#portfolioYear').val())?  $('#portfolioYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjPortfolio.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjPortfolio.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjPortfolio.fi = ($('#portfolioFI').val())?  $('#portfolioFI').val() :'';
+  // filterObjPortfolio.dispositionId = ($('#portfolioDispstnId').val())?  $('#portfolioDispstnId').val() :'';
+  filterObjPortfolio.locationId = ($('#portfolioLocation').val())?  $('#portfolioLocation').val() :'';
+  filterObjPortfolio.teamId = ($('#portfolioTeam').val())?  $('#portfolioTeam').val() :'';
+  filterObjPortfolio.productId = ($('#portfolioProductId').val())?  $('#portfolioProductId').val() :'';
+  filterObjPortfolio.dpdId = ($('#portfolioDPDId').val())?  $('#portfolioDPDId').val() :'';
+  console.log("\n\n\ filterObjPortfolio OBJ",filterObjPortfolio);
+  getPortfolioAnalysis(filterObjPortfolio);
+  });
+
+  $(document).on('change','#portfolioFI', function () {
+  let yearPeriod=($('#portfolioYear').val())?  $('#portfolioYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjPortfolio.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjPortfolio.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjPortfolio.fi = ($('#portfolioFI').val())?  $('#portfolioFI').val() :'';
+  // filterObjPortfolio.dispositionId = ($('#portfolioDispstnId').val())?  $('#portfolioDispstnId').val() :'';
+  filterObjPortfolio.locationId = ($('#portfolioLocation').val())?  $('#portfolioLocation').val() :'';
+  filterObjPortfolio.teamId = ($('#portfolioTeam').val())?  $('#portfolioTeam').val() :'';
+  filterObjPortfolio.productId = ($('#portfolioProductId').val())?  $('#portfolioProductId').val() :'';
+  filterObjPortfolio.dpdId = ($('#portfolioDPDId').val())?  $('#portfolioDPDId').val() :'';
+  console.log("\n\n\ filterObjPortfolio OBJ",filterObjPortfolio);
+  getPortfolioAnalysis(filterObjPortfolio);
+  });
+
+  $(document).on('change','#portfolioLocation', function () {
+  let yearPeriod=($('#portfolioYear').val())?  $('#portfolioYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjPortfolio.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjPortfolio.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjPortfolio.fi = ($('#portfolioFI').val())?  $('#portfolioFI').val() :'';
+  // filterObjPortfolio.dispositionId = ($('#portfolioDispstnId').val())?  $('#portfolioDispstnId').val() :'';
+  filterObjPortfolio.locationId = ($('#portfolioLocation').val())?  $('#portfolioLocation').val() :'';
+  filterObjPortfolio.teamId = ($('#portfolioTeam').val())?  $('#portfolioTeam').val() :'';
+  filterObjPortfolio.productId = ($('#portfolioProductId').val())?  $('#portfolioProductId').val() :'';
+  filterObjPortfolio.dpdId = ($('#portfolioDPDId').val())?  $('#portfolioDPDId').val() :'';
+  console.log("\n\n\ filterObjPortfolio OBJ",filterObjPortfolio);
+  getPortfolioAnalysis(filterObjPortfolio);
+  });
+
+  $(document).on('change','#portfolioTeam', function () {
+  let yearPeriod=($('#portfolioYear').val())?  $('#portfolioYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjPortfolio.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjPortfolio.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjPortfolio.fi = ($('#portfolioFI').val())?  $('#portfolioFI').val() :'';
+  // filterObjPortfolio.dispositionId = ($('#portfolioDispstnId').val())?  $('#portfolioDispstnId').val() :'';
+  filterObjPortfolio.locationId = ($('#portfolioLocation').val())?  $('#portfolioLocation').val() :'';
+  filterObjPortfolio.teamId = ($('#portfolioTeam').val())?  $('#portfolioTeam').val() :'';
+  filterObjPortfolio.productId = ($('#portfolioProductId').val())?  $('#portfolioProductId').val() :'';
+  filterObjPortfolio.dpdId = ($('#portfolioDPDId').val())?  $('#portfolioDPDId').val() :'';
+  console.log("\n\n\ filterObjPortfolio OBJ",filterObjPortfolio);
+  getPortfolioAnalysis(filterObjPortfolio);
+  });
+
+  $(document).on('change','#portfolioProductId', function () {
+  let yearPeriod=($('#portfolioYear').val())?  $('#portfolioYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjPortfolio.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjPortfolio.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjPortfolio.fi = ($('#portfolioFI').val())?  $('#portfolioFI').val() :'';
+  // filterObjPortfolio.dispositionId = ($('#portfolioDispstnId').val())?  $('#portfolioDispstnId').val() :'';
+  filterObjPortfolio.locationId = ($('#portfolioLocation').val())?  $('#portfolioLocation').val() :'';
+  filterObjPortfolio.teamId = ($('#portfolioTeam').val())?  $('#portfolioTeam').val() :'';
+  filterObjPortfolio.productId = ($('#portfolioProductId').val())?  $('#portfolioProductId').val() :'';
+  filterObjPortfolio.dpdId = ($('#portfolioDPDId').val())?  $('#portfolioDPDId').val() :'';
+  console.log("\n\n\ filterObjPortfolio OBJ",filterObjPortfolio);
+  getPortfolioAnalysis(filterObjPortfolio);
+  });
+
+  $(document).on('change','#portfolioDPDId', function () {
+  let yearPeriod=($('#portfolioYear').val())?  $('#portfolioYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjPortfolio.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjPortfolio.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjPortfolio.fi = ($('#portfolioFI').val())?  $('#portfolioFI').val() :'';
+  // filterObjPortfolio.dispositionId = ($('#portfolioDispstnId').val())?  $('#portfolioDispstnId').val() :'';
+  filterObjPortfolio.locationId = ($('#portfolioLocation').val())?  $('#portfolioLocation').val() :'';
+  filterObjPortfolio.teamId = ($('#portfolioTeam').val())?  $('#portfolioTeam').val() :'';
+  filterObjPortfolio.productId = ($('#portfolioProductId').val())?  $('#portfolioProductId').val() :'';
+  filterObjPortfolio.dpdId = ($('#portfolioDPDId').val())?  $('#portfolioDPDId').val() :'';
+  console.log("\n\n\ filterObjPortfolio OBJ",filterObjPortfolio);
+  getPortfolioAnalysis(filterObjPortfolio);
+  });
+
+  // Get Overall Collection Chart
+
+  $(document).on('change','#overallYear', function () {
+  let yearPeriod=($('#overallYear').val())?  $('#overallYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjOverall.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjOverall.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjOverall.fi = ($('#overallFIs').val())?  $('#overallFIs').val() :'';
+  filterObjOverall.PoolId = ($('#overallpoolId').val())?  $('#overallpoolId').val() :'';
+  filterObjOverall.locationId = ($('#overallLocation').val())?  $('#overallLocation').val() :'';
+  filterObjOverall.teamId = ($('#overallTeamId').val())?  $('#overallTeamId').val() :'';
+  filterObjOverall.productId = ($('#overallProductId').val())?  $('#overallProductId').val() :'';
+  filterObjOverall.dpdId = ($('#overallDPDId').val())?  $('#overallDPDId').val() :'';
+  console.log("\n\n\ Filter OBJ",filterObjOverall);
+  getOverallCollection(filterObjOverall);
+  });
+
+  $(document).on('change','#overallFIs', function () {
+  let yearPeriod=($('#overallYear').val())?  $('#overallYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjOverall.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjOverall.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjOverall.fi = ($('#overallFIs').val())?  $('#overallFIs').val() :'';
+  filterObjOverall.PoolId = ($('#overallpoolId').val())?  $('#overallpoolId').val() :'';
+  filterObjOverall.locationId = ($('#overallLocation').val())?  $('#overallLocation').val() :'';
+  filterObjOverall.teamId = ($('#overallTeamId').val())?  $('#overallTeamId').val() :'';
+  filterObjOverall.productId = ($('#overallProductId').val())?  $('#overallProductId').val() :'';
+  filterObjOverall.dpdId = ($('#overallDPDId').val())?  $('#overallDPDId').val() :'';
+  console.log("\n\n\ Filter OBJ",filterObjOverall);
+  getOverallCollection(filterObjOverall);
+  });
+
+  $(document).on('change','#overallpoolId', function () {
+  let yearPeriod=($('#overallYear').val())?  $('#overallYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjOverall.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjOverall.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjOverall.fi = ($('#overallFIs').val())?  $('#overallFIs').val() :'';
+  filterObjOverall.PoolId = ($('#overallpoolId').val())?  $('#overallpoolId').val() :'';
+  filterObjOverall.locationId = ($('#overallLocation').val())?  $('#overallLocation').val() :'';
+  filterObjOverall.teamId = ($('#overallTeamId').val())?  $('#overallTeamId').val() :'';
+  filterObjOverall.productId = ($('#overallProductId').val())?  $('#overallProductId').val() :'';
+  filterObjOverall.dpdId = ($('#overallDPDId').val())?  $('#overallDPDId').val() :'';
+  console.log("\n\n\ Filter OBJ",filterObjOverall);
+  getOverallCollection(filterObjOverall);
+  });
+
+  $(document).on('change','#overallLocation', function () {
+  let yearPeriod=($('#overallYear').val())?  $('#overallYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjOverall.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjOverall.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjOverall.fi = ($('#overallFIs').val())?  $('#overallFIs').val() :'';
+  filterObjOverall.PoolId = ($('#overallpoolId').val())?  $('#overallpoolId').val() :'';
+  filterObjOverall.locationId = ($('#overallLocation').val())?  $('#overallLocation').val() :'';
+  filterObjOverall.teamId = ($('#overallTeamId').val())?  $('#overallTeamId').val() :'';
+  filterObjOverall.productId = ($('#overallProductId').val())?  $('#overallProductId').val() :'';
+  filterObjOverall.dpdId = ($('#overallDPDId').val())?  $('#overallDPDId').val() :'';
+  console.log("\n\n\ Filter OBJ",filterObjOverall);
+  getOverallCollection(filterObjOverall);
+  });
+
+  $(document).on('change','#overallTeamId', function () {
+  let yearPeriod=($('#overallYear').val())?  $('#overallYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjOverall.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjOverall.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjOverall.fi = ($('#overallFIs').val())?  $('#overallFIs').val() :'';
+  filterObjOverall.PoolId = ($('#overallpoolId').val())?  $('#overallpoolId').val() :'';
+  filterObjOverall.locationId = ($('#overallLocation').val())?  $('#overallLocation').val() :'';
+  filterObjOverall.teamId = ($('#overallTeamId').val())?  $('#overallTeamId').val() :'';
+  filterObjOverall.productId = ($('#overallProductId').val())?  $('#overallProductId').val() :'';
+  filterObjOverall.dpdId = ($('#overallDPDId').val())?  $('#overallDPDId').val() :'';
+  console.log("\n\n\ Filter OBJ",filterObjOverall);
+  getOverallCollection(filterObjOverall);
+  });
+
+  $(document).on('change','#overallProductId', function () {
+  let yearPeriod=($('#overallYear').val())?  $('#overallYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjOverall.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjOverall.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjOverall.fi = ($('#overallFIs').val())?  $('#overallFIs').val() :'';
+  filterObjOverall.PoolId = ($('#overallpoolId').val())?  $('#overallpoolId').val() :'';
+  filterObjOverall.locationId = ($('#overallLocation').val())?  $('#overallLocation').val() :'';
+  filterObjOverall.teamId = ($('#overallTeamId').val())?  $('#overallTeamId').val() :'';
+  filterObjOverall.productId = ($('#overallProductId').val())?  $('#overallProductId').val() :'';
+  filterObjOverall.dpdId = ($('#overallDPDId').val())?  $('#overallDPDId').val() :'';
+  console.log("\n\n\ Filter OBJ",filterObjOverall);
+  getOverallCollection(filterObjOverall);
+  });
+
+  $(document).on('change','#overallDPDId', function () {
+  let yearPeriod=($('#overallYear').val())?  $('#overallYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjOverall.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjOverall.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjOverall.fi = ($('#overallFIs').val())?  $('#overallFIs').val() :'';
+  filterObjOverall.PoolId = ($('#overallpoolId').val())?  $('#overallpoolId').val() :'';
+  filterObjOverall.locationId = ($('#overallLocation').val())?  $('#overallLocation').val() :'';
+  filterObjOverall.teamId = ($('#overallTeamId').val())?  $('#overallTeamId').val() :'';
+  filterObjOverall.productId = ($('#overallProductId').val())?  $('#overallProductId').val() :'';
+  filterObjOverall.dpdId = ($('#overallDPDId').val())?  $('#overallDPDId').val() :'';
+  console.log("\n\n\ Filter OBJ",filterObjOverall);
+  getOverallCollection(filterObjOverall);
+  });
+
+// Get Collection Efficiency Chart
+
+$(document).on('change','#efficiencyYear', function () {
+  let yearPeriod=($('#efficiencyYear').val())?  $('#efficiencyYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjEfficiency.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjEfficiency.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjEfficiency.fi = ($('#efficiencyFIs').val())?  $('#efficiencyFIs').val() :'';
+  filterObjEfficiency.PoolId = ($('#efficiencyPoolId').val())?  $('#efficiencyPoolId').val() :'';
+  filterObjEfficiency.locationId = ($('#efficiencyLocation').val())?  $('#efficiencyLocation').val() :'';
+  filterObjEfficiency.teamId = ($('#efficiencyTeamId').val())?  $('#efficiencyTeamId').val() :'';
+  console.log("\n\n\filterObjEfficiency OBJ",filterObjEfficiency);
+  getCollectionEfficiency(filterObjEfficiency);
+  });
+
+  $(document).on('change','#efficiencyFIs', function () {
+  let yearPeriod=($('#efficiencyYear').val())?  $('#efficiencyYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjEfficiency.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjEfficiency.toYear = ( yearPeriod[1] ) ?   yearPeriod[1] :'';
+  filterObjEfficiency.fi = ($('#efficiencyFIs').val())?  $('#efficiencyFIs').val() :'';
+  filterObjEfficiency.PoolId = ($('#efficiencyPoolId').val())?  $('#efficiencyPoolId').val() :'';
+  filterObjEfficiency.locationId = ($('#efficiencyLocation').val())?  $('#efficiencyLocation').val() :'';
+  filterObjEfficiency.teamId = ($('#efficiencyTeamId').val())?  $('#efficiencyTeamId').val() :'';
+  console.log("\n\n\filterObjEfficiency OBJ",filterObjEfficiency);
+  getCollectionEfficiency(filterObjEfficiency);
+  });
+
+  $(document).on('change','#efficiencyPoolId', function () {
+  let yearPeriod=($('#efficiencyYear').val())?  $('#efficiencyYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjEfficiency.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjEfficiency.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjEfficiency.fi = ($('#efficiencyFIs').val())?  $('#efficiencyFIs').val() :'';
+  filterObjEfficiency.PoolId = ($('#efficiencyPoolId').val())?  $('#efficiencyPoolId').val() :'';
+  filterObjEfficiency.locationId = ($('#efficiencyLocation').val())?  $('#efficiencyLocation').val() :'';
+  filterObjEfficiency.teamId = ($('#efficiencyTeamId').val())?  $('#efficiencyTeamId').val() :'';
+  console.log("\n\n\filterObjEfficiency OBJ",filterObjEfficiency);
+  getCollectionEfficiency(filterObjEfficiency);
+  });
+
+  $(document).on('change','#efficiencyLocation', function () {
+  let yearPeriod=($('#efficiencyYear').val())?  $('#efficiencyYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjEfficiency.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjEfficiency.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjEfficiency.fi = ($('#efficiencyFIs').val())?  $('#efficiencyFIs').val() :'';
+  filterObjEfficiency.PoolId = ($('#efficiencyPoolId').val())?  $('#efficiencyPoolId').val() :'';
+  filterObjEfficiency.locationId = ($('#efficiencyLocation').val())?  $('#efficiencyLocation').val() :'';
+  filterObjEfficiency.teamId = ($('#efficiencyTeamId').val())?  $('#efficiencyTeamId').val() :'';
+  console.log("\n\n\filterObjEfficiency OBJ",filterObjEfficiency);
+  getCollectionEfficiency(filterObjEfficiency);
+  });
+
+  $(document).on('change','#efficiencyTeamId', function () {
+  let yearPeriod=($('#efficiencyYear').val())?  $('#efficiencyYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjEfficiency.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjEfficiency.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjEfficiency.fi = ($('#efficiencyFIs').val())?  $('#efficiencyFIs').val() :'';
+  filterObjEfficiency.PoolId = ($('#efficiencyPoolId').val())?  $('#efficiencyPoolId').val() :'';
+  filterObjEfficiency.locationId = ($('#efficiencyLocation').val())?  $('#efficiencyLocation').val() :'';
+  filterObjEfficiency.teamId = ($('#efficiencyTeamId').val())?  $('#efficiencyTeamId').val() :'';
+  console.log("\n\n\filterObjEfficiency OBJ",filterObjEfficiency);
+  getCollectionEfficiency(filterObjEfficiency);
+  });
+
+// Get Agent data filters
+  $(document).on('change','#avgFromDate', function () {
+  filterObjAgent.fromDate = ($('#avgFromDate').val())?  $('#avgFromDate').val() :'';
+  filterObjAgent.toDate = ($('#avgToDate').val())?  $('#avgToDate').val() :'';
+  getAgent(filterObjAgent);
+  });
+
+$(document).on('change','#avgToDate', function () {
+  filterObjAgent.fromDate = ($('#avgFromDate').val())?  $('#avgFromDate').val() :'';
+  filterObjAgent.toDate = ($('#avgToDate').val())?  $('#avgToDate').val() :'';
+  getAgent(filterObjAgent);
+});
+
+// Get FIs Filters Chart
+
+$(document).on('change','#agentProductYear', function () {
+  let yearPeriod=($('#agentProductYear').val())?  $('#agentProductYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjAgentProduct.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjAgentProduct.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  console.log("\n\n\ filterObjProductivity OBJ",filterObjAgentProduct);
+  getAgentProductivity(filterObjAgentProduct);
+  });
+
+// Customer base filters
+$(document).on('change','#CustomerfromDate', function () {
+  filterCustomer.fromDate = ($('#CustomerfromDate').val())?  $('#CustomerfromDate').val() :'';
+  filterCustomer.toDate = ($('#CustomertoDate').val())?  $('#CustomertoDate').val() :'';
+  filterCustomer.fi = ($('#customerFIs').val())?  $('#customerFIs').val() :'';
+  filterCustomer.productId = ($('#customerProductId').val())?  $('#customerProductId').val() :'';
+  filterCustomer.dispositionId = ($('#customerDispstnId').val())?  $('#customerDispstnId').val() :'';
+  console.log("\n\n\ filterCustomer OBJ",filterCustomer);
+  $('#reportLeadTable').DataTable().draw();
+}); 
+
+$(document).on('change','#CustomertoDate', function () {
+  filterCustomer.fromDate = ($('#CustomerfromDate').val())?  $('#CustomerfromDate').val() :'';
+  filterCustomer.toDate = ($('#CustomertoDate').val())?  $('#CustomertoDate').val() :'';
+  filterCustomer.fi = ($('#customerFIs').val())?  $('#customerFIs').val() :'';
+  filterCustomer.productId = ($('#customerProductId').val())?  $('#customerProductId').val() :'';
+  filterCustomer.dispositionId = ($('#customerDispstnId').val())?  $('#customerDispstnId').val() :'';
+  console.log("\n\n\ filterCustomer OBJ",filterCustomer);
+  $('#reportLeadTable').DataTable().draw();
+});
+
+$(document).on('change','#customerFIs', function () {
+  filterCustomer.fromDate = ($('#CustomerfromDate').val())?  $('#CustomerfromDate').val() :'';
+  filterCustomer.toDate = ($('#CustomertoDate').val())?  $('#CustomertoDate').val() :'';
+  filterCustomer.fi = ($('#customerFIs').val())?  $('#customerFIs').val() :'';
+  filterCustomer.productId = ($('#customerProductId').val())?  $('#customerProductId').val() :'';
+  filterCustomer.dispositionId = ($('#customerDispstnId').val())?  $('#customerDispstnId').val() :'';
+  console.log("\n\n\ filterCustomer OBJ",filterCustomer);
+  $('#reportLeadTable').DataTable().draw();
+});
+
+$(document).on('change','#customerProductId', function () {
+  filterCustomer.fromDate = ($('#CustomerfromDate').val())?  $('#CustomerfromDate').val() :'';
+  filterCustomer.toDate = ($('#CustomertoDate').val())?  $('#CustomertoDate').val() :'';
+  filterCustomer.fi = ($('#customerFIs').val())?  $('#customerFIs').val() :'';
+  filterCustomer.productId = ($('#customerProductId').val())?  $('#customerProductId').val() :'';
+  filterCustomer.dispositionId = ($('#customerDispstnId').val())?  $('#customerDispstnId').val() :'';
+  console.log("\n\n\ filterCustomer OBJ",filterCustomer);
+  $('#reportLeadTable').DataTable().draw();
+});
+
+$(document).on('change','#customerDispstnId', function () {
+  filterCustomer.fromDate = ($('#CustomerfromDate').val())?  $('#CustomerfromDate').val() :'';
+  filterCustomer.toDate = ($('#CustomertoDate').val())?  $('#CustomertoDate').val() :'';
+  filterCustomer.fi = ($('#customerFIs').val())?  $('#customerFIs').val() :'';
+  filterCustomer.productId = ($('#customerProductId').val())?  $('#customerProductId').val() :'';
+  filterCustomer.dispositionId = ($('#customerDispstnId').val())?  $('#customerDispstnId').val() :'';
+  console.log("\n\n\ filterCustomer OBJ",filterCustomer);
+  $('#reportLeadTable').DataTable().draw();
+});
+
+// MIS Report filters
+let filterMis={};
+$(document).on('change','#MISfromDate', function () {
+  filterMis.fromDate = ($('#MISfromDate').val())?  $('#MISfromDate').val() :'';
+  filterMis.toDate = ($('#MIStoDate').val())?  $('#MIStoDate').val() :'';
+  filterMis.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMis.locationId = ($('#MISLocation').val())?  $('#MISLocation').val() :'';
+  filterMis.PoolId = ($('#MISPool').val())?  $('#MISPool').val() :'';
+  // filterMis.dispositionId = ($('#MISDispstnId').val())?  $('#MISDispstnId').val() :'';
+  filterMis.teamId = ($('#MISteamId').val())?  $('#MISteamId').val() :'';
+  console.log("\n\n\ filterMis OBJ",filterMis);
+  $('#reportMisLeadTable').DataTable().draw();
+});
+
+$(document).on('change','#MIStoDate', function () {
+  filterMis.fromDate = ($('#MISfromDate').val())?  $('#MISfromDate').val() :'';
+  filterMis.toDate = ($('#MIStoDate').val())?  $('#MIStoDate').val() :'';
+  filterMis.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMis.locationId = ($('#MISLocation').val())?  $('#MISLocation').val() :'';
+  filterMis.PoolId = ($('#MISPool').val())?  $('#MISPool').val() :'';
+  // filterMis.dispositionId = ($('#MISDispstnId').val())?  $('#MISDispstnId').val() :'';
+  filterMis.teamId = ($('#MISteamId').val())?  $('#MISteamId').val() :'';
+  console.log("\n\n\ filterMis OBJ",filterMis);
+  $('#reportMisLeadTable').DataTable().draw();
+}); 
+
+$(document).on('change','#MISFIs', function () {
+  filterMis.fromDate = ($('#MISfromDate').val())?  $('#MISfromDate').val() :'';
+  filterMis.toDate = ($('#MIStoDate').val())?  $('#MIStoDate').val() :'';
+  filterMis.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMis.locationId = ($('#MISLocation').val())?  $('#MISLocation').val() :'';
+  filterMis.PoolId = ($('#MISPool').val())?  $('#MISPool').val() :'';
+  // filterMis.dispositionId = ($('#MISDispstnId').val())?  $('#MISDispstnId').val() :'';
+  filterMis.teamId = ($('#MISteamId').val())?  $('#MISteamId').val() :'';
+  console.log("\n\n\ filterMis OBJ",filterMis);
+  $('#reportMisLeadTable').DataTable().draw();
+}); 
+
+$(document).on('change','#MISLocation', function () {
+  filterMis.fromDate = ($('#MISfromDate').val())?  $('#MISfromDate').val() :'';
+  filterMis.toDate = ($('#MIStoDate').val())?  $('#MIStoDate').val() :'';
+  filterMis.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMis.locationId = ($('#MISLocation').val())?  $('#MISLocation').val() :'';
+  filterMis.PoolId = ($('#MISPool').val())?  $('#MISPool').val() :'';
+  // filterMis.dispositionId = ($('#MISDispstnId').val())?  $('#MISDispstnId').val() :'';
+  filterMis.teamId = ($('#MISteamId').val())?  $('#MISteamId').val() :'';
+  console.log("\n\n\ filterMis OBJ",filterMis);
+  $('#reportMisLeadTable').DataTable().draw();
+}); 
+
+$(document).on('change','#MISPool', function () {
+  filterMis.fromDate = ($('#MISfromDate').val())?  $('#MISfromDate').val() :'';
+  filterMis.toDate = ($('#MIStoDate').val())?  $('#MIStoDate').val() :'';
+  filterMis.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMis.locationId = ($('#MISLocation').val())?  $('#MISLocation').val() :'';
+  filterMis.PoolId = ($('#MISPool').val())?  $('#MISPool').val() :'';
+  // filterMis.dispositionId = ($('#MISDispstnId').val())?  $('#MISDispstnId').val() :'';
+  filterMis.teamId = ($('#MISteamId').val())?  $('#MISteamId').val() :'';
+  console.log("\n\n\ filterMis OBJ",filterMis);
+  $('#reportMisLeadTable').DataTable().draw();
+}); 
+
+$(document).on('change','#MISteamId', function () {
+  filterMis.fromDate = ($('#MISfromDate').val())?  $('#MISfromDate').val() :'';
+  filterMis.toDate = ($('#MIStoDate').val())?  $('#MIStoDate').val() :'';
+  filterMis.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMis.locationId = ($('#MISLocation').val())?  $('#MISLocation').val() :'';
+  filterMis.PoolId = ($('#MISPool').val())?  $('#MISPool').val() :'';
+  filterMis.dispositionId = ($('#MISDispstnId').val())?  $('#MISDispstnId').val() :'';
+  filterMis.teamId = ($('#MISteamId').val())?  $('#MISteamId').val() :'';
+  console.log("\n\n\ filterMis OBJ",filterMis);
+  $('#reportMisLeadTable').DataTable().draw();
+}); 
+
+$(document).on('click','#MISReport', function () {
+  filterMis.fromDate = ($('#MISfromDate').val())?  $('#MISfromDate').val() :'';
+  filterMis.toDate = ($('#MIStoDate').val())?  $('#MIStoDate').val() :'';
+  filterMis.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMis.locationId = ($('#MISLocation').val())?  $('#MISLocation').val() :'';
+  filterMis.PoolId = ($('#MISPool').val())?  $('#MISPool').val() :'';
+  // filterMis.dispositionId = ($('#MISDispstnId').val())?  $('#MISDispstnId').val() :'';
+  filterMis.teamId = ($('#MISteamId').val())?  $('#MISteamId').val() :'';
+  console.log("\n\n\ filterMis OBJ",filterMis);
+  DownloadMIS(filterMis);
+});
+
+let filterMisLead={};
+$(document).on('change','#MISLeadfromDate', function () {
+  filterMisLead.fromDate = ($('#MISLeadfromDate').val())?  $('#MISLeadfromDate').val() :'';
+  filterMisLead.toDate = ($('#MISLeadtoDate').val())?  $('#MISLeadtoDate').val() :'';
+  filterMisLead.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMisLead.locationId = ($('#MISLeadLocation').val())?  $('#MISLeadLocation').val() :'';
+  filterMisLead.PoolId = ($('#MISLeadPool').val())?  $('#MISLeadPool').val() :'';
+  filterMisLead.dispositionId = ($('#MISLeadDispstnId').val())?  $('#MISLeadDispstnId').val() :'';
+  filterMisLead.teamId = ($('#MISLeadteamId').val())?  $('#MISLeadteamId').val() :'';
+  console.log("\n\n\ filterMisLead OBJ",filterMisLead);
+});
+
+$(document).on('change','#MIStoDate', function () {
+  filterMisLead.fromDate = ($('#MISLeadfromDate').val())?  $('#MISLeadfromDate').val() :'';
+  filterMisLead.toDate = ($('#MISLeadtoDate').val())?  $('#MISLeadtoDate').val() :'';
+  filterMisLead.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMisLead.locationId = ($('#MISLeadLocation').val())?  $('#MISLeadLocation').val() :'';
+  filterMisLead.PoolId = ($('#MISLeadPool').val())?  $('#MISLeadPool').val() :'';
+  filterMisLead.dispositionId = ($('#MISLeadDispstnId').val())?  $('#MISLeadDispstnId').val() :'';
+  filterMisLead.teamId = ($('#MISLeadteamId').val())?  $('#MISLeadteamId').val() :'';
+  console.log("\n\n\ filterMisLead OBJ",filterMisLead);
+}); 
+
+$(document).on('change','#MISFIs', function () {
+  filterMisLead.fromDate = ($('#MISLeadfromDate').val())?  $('#MISLeadfromDate').val() :'';
+  filterMisLead.toDate = ($('#MISLeadtoDate').val())?  $('#MISLeadtoDate').val() :'';
+  filterMisLead.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMisLead.locationId = ($('#MISLeadLocation').val())?  $('#MISLeadLocation').val() :'';
+  filterMisLead.PoolId = ($('#MISLeadPool').val())?  $('#MISLeadPool').val() :'';
+  filterMisLead.dispositionId = ($('#MISLeadDispstnId').val())?  $('#MISLeadDispstnId').val() :'';
+  filterMisLead.teamId = ($('#MISLeadteamId').val())?  $('#MISLeadteamId').val() :'';
+  console.log("\n\n\ filterMisLead OBJ",filterMisLead);
+}); 
+
+$(document).on('change','#MISLocation', function () {
+  filterMisLead.fromDate = ($('#MISLeadfromDate').val())?  $('#MISLeadfromDate').val() :'';
+  filterMisLead.toDate = ($('#MISLeadtoDate').val())?  $('#MISLeadtoDate').val() :'';
+  filterMisLead.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMisLead.locationId = ($('#MISLeadLocation').val())?  $('#MISLeadLocation').val() :'';
+  filterMisLead.PoolId = ($('#MISLeadPool').val())?  $('#MISLeadPool').val() :'';
+  filterMisLead.dispositionId = ($('#MISLeadDispstnId').val())?  $('#MISLeadDispstnId').val() :'';
+  filterMisLead.teamId = ($('#MISLeadteamId').val())?  $('#MISLeadteamId').val() :'';
+  console.log("\n\n\ filterMisLead OBJ",filterMisLead);
+}); 
+
+$(document).on('change','#MISPool', function () {
+  filterMisLead.fromDate = ($('#MISLeadfromDate').val())?  $('#MISLeadfromDate').val() :'';
+  filterMisLead.toDate = ($('#MISLeadtoDate').val())?  $('#MISLeadtoDate').val() :'';
+  filterMisLead.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMisLead.locationId = ($('#MISLeadLocation').val())?  $('#MISLeadLocation').val() :'';
+  filterMisLead.PoolId = ($('#MISLeadPool').val())?  $('#MISLeadPool').val() :'';
+  filterMisLead.dispositionId = ($('#MISLeadDispstnId').val())?  $('#MISLeadDispstnId').val() :'';
+  filterMisLead.teamId = ($('#MISLeadteamId').val())?  $('#MISLeadteamId').val() :'';
+  console.log("\n\n\ filterMisLead OBJ",filterMisLead);
+}); 
+
+$(document).on('change','#MISteamId', function () {
+  filterMisLead.fromDate = ($('#MISLeadfromDate').val())?  $('#MISLeadfromDate').val() :'';
+  filterMisLead.toDate = ($('#MISLeadtoDate').val())?  $('#MISLeadtoDate').val() :'';
+  filterMisLead.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMisLead.locationId = ($('#MISLeadLocation').val())?  $('#MISLeadLocation').val() :'';
+  filterMisLead.PoolId = ($('#MISLeadPool').val())?  $('#MISLeadPool').val() :'';
+  filterMisLead.dispositionId = ($('#MISLeadDispstnId').val())?  $('#MISLeadDispstnId').val() :'';
+  filterMisLead.teamId = ($('#MISLeadteamId').val())?  $('#MISLeadteamId').val() :'';
+  console.log("\n\n\ filterMisLead OBJ",filterMisLead);
+}); 
+
+$(document).on('click','#MISLeadReport', function () {
+  filterMisLead.fromDate = ($('#MISLeadfromDate').val())?  $('#MISLeadfromDate').val() :'';
+  filterMisLead.toDate = ($('#MISLeadtoDate').val())?  $('#MISLeadtoDate').val() :'';
+  filterMisLead.fi = ($('#MISFIs').val())?  $('#MISFIs').val() :'';
+  filterMisLead.locationId = ($('#MISLeadLocation').val())?  $('#MISLeadLocation').val() :'';
+  filterMisLead.PoolId = ($('#MISLeadPool').val())?  $('#MISLeadPool').val() :'';
+  filterMisLead.dispositionId = ($('#MISLeadDispstnId').val())?  $('#MISLeadDispstnId').val() :'';
+  filterMisLead.teamId = ($('#teamNewId').val())?  $('#teamNewId').val() :'';
+  filterMisLead.agentId = ($('#teamMemberId').val())?  $('#teamMemberId').val() :'';
+  console.log("\n\n\ filterMisLead OBJ",filterMisLead);
+  DownloadMISLead(filterMisLead);
+});
+
+
+$(document).on('click','#CustomerReport', function () {
+  filterCustomer.fromDate = ($('#CustomerfromDate').val())?  $('#CustomerfromDate').val() :'';
+  filterCustomer.toDate = ($('#CustomertoDate').val())?  $('#CustomertoDate').val() :'';
+  filterCustomer.fi = ($('#customerFIs').val())?  $('#customerFIs').val() :'';
+  filterCustomer.productId = ($('#customerProductId').val())?  $('#customerProductId').val() :'';
+  filterCustomer.dispositionId = ($('#customerDispstnId').val())?  $('#customerDispstnId').val() :'';
+  console.log("\n\n\ filterCustomer OBJ",filterCustomer);
+  DownloadCustomerReport(filterCustomer);
+});
+
+$(document).on('click','#OverallReport', function () {
+  let yearPeriod=($('#overallYear').val())?  $('#overallYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjOverall.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjOverall.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjOverall.fi = ($('#overallFIs').val())?  $('#overallFIs').val() :'';
+  filterObjOverall.PoolId = ($('#overallpoolId').val())?  $('#overallpoolId').val() :'';
+  filterObjOverall.locationId = ($('#overallLocation').val())?  $('#overallLocation').val() :'';
+  filterObjOverall.teamId = ($('#overallTeamId').val())?  $('#overallTeamId').val() :'';
+  filterObjOverall.productId = ($('#overallProductId').val())?  $('#overallProductId').val() :'';
+  filterObjOverall.dpdId = ($('#overallDPDId').val())?  $('#overallDPDId').val() :'';
+  console.log("overall----",filterObjOverall);
+  DownloadOverallReport(filterObjOverall);
+});
+
+$(document).on('click','#collectionEffiReport', function () {
+  let yearPeriod=($('#efficiencyYear').val())?  $('#efficiencyYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjEfficiency.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjEfficiency.toYear = ( yearPeriod[1] ) ?   yearPeriod[1] :'';
+  filterObjEfficiency.fi = ($('#efficiencyFIs').val())?  $('#efficiencyFIs').val() :'';
+  filterObjEfficiency.PoolId = ($('#efficiencyPoolId').val())?  $('#efficiencyPoolId').val() :'';
+  filterObjEfficiency.locationId = ($('#efficiencyLocation').val())?  $('#efficiencyLocation').val() :'';
+  filterObjEfficiency.teamId = ($('#efficiencyTeamId').val())?  $('#efficiencyTeamId').val() :'';
+  console.log("\n\n\filterObjEfficiency OBJ",filterObjEfficiency);
+  DownloadcolnEfficienci(filterObjEfficiency);
+});
+
+$(document).on('click','#AgentReport', function () {
+  let yearPeriod=($('#agentProductYear').val())?  $('#agentProductYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjAgentProduct.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjAgentProduct.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  console.log("\n\n\ filterObjProductivity OBJ",filterObjAgentProduct);
+  DownloadAgentReport(filterObjAgentProduct);
+});
+
+$(document).on('click','#FIsReport', function () {
+  let yearPeriod=($('#yearRangeFI').val())?  $('#yearRangeFI').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjFIs.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjFIs.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  console.log("\n\n\ Filter OBJ FIsReport",filterObjFIs);
+  DownloadFIsReport(filterObjFIs);
+  });
+  
+$(document).on('click','#portfolioReport', function () {
+  let yearPeriod=($('#portfolioYear').val())?  $('#portfolioYear').val() :'';
+  yearPeriod=yearPeriod.split('-');
+  filterObjPortfolio.fromYear = ( yearPeriod[0] ) ?  yearPeriod[0] :'';
+  filterObjPortfolio.toYear = ( yearPeriod[1] )?   yearPeriod[1] :'';
+  filterObjPortfolio.fi = ($('#portfolioFI').val())?  $('#portfolioFI').val() :'';
+  // filterObjPortfolio.dispositionId = ($('#portfolioDispstnId').val())?  $('#portfolioDispstnId').val() :'';
+  filterObjPortfolio.locationId = ($('#portfolioLocation').val())?  $('#portfolioLocation').val() :'';
+  filterObjPortfolio.teamId = ($('#portfolioTeam').val())?  $('#portfolioTeam').val() :'';
+  filterObjPortfolio.productId = ($('#portfolioProductId').val())?  $('#portfolioProductId').val() :'';
+  filterObjPortfolio.dpdId = ($('#portfolioDPDId').val())?  $('#portfolioDPDId').val() :'';
+  console.log("\n\n\ filterObjPortfolio OBJ",filterObjPortfolio);
+  DownloadPortfolioReport(filterObjPortfolio);
+  });
+});
+
+let filterCaseMis={};
+$(document).on('click','#MISCaseReport', function () {
+  filterCaseMis.fromDate = ($('#MISCasefromDate').val())?  $('#MISCasefromDate').val() :'';
+  filterCaseMis.toDate = ($('#MISCasetoDate').val())?  $('#MISCasetoDate').val() :'';
+  filterCaseMis.fi = ($('#MISCaseFIs').val())?  $('#MISCaseFIs').val() :'';
+  filterCaseMis.locationId = ($('#MISCaseLocation').val())?  $('#MISCaseLocation').val() :'';
+  filterCaseMis.PoolId = ($('#MISPool').val())?  $('#MISPool').val() :'';
+  filterCaseMis.dispositionId = ($('#MISCaseDispstnId').val())?  $('#MISCaseDispstnId').val() :'';
+  filterCaseMis.teamId = ($('#MISCaseteamId').val())?  $('#MISCaseteamId').val() :'';
+  console.log("\n\n\ filterCaseMis OBJ",filterCaseMis);
+  DownloadCaseReport(filterCaseMis);
+});
+
+</script>
+
+<div id="main">
+
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+  </div>
+
+  <div class="row">
+    <div class="container">
+
+      <div class="col s12">
+        <div id="button-trigger" class="card roundCorners card-default scrollspy">
+          <div class="card-content" style="padding: 0px; margin-bottom: -30px;">
+            <ul class="tabs" style="border-radius: 10px 10px 0px 0px;">
+              <li class="tab col m3"><a href="#KeyPerformance">Key Performance</a></li>
+              <li class="tab col m3"><a href="#Statistics">Important Statistics</a></li>
+              <li class="tab col m3"><a href="#CustomerBase">Customer Statistics</a></li>
+              <li class="tab col m3"><a href="#MISReports">MIS reports</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="KeyPerformance" class="col s12">
+        <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+          <div class="card-content">
+            <div class="row">
+              <div class="row">
+                <div class="col s12">
+                  <div class="container">
+                    <div class="section">
+                      <!-- card stats start -->
+                      <div class="row" style="margin-top: 20px;">
+                        <div class="container">
+                        <div class="col s12">
+                        <div id="card-stats" class="pt-0">
+
+                          <!-- No Of FIs -->
+                          <h5 class="hero-main-label" style="margin-top: -20px;">FI Acquisition</h5>
+                          <div class="row" style="display: flex;margin-top: 29px;">
+                            <div class="col s4" style="margin-right: 440px;">
+                              <div class="input-field">
+                                <div class="input-field">
+                                  <label for="yearRangeFI" id="TotalFI" style="margin-top: -25px;">Year</label>
+                                  <select class="select2-theme browser-default" id="yearRangeFI" name="yearRangeFI">
+                                    <option value="" disabled>Choose Year</option>
+                                    <% years.forEach((year) => { %>
+                                    <option value="<%=year%>"><%=year%></option>
+                                    <% }); %>
+                                  </select>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="col s2 right">
+                              <button class="btn gradient-45deg-light-blue-cyan" id="FIsReport" style="margin-top: 20px;">
+                                Download
+                              </button>
+                            </div>
+                            </div>
+                          <div class="row" style="margin-top: 25px;">
+                            <div class="col s12 m12 l12">
+                            <div class="trending-line-chart-wrapper">
+                              <canvas id="FIs-line-chart" height="250" width="392"></canvas>
+                            </div>
+                            </div>
+                          </div>
+
+                          <!-- Portfolio Analysis -->
+                          <h5 class="hero-main-label" style="margin-top: 80px;">Portfolio Acquisition</h5>
+                          <div class="row" style="display: flex;margin-top: 20px;">
+                            <div class="col s4">
+                              <div class="input-field">
+                                <div class="input-field">
+                                  <label for="portfolioYear" style="margin-top: -25px;">Year</label>
+                                  <select class="select2-theme browser-default" id="portfolioYear" name="portfolioYear">
+                                    <option value="" disabled>Choose Year</option>
+                                    <% years.forEach((year) => { %>
+                                    <option value="<%=year%>"><%=year%></option>
+                                    <% }); %>
+                                  </select>
+                                  </div>
+                              </div>
+                            </div>
+                            <% if (roleName!='FiName') { %>
+                              <div class="col s4">
+                                <div class="input-field">
+                                <label for="portfolioFI" style="margin-top: -25px;">FIs</label>
+                                <select class="select2-theme browser-default" id="portfolioFI" name="portfolioFI">
+                                  <option value="" disabled>Choose Fis</option>
+                                  <option value="" selected>All</option>
+                                  <% fis.forEach((fi) => { %>
+                                  <option value="<%=fi.id%>"><%=fi.name%></option>
+                                  <% }); %>
+                                </select>
+                                </div>
+                              </div>
+                              <% } %>
+                              <div class="col s4">
+                                <div class="input-field">
+                                <label for="portfolioLocation" style="margin-top: -25px;">Location</label>
+                                <select class="select2-theme browser-default" id="portfolioLocation" name="portfolioLocation">
+                                  <option value="" disabled>Choose Location</option>
+                                  <option value="" selected>All</option>
+                                  <% locations.forEach((location) => { %>
+                                  <option value="<%=location.name%>"><%=location.name%></option>
+                                  <% }); %>
+                                </select>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="row" style="display: flex;margin-top: 20px;">
+                          <div class="col s3">
+                              <div class="input-field">
+                                <label for="portfolioTeam" style="margin-top: -25px;">Team</label>
+                                <select class="select2-theme browser-default" id="portfolioTeam" name="portfolioTeam">
+                                  <option value=""disabled>Choose Team</option>
+                                  <option value="" selected>All</option>
+                                  <% teams.forEach((team) => { %>
+                                  <option value="<%=team.id%>"><%=team.name%></option>
+                                  <% }); %>
+                                </select>
+                              </div>
+                          </div>
+                          <div class="col s3">
+                              <div class="input-field">
+                                <label for="portfolioProductId" style="margin-top: -25px;">ProductType</label>
+                                <select class="select2-theme browser-default" id="portfolioProductId" name="portfolioProductId">
+                                  <option value="" disabled>Choose Product</option>
+                                  <option value="" selected>All</option>
+                                  <% productTypes.forEach((productType) => { %>
+                                  <option value="<%=productType.id%>"><%=productType.name%></option>
+                                  <% }); %>
+                                </select>
+                               </div>
+                          </div>
+                          <div class="col s3">
+                            <div class="input-field">
+                              <label for="portfolioDPDId" style="margin-top: -25px;">DPD Bucket</label>
+                              <select class="select2-theme browser-default" id="portfolioDPDId" name="portfolioDPDId">
+                                <option value="" disabled>Choose DPD</option>
+                                <option value="" selected>All</option>
+                                <% dpdBuckets.forEach((dpdBucket) => { %>
+                                <option value="<%=dpdBucket.shortName%>"><%=dpdBucket.shortName%></option>
+                                <% }); %>
+                              </select>
+                             </div>
+                          </div>
+                          <div class="col s3">
+                              <button class="btn gradient-45deg-light-blue-cyan right" id="portfolioReport" style="margin-top: 20px;margin-right: 45px;">
+                                Download
+                              </button>
+                          </div>
+                          </div>
+                          <div class="row" style="margin-top: 25px;">
+                            <div class="col s12 m12 l12">
+                            <div class="trending-line-chart-wrapper">
+                              <canvas id="portfolio-line-chart" height="250" width="392"></canvas>
+                            </div>
+                            </div>
+                          </div>
+                         
+                          <!-- Overall Collection -->
+                          <h5 class="hero-main-label" style="margin-top: 80px;">Overall Collection</h5>
+                          <div class="row" style="display: flex;margin-top: 20px;">
+                              <div class="col s3" style="margin-left: 5px;">
+                              <div class="input-field">
+                                <div class="input-field">
+                                  <label for="overallYear" style="margin-top: -25px;">Year</label>
+                                  <select class="select2-theme browser-default" id="overallYear" name="overallYear">
+                                    <option value="" disabled>Choose Year</option>
+                                    <% years.forEach((year) => { %>
+                                    <option value="<%=year%>"><%=year%></option>
+                                    <% }); %>
+                                  </select>
+                                  </div>
+                              </div>
+                              </div>
+                              <div class="col s6">
+                                <div id="overallPoolID" style="margin-top: -6px;"></div>
+                              </div>
+
+                              <!-- <div class="col s3">
+                                <div class="input-field">
+                                <label for="overallFIs" style="margin-top: -25px;">FIs</label>
+                                <select class="select2-theme browser-default" id="overallFIs" name="overallFIs">
+                                  <option value="" disabled>Choose Fis</option>
+                                  <option value="" selected>All</option>
+                                  <% fis.forEach((fi) => { %>
+                                  <option value="<%=fi.id%>"><%=fi.name%></option>
+                                  <% }); %>
+                                </select>
+                                </div>
+                              </div>
+                              <div class="col s3">
+                                <div class="input-field" >
+                                  <label for="overallPool" style="margin-top: -25px;">Pool</label>
+                                  <select class="select2-theme browser-default" id="overallpoolId" name="overallpoolId">
+                                    <option value="" disabled>Choose Pool</option>
+                                    <option value="" selected>All</option>
+                                    <% pools.forEach((pool) => { %>
+                                    <option value="<%=pool.id%>"><%=pool.fileName.replace('.csv','')%></option>
+                                    <% }); %>
+                                  </select>
+                                </div>
+                              </div> -->
+
+                              <div class="col s3">
+                                <div class="input-field">
+                                <label for="overallLocation" style="margin-top: -25px;">Location</label>
+                                <select class="select2-theme browser-default" id="overallLocation" name="overallLocation">
+                                  <option value="" disabled>Choose Location</option>
+                                  <option value="" selected>All</option>
+                                  <% locations.forEach((location) => { %>
+                                  <option value="<%=location.name%>"><%=location.name%></option>
+                                  <% }); %>
+                                </select>
+                                </div>
+                              </div>        
+                            </div>
+                            <div class="row" style="display: flex;margin-top: 20px;">
+                             <div class="col s3">
+                                <div class="input-field">
+                                  <label for="overallTeam" style="margin-top: -25px;">Team</label>
+                                  <select class="select2-theme browser-default" id="overallTeamId" name="overallTeamId">
+                                    <option value=""disabled>Choose Team</option>
+                                    <option value="" selected>All</option>
+                                    <% teams.forEach((team) => { %>
+                                    <option value="<%=team.id%>"><%=team.name%></option>
+                                    <% }); %>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col s3">
+                                <div class="input-field">
+                                  <label for="overallProductId" style="margin-top: -25px;">ProductType</label>
+                                  <select class="select2-theme browser-default" id="overallProductId" name="overallProductId">
+                                    <option value="" disabled>Choose Product</option>
+                                    <option value="" selected>All</option>
+                                    <% productTypes.forEach((productType) => { %>
+                                    <option value="<%=productType.id%>"><%=productType.name%></option>
+                                    <% }); %>
+                                  </select>
+                                 </div>
+                             </div>
+                             <div class="col s3">
+                              <div class="input-field">
+                                <label for="overallDPDId" style="margin-top: -25px;">DPD Bucket</label>
+                                <select class="select2-theme browser-default" id="overallDPDId" name="overallDPDId">
+                                  <option value="" disabled>Choose DPD</option>
+                                  <option value="" selected>All</option>
+                                  <% dpdBuckets.forEach((dpdBucket) => { %>
+                                  <option value="<%=dpdBucket.shortName%>"><%=dpdBucket.shortName%></option>
+                                  <% }); %>
+                                </select>
+                               </div>
+                             </div>
+                             <div class="col s3">
+                            <button class="btn gradient-45deg-light-blue-cyan right" id="OverallReport" style="margin-top: 20px;margin-right: 40px;">
+                              Download
+                            </button>
+                            </div>
+                            </div>
+                          <div class="row" style="margin-top: 25px;">
+                            <div class="col s12 m12 l12">
+                            <div class="trending-line-chart-wrapper">
+                              <canvas id="overallCollection-line-chart" height="250" width="392"></canvas>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+                      <!--card stats end-->
+                    </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+      </div>
+      <div id="Statistics" class="col s12">
+        <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+          <div class="card-content">
+            <div class="row">
+              <div class="row">
+                <div class="col s12">
+                  <div class="container">
+                    <div class="section">
+                    <!--chart dashboard start-->
+                    <div class="row" style="margin-top: -30px;">
+                      <div class="container">
+                      <div class="col l12">
+                        <div id="card-stats" class="pt-0">
+                        <div class="row" style="margin-top: 25px;">
+                          <div class="col s12 m12 l12">
+                            <h5 class="hero-main-label" style="margin-top: 10px;">Avg collection value per agent</h5>
+                            <div id="card-stats" class="pt-0">
+                              <div class="row">
+                              <div class="col s6">
+                                <div class="input-field">
+                                  <label for="avgFromDate" style="font-size: 16px;">From Date</label>
+                                  <input placeholder="fromDate" class="" id="avgFromDate" name="avgFromDate" type="date" value="<%= moment().startOf('month').format("YYYY-MM-DD") %>"/>
+                                </div>
+                               </div>
+                               <div class="col s6">
+                                <div class="input-field">
+                                  <label for="avgToDate" style="font-size: 16px;">To Date</label>
+                                  <input placeholder="toDate" class="" id="avgToDate" name="avgToDate" type="date" value="<%= moment().format("YYYY-MM-DD") %>"/>
+                                </div>
+                               </div>
+                              </div>
+                              <div class="row">
+                                <div class="col s12 m6 l6">
+                                  <div class="card padding-4 animate fadeLeft bor-top">
+                                    <div class="row">
+                                        <div class="col">
+                                          <p class="no-margin strong">Tellecallers</p>
+                                          <h5 class="mb-0 color-blue" id="avgTellecaller"></h5>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col s12 m6 l6">
+                                  <div class="card padding-4 animate fadeLeft bor-top">
+                                    <div class="row">
+                                        <div class="col">
+                                          <p class="no-margin strong">Fos</p>
+                                          <h5 class="mb-0 color-blue" id="avgFos"></h5>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col s6"> 
+                              <h5 class="hero-main-label" style="margin-top: 40px;">Agent wise productivity increase</h5>
+                            </div>
+                            <div class="col s2 right" style="margin-top: 25px;">
+                              <button class="btn gradient-45deg-light-blue-cyan right" id="AgentReport" style="margin-top: 20px;margin-right: -10px;">
+                                Download
+                              </button>
+                            </div>
+                            <div class="col s2 right" style="margin-top: 25px;">
+                                <div class="input-field">
+                                  <label for="agentProductYear" style="margin-top: -25px;">Year</label>
+                                  <select class="select2-theme browser-default" id="agentProductYear" name="agentProductYear">
+                                    <option value="" disabled>Choose Year</option>
+                                    <% years.forEach((year) => { %>
+                                    <option value="<%=year%>"><%=year%></option>
+                                    <% }); %>
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="trending-line-chart-wrapper">
+                            <canvas id="agentProductivity-line-chart" height="250" width="392"></canvas>
+                          </div>
+                          </div>
+                         </div>
+                         <div class="row" style="margin-top: 70px;">
+                          <div class="col s12 m12 l12">
+                            <!-- Overall Collection -->
+                            <h5 class="hero-main-label" style="margin-top: 5px;">Collection Efficiency</h5>
+                            <div class="row" style="display: flex;margin-top: 20px;">
+                            <div class="col s4" style="margin-left: 5px;">
+                              <div class="input-field">
+                                <div class="input-field">
+                                  <label for="efficiencyYear" style="margin-top: -25px;">Year</label>
+                                  <select class="select2-theme browser-default" id="efficiencyYear" name="efficiencyYear">
+                                    <option value="" disabled>Choose Year</option>
+                                    <% years.forEach((year) => { %>
+                                    <option value="<%=year%>"><%=year%></option>
+                                    <% }); %>
+                                  </select>
+                                  </div>
+                              </div>
+                            </div>
+
+                            <div class="col s8">
+                              <div id="colEfficiencyPoolID" style="margin-top: -6px;"></div>
+                            </div>
+
+                              <!-- <div class="col s4">
+                                <div class="input-field">
+                                <label for="efficiencyFIs" style="margin-top: -25px;">FIs</label>
+                                <select class="select2-theme browser-default" id="efficiencyFIs" name="efficiencyFIs">
+                                  <option value="" disabled>Choose Fis</option>
+                                  <option value="" selected>All</option>
+                                  <% fis.forEach((fi) => { %>
+                                  <option value="<%=fi.id%>"><%=fi.name%></option>
+                                  <% }); %>
+                                </select>
+                                </div>
+                              </div>
+                              <div class="col s4">
+                                <div class="input-field" >
+                                  <label for="efficiencyPoolId" style="margin-top: -25px;">Pool</label>
+                                  <select class="select2-theme browser-default" id="efficiencyPoolId" name="efficiencyPoolId">
+                                    <option value="" disabled>Choose Pool</option>
+                                    <option value="" selected>All</option>
+                                    <% pools.forEach((pool) => { %>
+                                    <option value="<%=pool.id%>"><%=pool.fileName.replace('.csv','')%></option>
+                                    <% }); %>
+                                  </select>
+                                </div>
+                              </div> -->
+                             </div>
+                            <div class="row" style="display: flex;margin-top: 20px;">
+                              <div class="col s4">
+                                  <div class="input-field">
+                                  <label for="efficiencyLocation" style="margin-top: -25px;">Location</label>
+                                  <select class="select2-theme browser-default" id="efficiencyLocation" name="efficiencyLocation">
+                                    <option value="" disabled>Choose Location</option>
+                                    <option value="" selected>All</option>
+                                    <% locations.forEach((location) => { %>
+                                    <option value="<%=location.name%>"><%=location.name%></option>
+                                    <% }); %>
+                                  </select>
+                                  </div>
+                              </div>
+                              <div class="col s4">
+                                <div class="input-field">
+                                  <label for="efficiencyTeamId" style="margin-top: -25px;">Team</label>
+                                  <select class="select2-theme browser-default" id="efficiencyTeamId" name="efficiencyTeamId">
+                                    <option value=""disabled>Choose Team</option>
+                                    <option value="" selected>All</option>
+                                    <% teams.forEach((team) => { %>
+                                    <option value="<%=team.id%>"><%=team.name%></option>
+                                    <% }); %>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col s4">
+                                <button class="btn gradient-45deg-light-blue-cyan right" id="collectionEffiReport" style="margin-top: 20px;margin-right: 45px;">
+                                  Download
+                                </button>
+                              </div>
+                            </div>
+                    
+                            <div class="row" style="margin-top: 25px;">
+                            <div class="col s12 m12 l12">
+                            <div class="trending-line-chart-wrapper">
+                              <canvas id="collectionEfficiency-line-chart" height="250" width="392"></canvas>
+                            </div>
+                            </div>
+                            </div>
+                          </div>
+                         </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                    <!--chart dashboard end-->
+                    </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+      </div>
+      <div id="CustomerBase" class="col s12">
+        <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+          <div class="card-content">
+            <div class="row">
+              <div class="row">
+                <div class="col s12">
+                  <div class="container">
+                    <div class="section">
+                      <div class="row">
+                        <div class="container">
+                        <div class="col s12">
+                        <div id="card-stats" class="pt-0">
+                          <div class="col s12 m12 l12">
+                            <h5 class="hero-main-label" style="margin-top: 10px;">State wise Customer Base</h5>
+                            <div class="row" style="display: flex;margin-top: 22px !important;">
+                              <div class="col s4">
+                                <div class="input-field">
+                                  <label for="CustomerfromDate" style="font-size: 16px;">From Date</label>
+                                  <input placeholder="fromDate" class="" id="CustomerfromDate" name="CustomerfromDate" type="date" value="<%= moment().startOf('month').format("YYYY-MM-DD")%>" />
+                                </div>
+                               </div>
+                               <div class="col s4">
+                                <div class="input-field">
+                                  <label for="CustomertoDate" style="font-size: 16px;">To Date</label>
+                                  <input placeholder="toDate" class="" id="CustomertoDate" name="CustomertoDate" type="date" value="<%= moment().format("YYYY-MM-DD") %>" />
+                                </div>
+                               </div>
+                               <div class="col s4">
+                                <div class="input-field">
+                                 <label for="customerFIs" style="margin-top: -25px;">FIs</label>
+                                 <select class="select2-theme browser-default" id="customerFIs" name="customerFIs">
+                                  <option value="" disabled>Choose FIs</option>
+                                  <option value="" selected>All</option>
+                                  <% fis.forEach((fi) => { %>
+                                  <option value="<%=fi.id%>"><%=fi.name%></option>
+                                  <% }); %>
+                                 </select>
+                                </div>
+                               </div>
+                            </div>
+                            <div class="row" style="display: flex;margin-top: 22px !important;">
+                               <div class="col s4">
+                                 <div class="input-field">
+                                  <label for="customerProductId" style="margin-top: -25px;">ProductType</label>
+                                  <select class="select2-theme browser-default" id="customerProductId" name="customerProductId">
+                                    <option value="" disabled>Choose Product</option>
+                                    <option value="" selected>All</option>
+                                    <% productTypes.forEach((productType) => { %>
+                                    <option value="<%=productType.id%>"><%=productType.name%></option>
+                                    <% }); %>
+                                  </select>
+                                 </div>
+                                </div>
+                                <div class="col s4">
+                                  <div class="input-field" >
+                                    <label for="customerDispstnId" style="margin-top: -25px;">Disposition</label>
+                                    <select class="select2-theme browser-default" id="customerDispstnId" name="customerDispstnId">
+                                      <option value="" disabled>Choose Disposition</option>
+                                      <option value="" selected>All</option>
+                                      <% Dispositions.forEach((disposition) => { %>
+                                      <option value="<%=disposition.id%>"><%=disposition.status%></option>
+                                      <% }); %>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col s4">
+                                  <button class="btn gradient-45deg-light-blue-cyan right" id="CustomerReport" style="margin-top: 20px;margin-right: 70px;">
+                                    Download
+                                  </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <%- include('./datatables/leads_datatable.ejs', datatable) -%>
+                            </div>
+                            <h5 class="hero-main-label" style="margin-top: 20px;">Case Status</h5>
+                            <div class="row" style="display: flex;">
+                              <div class="col s3">
+                               <div class="input-field">
+                                 <label for="MISCasefromDate" style="font-size: 16px;">From Date</label>
+                                 <input placeholder="fromDate" class="" id="MISCasefromDate" name="MISCasefromDate" type="date" value="<%= moment().startOf('month').format("YYYY-MM-DD") %>"/>
+                               </div>
+                              </div>
+                              <div class="col s3">
+                               <div class="input-field">
+                                 <label for="MISCasetoDate" style="font-size: 16px;">To Date</label>
+                                 <input placeholder="toDate" class="" id="MISCasetoDate" name="MISCasetoDate" type="date" value="<%= moment().format("YYYY-MM-DD") %>" />
+                               </div>
+                              </div>
+
+                              <div class="col s6">
+                                <div id="MISCasePoolID" style="margin-top: -6px;"></div>
+                              </div>
+
+                              <!-- <div class="col s3">
+                               <div class="input-field">
+                                <label for="MISCaseFIs" style="margin-top: -25px;">FIs</label>
+                                <select class="select2-theme browser-default" id="MISCaseFIs" name="MISCaseFIs">
+                                 <option value="" disabled>Choose FIs</option>
+                                 <option value="" selected>All</option>
+                                 <% fis.forEach((fi) => { %>
+                                 <option value="<%=fi.id%>"><%=fi.name%></option>
+                                 <% }); %>
+                                </select>
+                               </div>
+                              </div>
+                              <div class="col s3">
+                                <div class="input-field">
+                                 <label for="MISCasePool" style="margin-top: -25px;">Pool</label>
+                                 <select class="select2-theme browser-default" id="MISCasePool" name="MISCasePool">
+                                   <option value="" disabled>Choose Pool</option>
+                                   <option value="" selected>All</option>
+                                   <% pools.forEach((pool) => { %>
+                                   <option value="<%=pool.id%>"><%=pool.fileName.replace('.csv','')%></option>
+                                   <% }); %>
+                                 </select>
+                                </div>
+                              </div> -->
+
+                           </div>
+                           <div class="row" style="display: flex;">
+                            <div class="col s4">
+                              <div class="input-field">
+                              <label for="MISCaseLocation" style="margin-top: -25px;">Location</label>
+                              <select class="select2-theme browser-default" id="MISCaseLocation" name="MISCaseLocation">
+                                <option value="" disabled>Choose Location</option>
+                                <option value="" selected>All</option>
+                                <% locations.forEach((location) => { %>
+                                <option value="<%=location.name%>"><%=location.name%></option>
+                                <% }); %>
+                              </select>
+                              </div>
+                            </div>
+                             <div class="col s4">
+                               <div class="input-field">
+                                <label for="MISCaseteamId" style="margin-top: -25px;">Team</label>
+                                <select class="select2-theme browser-default" id="MISCaseteamId" name="MISCaseteamId">
+                                  <option value="" disabled>Choose Team</option>
+                                  <option value="" selected>All</option>
+                                  <% teams.forEach((team) => { %>
+                                    <option value="<%=team.id%>"><%=team.name%></option>
+                                  <% }); %>
+                                </select>
+                               </div>
+                             </div>
+                             <div class="col s4">
+                               <button class="btn gradient-45deg-light-blue-cyan right" id="MISCaseReport" style="margin-top: 20px;margin-right: 80px;">
+                                 Download
+                               </button>
+                             </div>
+                           </div>
+                          </div>
+                        </div>
+                       </div>
+                      </div>
+                    </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+        </div>
+      </div>
+      <div id="MISReports" class="col s12">
+        <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+          <div class="card-content">
+            <div class="row">
+              <div class="row">
+                <div class="col s12">
+                  <div class="container">
+                    <div class="section">
+                     
+                      <div class="row">
+                        <div class="container">
+                        <div class="col s12">
+                        <div id="card-stats" class="pt-0">
+                          <h5 class="hero-main-label" style="margin-bottom: 17px;">Agent Performance</h5>
+                          <div class="row" style="display: flex;">
+                             <div class="col s3">
+                              <div class="input-field">
+                                <label for="MISfromDate" style="font-size: 16px;">From Date</label>
+                                <input placeholder="fromDate" class="" id="MISfromDate" name="MISfromDate" type="date" value="<%= moment().startOf('month').format("YYYY-MM-DD") %>"/>
+                              </div>
+                             </div>
+                             <div class="col s3">
+                              <div class="input-field">
+                                <label for="MIStoDate" style="font-size: 16px;">To Date</label>
+                                <input placeholder="toDate" class="" id="MIStoDate" name="MIStoDate" type="date" value="<%= moment().format("YYYY-MM-DD") %>" />
+                              </div>
+                             </div>
+
+                             <div class="col s6">
+                              <div id="MISPoolID" style="margin-top: -6px;"></div>
+                              </div>
+
+                             <!-- <div class="col s3">
+                              <div class="input-field">
+                               <label for="MISFIs" style="margin-top: -25px;">FIs</label>
+                               <select class="select2-theme browser-default" id="MISFIs" name="MISFIs">
+                                <option value="" disabled>Choose FIs</option>
+                                <option value="" selected>All</option>
+                                <% fis.forEach((fi) => { %>
+                                <option value="<%=fi.id%>"><%=fi.name%></option>
+                                <% }); %>
+                               </select>
+                              </div>
+                             </div>
+
+                             <div class="col s3">
+                              <div class="input-field">
+                               <label for="MISPool" style="margin-top: -25px;">Pool</label>
+                               <select class="select2-theme browser-default" id="MISPool" name="MISPool">
+                                 <option value="" disabled>Choose Pool</option>
+                                 <option value="" selected>All</option>
+                                 <% pools.forEach((pool) => { %>
+                                 <option value="<%=pool.id%>"><%=pool.fileName.replace('.csv','')%></option>
+                                 <% }); %>
+                               </select>
+                              </div>
+                             </div> -->
+                          </div>
+                          <div class="row" style="display: flex;">
+                            <div class="col s4">
+                              <div class="input-field">
+                              <label for="MISLocation" style="margin-top: -25px;">Location</label>
+                              <select class="select2-theme browser-default" id="MISLocation" name="MISLocation">
+                                <option value="" disabled>Choose Location</option>
+                                <option value="" selected>All</option>
+                                <% locations.forEach((location) => { %>
+                                <option value="<%=location.name%>"><%=location.name%></option>
+                                <% }); %>
+                              </select>
+                              </div>
+                            </div>
+                            <div class="col s4">
+                              <div class="input-field">
+                               <label for="MISteamId" style="margin-top: -25px;">Team</label>
+                               <select class="select2-theme browser-default" id="MISteamId" name="MISteamId">
+                                 <option value="" disabled>Choose Team</option>
+                                 <option value="" selected>All</option>
+                                 <% teams.forEach((team) => { %>
+                                 <option value="<%=team.id%>" <% if (team.id == teamOne.id) { %>selected
+                                  <% } %>><%=team.name%></option>
+                                 <% }); %>
+                               </select>
+                              </div>
+                            </div>
+                            <div class="col s4">
+                              <button class="btn gradient-45deg-light-blue-cyan right" id="MISReport" style="margin-top: 20px;margin-right: 80px;">
+                                Download
+                              </button>
+                            </div>
+                          </div>
+                          <!-- <div class="row" style="margin-top: 25px;">
+                            <%- include('./datatables/misReport.ejs', datatableMIS) -%>
+                          </div> -->
+                        <h5 class="hero-main-label" style="margin-top: 40px;">Leads Analysis</h5>
+                        <div class="row" style="display: flex;">
+                          <div class="col s3">
+                           <div class="input-field">
+                             <label for="MISLeadfromDate" style="font-size: 16px;">From Date</label>
+                             <input placeholder="fromDate" class="" id="MISLeadfromDate" name="MISLeadfromDate" type="date" value="<%= moment().startOf('month').format("YYYY-MM-DD") %>"/>
+                           </div>
+                          </div>
+                          <div class="col s3">
+                           <div class="input-field">
+                             <label for="MISLeadtoDate" style="font-size: 16px;">To Date</label>
+                             <input placeholder="toDate" class="" id="MISLeadtoDate" name="MISLeadtoDate" type="date" value="<%= moment().format("YYYY-MM-DD") %>" />
+                           </div>
+                          </div>
+
+                          <div class="col s6">
+                            <div id="MISLeadPoolID" style="margin-top: -6px;"></div>
+                          </div>
+
+                          <!-- <div class="col s3">
+                           <div class="input-field">
+                            <label for="MISLeadFIs" style="margin-top: -25px;">FIs</label>
+                            <select class="select2-theme browser-default" id="MISLeadFIs" name="MISLeadFIs">
+                             <option value="" disabled>Choose FIs</option>
+                             <option value="" selected>All</option>
+                             <% fis.forEach((fi) => { %>
+                             <option value="<%=fi.id%>"><%=fi.name%></option>
+                             <% }); %>
+                            </select>
+                           </div>
+                          </div>
+                          <div class="col s3">
+                            <div class="input-field">
+                             <label for="MISLeadPool" style="margin-top: -25px;">Pool</label>
+                             <select class="select2-theme browser-default" id="MISLeadPool" name="MISLeadPool">
+                               <option value="" disabled>Choose Pool</option>
+                               <option value="" selected>All</option>
+                               <% pools.forEach((pool) => { %>
+                               <option value="<%=pool.id%>"><%=pool.fileName.replace('.csv','')%></option>
+                               <% }); %>
+                             </select>
+                            </div>
+                          </div> -->
+
+                          <div class="col s3">
+                            <div class="input-field">
+                            <label for="MISLeadLocation" style="margin-top: -25px;">Location</label>
+                            <select class="select2-theme browser-default" id="MISLeadLocation" name="MISLeadLocation">
+                              <option value="" disabled>Choose Location</option>
+                              <option value="" selected>All</option>
+                              <% locations.forEach((location) => { %>
+                              <option value="<%=location.name%>"><%=location.name%></option>
+                              <% }); %>
+                            </select>
+                            </div>
+                          </div>
+                       </div>
+                       <div class="row" style="display: flex;">
+                          <div class="col s3" style="margin-top: 8px;">
+                            <div class="input-field" >
+                              <label for="MISLeadDispstnId" style="margin-top: -32px;">Disposition</label>
+                              <select class="select2-theme browser-default" id="MISLeadDispstnId" name="MISLeadDispstnId">
+                                <option value="" disabled>Choose Disposition</option>
+                                <option value="" selected>All</option>
+                                <% Dispositions.forEach((disposition) => { %>
+                                <option value="<%=disposition.id%>"><%=disposition.status%></option>
+                                <% }); %>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col s7">
+                          <div id="TeamMember"></div>
+                          </div>
+                         <div class="col s2">
+                           <button class="btn gradient-45deg-light-blue-cyan right" id="MISLeadReport" style="margin-top: 20px;">
+                             Download
+                           </button>
+                         </div>
+                       </div>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let isteamSelect=false;
+  let team = document.getElementById("teamNewId");
+  let teamId='';
+  console.log("Team ID1",teamId);
+  getTeamMembers(teamId,isteamSelect);
+  const handleTeamMember=()=>{
+  let team = document.getElementById("teamNewId");
+  let teamId=team.options[team.selectedIndex].value;
+  console.log("Team ID2",teamId);
+  isteamSelect=true;
+  getMembers(teamId,isteamSelect);
+ };
+
+   //MIS agent fis & pool dependencies
+
+  let isFiSelect=false;
+  let fis = document.getElementById("MISFIs");
+  let fiId='';
+  console.log("FI ID1",fiId);
+  getMisAgentPoolName(fiId,isFiSelect);
+  const handlePoolName=()=>{
+  let fis = document.getElementById("MISFIs");
+  let fiId=fis.options[fis.selectedIndex].value;
+  console.log("FI ID2",fiId);
+  isFiSelect=true;
+  getMisAgentPool(fiId,isFiSelect);
+  }
+
+   //MIS leads fis & pool dependencies
+  let fisMISLead = document.getElementById("MISLeadFIs");
+  getMisLeadPoolName(fiId,isFiSelect);
+  const handleLeadPoolName=()=>{
+  let fis = document.getElementById("MISLeadFIs");
+  let fiId=fis.options[fis.selectedIndex].value;
+  console.log("FI ID2",fiId);
+  isFiSelect=true;
+  getMisLeadPool(fiId,isFiSelect);
+  }
+
+  //MIS Case fis & pool dependencies
+  let fisMISCase = document.getElementById("MISCaseFIs");
+  getMisCasePoolName(fiId,isFiSelect);
+  const handCasePoolName=()=>{
+  let fis = document.getElementById("MISCaseFIs");
+  let fiId=fis.options[fis.selectedIndex].value;
+  console.log("FI ID2",fiId);
+  isFiSelect=true;
+  getMisCasePool(fiId,isFiSelect);
+  }
+
+  //Collection Efficiency fis & pool dependencies
+  let fisEfficiency = document.getElementById("efficiencyFIs");
+  getEfficiencyPoolName(fiId,isFiSelect);
+  const handefficiencyPoolName=()=>{
+  let fis = document.getElementById("efficiencyFIs");
+  let fiId=fis.options[fis.selectedIndex].value;
+  console.log("FI ID2",fiId);
+  isFiSelect=true;
+  getEfficiencyPool(fiId,isFiSelect);
+  }
+
+  //Overall Collection fis & pool dependencies
+  let fisOverall = document.getElementById("overallFIs");
+  getOverallPoolName(fiId,isFiSelect);
+  const handeOverallPoolName=()=>{
+  let fis = document.getElementById("overallFIs");
+  let fiId=fis.options[fis.selectedIndex].value;
+  console.log("FI ID2",fiId);
+  isFiSelect=true;
+  getOverallPool(fiId,isFiSelect);
+  }
+
+  function filterApiNew(filterObj) {
+  
+  console.log("\n\n\ Filter OBJ2",filterObj);
+  const data = {
+    filterData: filterObj,
+  };
+  
+  console.log('data body: ', data);
+  
+    fetch(`${baseUrl}reports/filterData`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(response => response.json())
+      .then(data => {
+        console.log('Success Data:', data);
+        $("#totalCases").html(data.data.totalCases.toLocaleString());
+        $("#caseAllocate").html(data.data.caseAllocate.toLocaleString());
+        $("#caseRecover").html(data.data.caseRecover.toLocaleString());
+        $("#casePending").html(data.data.casePending.toLocaleString());
+        $("#totalAmount").html(data.data.totalAmount.toLocaleString());
+        $("#totalAmountAllocated").html(data.data.totalAmountAllocated.toLocaleString());
+        $("#totalAmountRecover").html(data.data.totalAmountRecover.toLocaleString());
+        $("#amountPending").html(data.data.amountPending.toLocaleString());
+        
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  
+    }
+
+  function DownloadAgentReport(filterObjAgentProduct) {
+  console.log("\n\n\ Filter OBJ filterObjAgentProduct",filterObjAgentProduct);
+  $('#filterAgentProductId').val(JSON.stringify(filterObjAgentProduct));
+  $('#downloadAgentProduct').submit();
+  }
+
+  function DownloadCaseReport(filterCaseMis) {
+  console.log("\n\n\ Filter OBJ filterCaseMis",filterCaseMis);
+  $('#filterCaseId').val(JSON.stringify(filterCaseMis));
+  $('#downloadCase').submit();
+  }
+
+  function DownloadcolnEfficienci(filterObjEfficiency) {
+  console.log("\n\n\ Filter OBJ Efficiency",filterObjEfficiency);
+  $('#filtercolnEfficienciId').val(JSON.stringify(filterObjEfficiency));
+  $('#downloadcolnEfficienci').submit();
+  }
+
+  function DownloadOverallReport(filterObjOverall) {
+  console.log("\n\n\ Filter OBJ27777",filterObjOverall);
+  $('#filterOverallId').val(JSON.stringify(filterObjOverall));
+  $('#downloadOverallFile').submit();
+  }
+
+  function DownloadFIsReport(filterObjFIs) {
+  console.log("\n\n\ Filter OBJ FIs",filterObjFIs);
+  $('#filterFIsId').val(JSON.stringify(filterObjFIs));
+  $('#downloadFIsReport').submit();
+  }
+
+  function DownloadPortfolioReport(filterObjPortfolio) {
+  console.log("\n\n\ Filter OBJ Portfolio",filterObjPortfolio);
+  $('#filterPortfolioId').val(JSON.stringify(filterObjPortfolio));
+  $('#downloadPortfolio').submit();
+  }
+
+  
+  function DownloadMIS(filterMis) {
+  console.log("\n\n\ Filter OBJ288888",filterMis);
+  
+  $('#filterMISId').val(JSON.stringify(filterMis));
+  $('#downloadFile').submit();
+  }
+
+  function DownloadMISLead(filterMisLead) {
+  console.log("\n\n\ FilterMisLead OBJ2",filterMisLead);
+  
+  $('#filterMISLeadId').val(JSON.stringify(filterMisLead));
+  $('#downloadMISLead').submit();
+  }
+
+function getTeamMembers(teamId,isteamSelect) {
+
+console.log('teamId :-', teamId);
+
+const data = {
+isteamSelect : isteamSelect,
+teamId:teamId
+};
+
+console.log('data getTeamMembers:-', data);
+
+fetch(`${baseUrl}reports/getTeamMembers`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+
+console.log('Success getTeamMembers:', data.data);
+  
+let option = data.data.teams.map(team => {
+  return `<option value='${team.id}'>${team.name}</option>`;
+}).join('');
+
+
+let option2;
+if(data.data.isteamSelect==false){
+  option2= `<option value='' disabled>please select team</option>`;
+}
+else{
+  option2= data.data.teamMemberArr.map(teamMember => {
+  return `<option value='${teamMember.id}'>${teamMember.name}</option>`;
+  }).join('');
+}
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>Team</label>
+<select class="error" id="teamNewId" name="teamNewId" required
+    data-error=".errorTxt20" onchange="handleTeamMember()">
+    <option value="" selected>All</option>
+    ${option}
+</select>
+<small class="errorTxt20"></small>
+</div>
+<div class="col s6" style="text-transform: capitalize !important;">
+<label>Team Member</label>
+<select class="error" id="teamMemberId" name="teamMemberId" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option2}
+</select>
+<small class="errorTxt21"></small>
+</div>`;
+document.getElementById('TeamMember').innerHTML = reportHtml;
+$('select').formSelect();
+})
+
+}
+ 
+function getMembers(teamId,isteamSelect) {
+
+  console.log('teamId :-', teamId);
+
+const data = {
+  isteamSelect : isteamSelect,
+  teamId:teamId
+};
+
+console.log('data getMembers:-', data);
+
+fetch(`${baseUrl}reports/getMembers`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success getMembers:', data);
+let option= data.data.teamMemberArr.map(teamMember => {
+  return `<option value='${teamMember.id}'>${teamMember.name}</option>`;
+}).join('');
+
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>Team Member</label>
+<select class="error" id="teamMemberId" name="teamMemberId" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option}
+</select>
+<small class="errorTxt21"></small>
+</div>`;
+document.getElementById('teamMemberId').innerHTML = reportHtml;
+$('select').formSelect();
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+}
+
+function getMisAgentPoolName(fiId,isFiSelect) {
+
+console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId 
+};
+
+console.log('data getPoolName:-', data);
+
+fetch(`${baseUrl}reports/getPoolName`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+
+console.log('Success getPoolName:', data.data);
+  
+let option = data.data.fis.map(fi => {
+  return `<option value='${fi.id}'>${fi.name}</option>`;
+}).join('');
+
+
+let option2;
+if(data.data.isFiSelect==false){
+  option2= `<option value='' disabled>please select FI</option>`;
+}
+else{
+  option2= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+  }).join('');
+}
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>FIs</label>
+<select class="error" id="MISFIs" name="MISFIs" required
+    data-error=".errorTxt20" onchange="handlePoolName()">
+    <option value="" selected>All</option>
+    ${option}
+</select>
+<small class="errorTxt20"></small>
+</div>
+<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="MISPool" name="MISPool" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option2}
+</select>
+<small class="errorTxt21"></small>
+</div>`;
+document.getElementById('MISPoolID').innerHTML = reportHtml;
+$('select').formSelect();
+})
+
+}
+ 
+function getMisAgentPool(fiId,isFiSelect) {
+
+  console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId
+};
+
+console.log('data getMembers:-', data);
+
+fetch(`${baseUrl}reports/getPool`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success getPool:', data);
+let option= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+}).join('');
+
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="MISPool" name="MISPool" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option}
+</select>
+</div>`;
+document.getElementById('MISPool').innerHTML = reportHtml;
+$('select').formSelect();
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+}
+
+
+function getMisLeadPoolName(fiId,isFiSelect) {
+
+console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId 
+};
+
+console.log('data getPoolName:-', data);
+
+fetch(`${baseUrl}reports/getPoolName`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+
+console.log('Success getPoolName:', data.data);
+  
+let option = data.data.fis.map(fi => {
+  return `<option value='${fi.id}'>${fi.name}</option>`;
+}).join('');
+
+
+let option2;
+if(data.data.isFiSelect==false){
+  option2= `<option value='' disabled>please select FI</option>`;
+}
+else{
+  option2= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+  }).join('');
+}
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>FIs</label>
+<select class="error" id="MISLeadFIs" name="MISLeadFIs" required
+    data-error=".errorTxt20" onchange="handleLeadPoolName()">
+    <option value="" selected>All</option>
+    ${option}
+</select>
+<small class="errorTxt20"></small>
+</div>
+<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="MISLeadPool" name="MISLeadPool" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option2}
+</select>
+<small class="errorTxt21"></small>
+</div>`;
+document.getElementById('MISLeadPoolID').innerHTML = reportHtml;
+$('select').formSelect();
+})
+
+}
+ 
+function getMisLeadPool(fiId,isFiSelect) {
+
+  console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId
+};
+
+console.log('data getMembers:-', data);
+
+fetch(`${baseUrl}reports/getPool`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success getPool:', data);
+let option= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+}).join('');
+
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="MISLeadPool" name="MISLeadPool" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option}
+</select>
+</div>`;
+document.getElementById('MISLeadPool').innerHTML = reportHtml;
+$('select').formSelect();
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+}
+
+
+function getMisCasePoolName(fiId,isFiSelect) {
+
+console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId 
+};
+
+console.log('data getPoolName:-', data);
+
+fetch(`${baseUrl}reports/getPoolName`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+
+console.log('Success getPoolName:', data.data);
+  
+let option = data.data.fis.map(fi => {
+  return `<option value='${fi.id}'>${fi.name}</option>`;
+}).join('');
+
+
+let option2;
+if(data.data.isFiSelect==false){
+  option2= `<option value='' disabled>please select FI</option>`;
+}
+else{
+  option2= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+  }).join('');
+}
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>FIs</label>
+<select class="error" id="MISCaseFIs" name="MISCaseFIs" required
+    data-error=".errorTxt20" onchange="handCasePoolName()">
+    <option value="" selected>All</option>
+    ${option}
+</select>
+<small class="errorTxt20"></small>
+</div>
+<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="MISCasePool" name="MISCasePool" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option2}
+</select>
+<small class="errorTxt21"></small>
+</div>`;
+document.getElementById('MISCasePoolID').innerHTML = reportHtml;
+$('select').formSelect();
+})
+
+}
+ 
+function getMisCasePool(fiId,isFiSelect) {
+
+  console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId
+};
+
+console.log('data getMembers:-', data);
+
+fetch(`${baseUrl}reports/getPool`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success getPool:', data);
+let option= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+}).join('');
+
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="MISCasePool" name="MISCasePool" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option}
+</select>
+</div>`;
+document.getElementById('MISCasePool').innerHTML = reportHtml;
+$('select').formSelect();
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+}
+
+
+function getEfficiencyPoolName(fiId,isFiSelect) {
+
+console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId 
+};
+
+console.log('data getPoolName:-', data);
+
+fetch(`${baseUrl}reports/getPoolName`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+
+console.log('Success getPoolName:', data.data);
+  
+let option = data.data.fis.map(fi => {
+  return `<option value='${fi.id}'>${fi.name}</option>`;
+}).join('');
+
+
+let option2;
+if(data.data.isFiSelect==false){
+  option2= `<option value='' disabled>please select FI</option>`;
+}
+else{
+  option2= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+  }).join('');
+}
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>FIs</label>
+<select class="error" id="efficiencyFIs" name="efficiencyFIs" required
+    data-error=".errorTxt20" onchange="handefficiencyPoolName()">
+    <option value="" selected>All</option>
+    ${option}
+</select>
+<small class="errorTxt20"></small>
+</div>
+<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="efficiencyPoolId" name="efficiencyPoolId" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option2}
+</select>
+<small class="errorTxt21"></small>
+</div>`;
+document.getElementById('colEfficiencyPoolID').innerHTML = reportHtml;
+$('select').formSelect();
+})
+
+}
+ 
+function getEfficiencyPool(fiId,isFiSelect) {
+
+  console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId
+};
+
+console.log('data getMembers:-', data);
+
+fetch(`${baseUrl}reports/getPool`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success getPool:', data);
+let option= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+}).join('');
+
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="efficiencyPoolId" name="efficiencyPoolId" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option}
+</select>
+</div>`;
+document.getElementById('efficiencyPoolId').innerHTML = reportHtml;
+$('select').formSelect();
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+}
+
+
+function getOverallPoolName(fiId,isFiSelect) {
+
+console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId 
+};
+
+console.log('data getPoolName:-', data);
+
+fetch(`${baseUrl}reports/getPoolName`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+
+console.log('Success getPoolName:', data.data);
+  
+let option = data.data.fis.map(fi => {
+  return `<option value='${fi.id}'>${fi.name}</option>`;
+}).join('');
+
+
+let option2;
+if(data.data.isFiSelect==false){
+  option2= `<option value='' disabled>please select FI</option>`;
+}
+else{
+  option2= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+  }).join('');
+}
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>FIs</label>
+<select class="error" id="overallFIs" name="overallFIs" required
+    data-error=".errorTxt20" onchange="handeOverallPoolName()">
+    <option value="" selected>All</option>
+    ${option}
+</select>
+<small class="errorTxt20"></small>
+</div>
+<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="overallpoolId" name="overallpoolId" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option2}
+</select>
+<small class="errorTxt21"></small>
+</div>`;
+document.getElementById('overallPoolID').innerHTML = reportHtml;
+$('select').formSelect();
+})
+
+}
+ 
+function getOverallPool(fiId,isFiSelect) {
+
+  console.log('fiId :-', fiId);
+
+const data = {
+  isFiSelect : isFiSelect,
+  FIId:fiId
+};
+
+console.log('data getMembers:-', data);
+
+fetch(`${baseUrl}reports/getPool`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success getPool:', data);
+let option= data.data.poolsArr.map(poolArr => {
+  return `<option value='${poolArr.id}'>${poolArr.name}</option>`;
+}).join('');
+
+  let reportHtml =`<div class="col s6" style="text-transform: capitalize !important;">
+<label>Pool</label>
+<select class="error" id="overallpoolId" name="overallpoolId" required
+  data-error=".errorTxt21">
+  <option value="" disabled selected>Choose your option</option>
+  ${option}
+</select>
+</div>`;
+document.getElementById('overallpoolId').innerHTML = reportHtml;
+$('select').formSelect();
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+}
+
+$(document).ready(function () {
+    $("#downloadAgentProduct").submit(function () {
+        $("#AgentReport").attr("disabled", true);
+        return true;
+    });
+
+    $("#downloadMISLead").submit(function () {
+        $("#MISLeadReport").attr("disabled", true);
+        return true;
+    });
+
+    $("#downloadCase").submit(function () {
+        $("#MISCaseReport").attr("disabled", true);
+        return true;
+    });
+
+    $("#downloadCustomerFile").submit(function () {
+        $("#CustomerReport").attr("disabled", true);
+        return true;
+    });
+
+    $("#downloadcolnEfficienci").submit(function () {
+        $("#collectionEffiReport").attr("disabled", true);
+        return true;
+    });
+
+    $("#downloadFile").submit(function () {
+        $("#MISReport").attr("disabled", true);
+        return true;
+    });
+
+    $("#downloadOverallFile").submit(function () {
+        $("#OverallReport").attr("disabled", true);
+        return true;
+    });
+
+    $("#downloadPortfolio").submit(function () {
+        $("#portfolioReport").attr("disabled", true);
+        return true;
+    });
+
+    $("#downloadFIsReport").submit(function () {
+        $("#FIsReport").attr("disabled", true);
+        return true;
+    });
+});
+
+</script>
+
+<form id="downloadFile" method="post" action="/reports/misAgentReport">
+  <input type="hidden" id="filterMISId" name="filterObj" value=""/>
+</form>
+
+<form id="downloadPortfolio" method="post" action="/reports/portfolioReport">
+  <input type="hidden" id="filterPortfolioId" name="filterObj" value=""/>
+</form>
+
+<form id="downloadAgentProduct" method="post" action="/reports/agentProductReport">
+  <input type="hidden" id="filterAgentProductId" name="filterObj" value=""/>
+</form>
+
+<form id="downloadMISLead" method="post" action="/reports/misLeadReport">
+  <input type="hidden" id="filterMISLeadId" name="filterObj" value=""/>
+</form>
+
+<form id="downloadCase" method="post" action="/reports/misCaseReport">
+  <input type="hidden" id="filterCaseId" name="filterObj" value=""/>
+</form>
+
+<form id="downloadcolnEfficienci" method="post" action="/reports/collectionEfficiencyReport">
+  <input type="hidden" id="filtercolnEfficienciId" name="filterObj" value=""/>
+</form>
+
+<form id="downloadOverallFile" method="post" action="/reports/overallReportDownload">
+  <input type="hidden" id="filterOverallId" name="filterObj" value=""/>
+</form>
+
+<form id="downloadFIsReport" method="post" action="/reports/fisCountReport">
+  <input type="hidden" id="filterFIsId" name="filterObj" value=""/>
+</form>
+<%- include('../../bottom.ejs') -%>

@@ -1,0 +1,299 @@
+/**! ----- Button Hover ---- **/
+// Hover 3d
+.btn-hover--3d {
+
+    &:hover,
+    &:focus {
+        transform: translateY(-3px);
+    }
+}
+
+// Hover splash
+.btn-hover--splash {
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+        content: "";
+        @include pos-abs(-40px, auto, auto, -100px);
+        height: 220px;
+        width: 50px;
+        background: linear-gradient(to $right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 1%, rgba(255, 255, 255, 0.6) 30%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0.85) 70%, rgba(255, 255, 255, 0.85) 71%, rgba(255, 255, 255, 0) 100%);
+        z-index: -1;
+        opacity: .1;
+        transform: skew(-12deg, 0deg);
+        transition: .5s ease 0s;
+        visibility: hidden;
+
+        @include rtl {
+            transform: skew(12deg, 0deg);
+
+        }
+    }
+
+    &.btn--bg-white {
+        &:before {
+            background: linear-gradient(to $right, rgba(#ddd, 0) 0%, rgba(#ddd, 0.03) 1%, rgba(#ddd, 0.4) 30%, rgba(#ddd, 0.85) 50%, rgba(#ddd, 0.75) 70%, rgba(#ddd, 0.75) 71%, rgba(#ddd, 0) 100%);
+
+        }
+    }
+
+    &:hover {
+        &:before {
+            #{$left}: 100%;
+            visibility: visible;
+            transition: .5s ease .2s;
+
+        }
+
+    }
+}
+
+// hover cta bg color
+.btn-hover {
+    &--primary {
+        &:hover {
+            @extend %bg-primary;
+            color: white !important;
+            opacity: 1 !important;
+
+        }
+
+        &.btn-border--color--dark {
+            &:hover {
+                @extend %btn-border-color-primary;
+            }
+        }
+
+        &.btn-border--color--light {
+            &:hover {
+                @extend %btn-border-color-primary;
+            }
+        }
+    }
+
+    &--cta--1 {
+        &:hover {
+            background: $cta-color !important;
+            box-shadow: inset 0 -3px 5px rgba(255, 255, 255, 0.5);
+            color: $color-dark-700 !important;
+        }
+    }
+
+    &--cta--2 {
+        &:hover {
+            background: $cta-color-2 !important;
+            color: $color-white !important;
+
+        }
+    }
+
+    &--cta--3 {
+
+        &:hover {
+            background: $cta-color-3 !important;
+            color: $color-white !important;
+        }
+    }
+
+    &--cta--4 {
+
+        &:hover {
+            background: $cta-color-4 !important;
+            color: $color-white !important;
+        }
+    }
+
+    &--cta--5 {
+
+        &:hover {
+            background: $color-light-orange !important;
+            color: $color-white !important;
+        }
+    }
+}
+
+
+/**! ----- Button Text Hover ---- **/
+a {
+
+    &.color--primary,
+    &.color--white,
+    &.text-color--200,
+    &.text-color--300,
+    &.text-color--400,
+    &.text-color--500,
+    &.text-color--700 {
+        @extend .transition-default;
+
+        &:hover {
+            opacity: .8;
+        }
+    }
+
+    &.text-color--cta {
+        &--1 {
+            color: $cta-color;
+
+            &:hover {
+                color: $cta-color;
+            }
+        }
+
+        &--2 {
+            color: $cta-color-2;
+
+            &:hover {
+                color: $cta-color-2;
+            }
+        }
+
+        &--3 {
+            color: $cta-color-3;
+
+            &:hover {
+                color: $cta-color-3;
+            }
+
+        }
+
+
+        &--4 {
+            color: $cta-color-4;
+
+            &:hover {
+                color: $cta-color-4;
+            }
+
+        }
+
+        &--5 {
+            color: $cta-color-5;
+
+            &:hover {
+                color: $cta-color-5;
+            }
+
+        }
+    }
+}
+
+.text-hover {
+    &--primary {
+        &:hover {
+            @extend %color-primary;
+            opacity: 1!important;
+            
+            .section--dark &,
+            .section--darkblue & {
+                @extend %color-primary;
+                opacity: 1!important;
+            }
+        }
+    }
+
+    &--dark {
+        &:hover {
+            color: $color-dark-700 !important;
+            opacity: 1;
+        }
+
+    }
+
+    &--light {
+        &:hover {
+            color: $color-light-gray-400 !important;
+            opacity: 1;
+        }
+
+    }
+}
+
+/**! ----- card hover ---- **/
+.card-hover--3d {
+    &:hover {
+        transform: translateY(-5px);
+    }
+}
+
+.card-hover--shadow {
+    &:hover {
+        box-shadow: 0 12px 35px rgba($color-black, .15);
+    }
+}
+
+.card-hover--shadow-3d {
+    &:hover {
+        box-shadow: 0 12px 35px rgba($color-black, .15);
+        transform: translateY(-5px);
+    }
+}
+
+.card-hover--bg--primary-shadow {
+
+    &.focused,
+    &:hover {
+        box-shadow: 0 20px 44px 0 rgba($color-black, .2);
+        @extend %bg-primary;
+    }
+}
+
+.card-hover--bg--alt-shadow {
+
+    &.focused,
+    &:hover {
+        box-shadow: 0 20px 44px 0 rgba($color-black, .2);
+        background: $color-green;
+    }
+}
+
+
+/**! ----- list group arrow hover ---- **/
+
+a.justify-content-between:hover .arrow_right,
+a.justify-content-between:hover+i,
+.justify-content-between>a:hover+i,
+.justify-content-between>a:hover i {
+    transform: translateX(0.375rem);
+}
+
+a.justify-content-between .arrow_right,
+.justify-content-between>a+i,
+.justify-content-between>a i {
+    transition: transform 0.1s linear;
+}
+
+/**! ----- button Media (Play Buttons) hover ---- **/
+
+.btn-media {
+    &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: 50px;
+        box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+        opacity: 1;
+        transition: 0.5s;
+        visibility: hidden;
+    }
+
+    &.rounded--full {
+        &:before {
+            border-radius: 100px;
+
+        }
+    }
+
+    &:hover {
+        &:before {
+
+            opacity: 0;
+            transform: scale(1.7);
+            visibility: visible;
+            box-shadow: 0 0 0 15px #ffffff;
+        }
+    }
+}

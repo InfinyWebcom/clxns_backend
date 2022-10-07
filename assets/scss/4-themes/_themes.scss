@@ -1,0 +1,564 @@
+// DESCRIPTION:
+// These are the theme colors that we have used in the demo color switcher controller.
+
+//// Using method of the demo colors:
+// Add any of the "theme-" class to the <body> element. example "theme-green"
+
+// Remamber the core colors code are declared in the variables file. 
+// You can delete theme If you don't want to use any of our given colors. And if you want to use your own color then just open the variable file and change the variable color of "$color-primary" !! SIMPLE!!! Isn't?!
+/**! ----- Common colors (SCSS extend) ---- **/
+
+
+%bg-primary {
+    .theme-royal-blue & {
+        background: $color-royal-blue;
+    }
+
+    .theme-blue & {
+        background: $color-primary;
+    }
+
+    .theme-amethyst & {
+        background: $color-amethyst;
+    }
+
+    .theme-roman & {
+        background: $color-roman;
+    }
+
+    .theme-amaranth & {
+        background: $color-amaranth;
+    }
+
+    .theme-orange & {
+        background: $color-orange;
+    }
+
+    .theme-green & {
+        background: $color-green;
+    }
+
+    .theme-fern & {
+        background: $color-fern;
+    }
+
+    /////////////////////// Gradient bg
+    .theme-gradient-1 & {
+        background: $gradient-1;
+        background-size: 105% 105%;
+
+        &.btn-bg--primary,
+        &.btn-hover--primary {
+            background: #5b7fec;
+        }
+    }
+
+    .theme-gradient-2 & {
+        background: $gradient-2;
+        background-size: 105% 105%;
+
+        &.btn-bg--primary,
+        &.btn-hover--primary {
+            background: #4abdaf;
+        }
+    }
+
+    .theme-gradient-3 & {
+        background: $gradient-3;
+        background-size: 105% 105%;
+
+        &.btn-bg--primary,
+        &.btn-hover--primary {
+            background: #df8685;
+        }
+    }
+
+    .theme-gradient-4 & {
+        background: $gradient-4;
+        background-size: 105% 105%;
+
+        &.btn-bg--primary,
+        &.btn-hover--primary {
+            background: $color-blue;
+        }
+    }
+
+    .theme-gradient-5 & {
+        background: $gradient-5;
+        background-size: 105% 105%;
+
+        &.btn-bg--primary,
+        &.btn-hover--primary {
+            background: $color-blue;
+        }
+    }
+
+    .theme-gradient-6 & {
+        background: $gradient-6;
+        background-size: 105% 105%;
+
+        &.btn-bg--primary,
+        &.btn-hover--primary {
+            background: $color-purple;
+        }
+    }
+
+    .theme-gradient-7 & {
+        background: $gradient-7;
+        background-size: 105% 105%;
+
+        &.btn-bg--primary,
+        &.btn-hover--primary {
+            background: $color-purple;
+        }
+    }
+
+    .theme-gradient-8 & {
+        background: $gradient-8;
+        background-size: 105% 105%;
+
+        &.btn-bg--primary,
+        &.btn-hover--primary {
+            background: #a9486e;
+        }
+
+    }
+}
+
+// Dynamic color which fits with our given theme colors
+.bg-color--primary-light--1 {
+
+    .theme-amethyst & {
+        background: lighten($color: $color-amethyst, $amount: 41);
+    }
+
+    .theme-roman & {
+        background: lighten($color: $color-roman, $amount: 36);
+    }
+
+    .theme-amaranth & {
+        background: lighten($color: $color-amaranth, $amount: 37);
+    }
+
+    .theme-orange & {
+        background: lighten($color: $color-orange, $amount: 40);
+    }
+
+    .theme-green & {
+        background: lighten($color: $color-green, $amount: 48);
+    }
+
+    .theme-fern & {
+        background: lighten($color: $color-fern, $amount: 45);
+    }
+}
+
+// Dynamic gradient color which fits with our given theme colors
+.bg-gradient-primary--1 {
+    .theme-royal-blue & {
+        background: linear-gradient(to top, rgba($color-royal-blue, 0) 0%, rgba($color-royal-blue, .05) 100%);
+
+    }
+
+    .theme-blue & {
+        background: linear-gradient(to top, rgba($color-primary, 0) 0%, rgba($color-primary, .08) 100%);
+
+    }
+
+    .theme-amethyst & {
+        background: linear-gradient(to top, rgba($color-amethyst, 0) 0%, rgba($color-amethyst, .08) 100%);
+
+    }
+
+    .theme-roman & {
+        background: linear-gradient(to top, rgba($color-roman, 0) 0%, rgba($color-roman, .08) 100%);
+
+    }
+
+    .theme-amaranth & {
+        background: linear-gradient(to top, rgba($color-amaranth, 0) 0%, rgba($color-amaranth, .08) 100%);
+
+    }
+
+    .theme-orange & {
+        background: linear-gradient(to top, rgba($color-orange, 0) 0%, rgba($color-orange, .08) 100%);
+
+    }
+
+    .theme-green & {
+        background: linear-gradient(to top, rgba($color-green, 0) 0%, rgba($color-green, .1) 100%);
+
+    }
+
+    .theme-fern & {
+        background: linear-gradient(to top, rgba($color-fern, 0) 0%, rgba($color-fern, .1) 100%);
+
+    }
+    .theme-gradient-7 & {
+        background: linear-gradient(to top, rgba(242, 245, 248, 0) 0%, #f2f5f8 100%);
+    }
+}
+
+
+// BG Color adjustment with other elements
+.decor {
+    .theme-gradient-1 & {
+        background: $color-blue;
+    }
+
+    .theme-gradient-2 & {
+        background: inset 0 0 0 2px #4abdaf;
+
+    }
+
+    .theme-gradient-3 & {
+        background: inset 0 0 0 2px #EB699D;
+
+    }
+
+    .theme-gradient-4 & {
+        background: inset 0 0 0 2px #2b5bed;
+
+    }
+
+    .theme-gradient-5 & {
+        background: inset 0 0 0 2px #6610f2;
+
+    }
+
+    .theme-gradient-6 & {
+        background: inset 0 0 0 2px $color-blue;
+
+    }
+
+    .theme-gradient-7 & {
+        background: inset 0 0 0 2px $color-purple;
+
+    }
+
+    .theme-gradient-8 & {
+        background: inset 0 0 0 2px #a9486e;
+
+    }
+
+}
+
+// btn bg color adjustment with gradient theme
+.btn-bg--light {
+    .theme-royal-blue & {
+        background: lighten($color: $color-royal-blue, $amount: 42);
+    }
+
+    .theme-blue & {
+        background: lighten($color: $color-royal-blue, $amount: 42);
+    }
+
+    .theme-amethyst & {
+        background: lighten($color: $color-amethyst, $amount: 41);
+    }
+
+    .theme-roman & {
+        background: lighten($color: $color-roman, $amount: 36);
+    }
+
+    .theme-amaranth & {
+        background: #f7f5f2;
+    }
+
+    .theme-orange & {
+        background: #f7f5f2;
+    }
+
+    .theme-green & {
+        background: lighten($color: $color-green, $amount: 45);
+    }
+
+    .theme-fern & {
+        background: lighten($color: $color-fern, $amount: 42);
+    }
+
+    ///// Gradient
+    .theme-gradient-1 & {
+        background: lighten($color: $color-royal-blue, $amount: 42);
+    }
+
+    .theme-gradient-2 & {
+        background: lighten($color: #4abdaf, $amount: 42);
+    }
+
+    .theme-gradient-3 & {
+        background: lighten($color: #EB699D, $amount: 30);
+    }
+
+    .theme-gradient-4 & {
+        background: lighten($color: $color-royal-blue, $amount: 42);
+    }
+
+    .theme-gradient-5 & {
+        background: lighten($color: $color-royal-blue, $amount: 42);
+    }
+
+    .theme-gradient-6 & {
+        background: lighten($color: $color-royal-blue, $amount: 42);
+    }
+
+    .theme-gradient-7 & {
+        background: lighten($color: $color-royal-blue, $amount: 42);
+    }
+
+    .theme-gradient-8 & {
+        background: lighten($color: #a9486e, $amount: 45);
+    }
+}
+
+%color-primary {
+    .theme-royal-blue & {
+        color: $color-royal-blue;
+    }
+
+    .theme-blue & {
+        color: $color-primary;
+    }
+
+    .theme-amethyst & {
+        color: $color-amethyst;
+    }
+
+    .theme-roman & {
+        color: $color-roman;
+    }
+
+    .theme-amaranth & {
+        color: $color-amaranth;
+    }
+
+    .theme-orange & {
+        color: $color-orange;
+    }
+
+    .theme-green & {
+        color: $color-green;
+    }
+
+    .theme-fern & {
+        color: $color-fern;
+    }
+
+    /////// Theme Graidnet
+    .theme-gradient-1 & {
+        color: #5b7fec;
+    }
+
+    .theme-gradient-2 & {
+        color: #4abdaf;
+    }
+
+    .theme-gradient-3 & {
+        color: #df8685;
+    }
+
+    .theme-gradient-4 & {
+        color: $color-blue;
+    }
+
+    .theme-gradient-5 & {
+        color: $color-blue;
+    }
+
+    .theme-gradient-6 & {
+        color: $color-purple;
+    }
+
+    .theme-gradient-7 & {
+        color: $color-purple;
+    }
+
+    .theme-gradient-8 & {
+        color: #a9486e;
+    }
+}
+
+%fill-primary {
+    .theme-royal-blue & {
+        fill: $color-royal-blue;
+    }
+
+    .theme-blue & {
+        fill: $color-primary;
+    }
+
+    .theme-amethyst & {
+        fill: $color-amethyst;
+    }
+
+    .theme-roman & {
+        fill: $color-roman;
+    }
+
+    .theme-amaranth & {
+        fill: $color-amaranth;
+    }
+
+    .theme-orange & {
+        fill: $color-orange;
+    }
+
+    .theme-green & {
+        fill: $color-green;
+    }
+
+    .theme-fern & {
+        fill: $color-fern;
+    }
+
+    /////// Theme Graidnet
+    .theme-gradient-1 & {
+        fill: #5b7fec;
+    }
+
+    .theme-gradient-2 & {
+        fill: #4abdaf;
+    }
+
+    .theme-gradient-3 & {
+        fill: #df8685;
+    }
+
+    .theme-gradient-4 & {
+        fill: $color-blue;
+    }
+
+    .theme-gradient-5 & {
+        fill: $color-blue;
+    }
+
+    .theme-gradient-6 & {
+        fill: $color-purple;
+    }
+
+    .theme-gradient-7 & {
+        fill: $color-purple;
+    }
+
+    .theme-gradient-8 & {
+        fill: #a9486e;
+    }
+}
+
+// Dynamic fill bg which fits with our given theme colors
+.fill-primary-light--1 {
+
+    rect,
+    path,
+    polygon,
+    circle {
+
+        .theme-royal-blue &,
+        .theme-blue &,
+        .theme-gradient-4 &,
+        .theme-gradient-5 &,
+        .theme-gradient-6 &,
+        .theme-gradient-7 & {
+            fill: $color-blue-100;
+        }
+
+        .theme-amethyst & {
+            fill: lighten($color: $color-amethyst, $amount: 41);
+        }
+
+        .theme-roman & {
+            fill: lighten($color: $color-roman, $amount: 36);
+        }
+
+        .theme-amaranth & {
+            fill: lighten($color: $color-amaranth, $amount: 37);
+        }
+
+        .theme-orange & {
+            fill: lighten($color: $color-orange, $amount: 40);
+        }
+
+        .theme-green & {
+            fill: lighten($color: $color-green, $amount: 48);
+        }
+
+        .theme-fern & {
+            fill: lighten($color: $color-fern, $amount: 45);
+        }
+    }
+}
+
+%btn-border-color-primary {
+    .theme-royal-blue & {
+        border-color: $color-royal-blue;
+    }
+
+    .theme-blue & {
+        border-color: $color-primary;
+    }
+
+    .theme-amethyst & {
+        border-color: $color-amethyst;
+    }
+
+    .theme-roman & {
+        border-color: $color-roman;
+    }
+
+    .theme-amaranth & {
+        border-color: $color-amaranth;
+    }
+
+    .theme-orange & {
+        border-color: $color-orange;
+    }
+
+    .theme-green & {
+        border-color: $color-green;
+    }
+
+    .theme-fern & {
+        border-color: $color-fern;
+    }
+
+    /////// Theme Graidnet
+    .theme-gradient-1 & {
+        border-color: #5b7fec;
+    }
+
+    .theme-gradient-2 & {
+        border-color: #4abdaf;
+
+    }
+
+    .theme-gradient-3 & {
+        border-color: #df8685;
+
+    }
+
+    .theme-gradient-4 & {
+        border-color: $color-blue;
+
+    }
+
+    .theme-gradient-5 & {
+        border-color: $color-blue;
+
+    }
+
+    .theme-gradient-6 & {
+        border-color: $color-purple;
+
+    }
+
+    .theme-gradient-7 & {
+        border-color: $color-purple;
+
+    }
+
+    .theme-gradient-8 & {
+        border-color: #a9486e;
+
+    }
+
+}

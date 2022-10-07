@@ -1,0 +1,56 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m6 l12">
+                        <h5 class="breadcrumbs-title mt-0 mb-0"><span>Team</span></h5>
+                        <ol class="breadcrumbs mb-0">
+                            <!-- <li class="breadcrumb-item"><a href="/dashboard">Home</a>
+                            </li> -->
+                            <li class="breadcrumb-item"><a href="/team">Teams</a>
+                            </li>
+                            <li class="breadcrumb-item "><a href="/team/view/<%= team.id %>">View Team Details</a>
+                            </li>
+                            <li class="breadcrumb-item active">Add a Team Member
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="container">
+                    <section class="tabs-vertical mt-1 section">
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                                    <h6 class="media-heading">
+                                        <span class="users-view-name">Add a Team Member to "<b><%= team.name %></b>"</span>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="content-overlay"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <%- include('../../components/datatable_new.ejs', datatable) -%>
+        </div>
+        
+    </div>
+</div>
+
+
+<%- include('../../bottom.ejs') -%>

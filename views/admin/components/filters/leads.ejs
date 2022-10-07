@@ -1,0 +1,128 @@
+<style>
+  .customModal{
+    top: -3% !important;
+    height: 90%;
+  }
+  .filterModal{
+    top: 12%;
+    width: 70%;
+    margin-left: 255px;
+  }
+</style>
+<script>
+//assign teamID
+$(document).on('change','#TeamMemberId', function () {
+   teamsId = $(this).val();
+   console.log('\n\nteam ID',teamsId);
+myTableLeadAddTelecaller.search(teamsId).draw();
+});
+
+//reassign teamID
+$(document).on('change','#TeamMemberID', function () {
+  teamsId = $(this).val();
+  console.log('\n\nteam ID',teamsId);
+myTableReassignLeadAddTelecaller.search(teamsId).draw();
+});
+
+
+$(document).ready(function () {
+    $('#input-filter').val('').trigger('keyup').focus();
+});
+</script>
+
+<!--Assign to Team Modal -->
+<div class="card">
+  <div id="allocateModal" class="modal modal-fixed-footer customModal roundCornersFloat">
+    <div class="modal-content customModalContent">
+
+      <h5 class="mt-0"><b>Assign to Team</b></h5>
+      <div class="row">
+      <div class="col s6 m6 l6">
+      <h4 class="card-title mt-4">Assign filtered leads to : </h4>
+      </div>
+      <div class="col s6 m6 l6 input-field mt-0">
+        <select id="TeamMemberId" name="teamLeader">
+            <option value="" disabled selected>Select team</option>
+            <% teams.forEach((team) => { %>
+              <option value="<%= team.id %>"><%= team.name %></option>
+              <% }); %>
+        </select>
+      </div>
+    </div>
+
+    <div class="customDatatable" style="box-shadow: none;">
+      <% if((url && url=='leads/newLeads') || (url && url=='leads/assignLeads')) { %>
+      <%- include('../leads/datatables/leadsAddTelecaller_datatable.ejs', datatableAddTelecallers) -%>
+      <% }; %>
+    </div>
+    </div>
+    <div class="modal-footer customModalFooter">
+      <a class="modal-action modal-close btn-flat" id="input-filter">Cancel</a>
+      <a onclick="applyAssignLeadToTeam()" class="modal-action modal-close btn-flat mr-1">Assign</a>
+    </div>
+  </div>
+</div>
+
+<!--Re-Assign to Team Modal -->
+<div class="card">
+  <div id="reallocateModal" class="modal modal-fixed-footer customModal roundCornersFloat">
+    <div class="modal-content customModalContent">
+
+      <h5 class="mt-0"><b>Reassign to Team</b></h5>
+      <div class="row">
+      <div class="col s6 m6 l6">
+      <h4 class="card-title mt-4">Reassign leads to : </h4>
+      </div>
+      <div class="col s6 m6 l6 input-field mt-0">
+        <select id="TeamMemberID" name="teamLeader">
+            <option value="" disabled selected>Select team</option>
+            <% teams.forEach((team) => { %>
+              <option value="<%= team.id %>"><%= team.name %></option>
+              <% }); %>
+        </select>
+      </div>
+    </div>
+
+    <div class="customDatatable" style="box-shadow: none;">
+      <% if(url && url=='leads/newLeads') { %>
+      <%- include('../leads/datatables/leadsAddTelecaller_datatable.ejs', datatableAddTelecallers) -%>
+      <% }; %>
+      <% if(url && url=='leads/assignLeads') { %>
+        <%- include('../leads/datatables/reassignLeadsAddTelec_datatable.ejs', datatableAddTelecallers) -%>
+      <% }; %>
+    </div>
+    </div>
+    <div class="modal-footer customModalFooter">
+      <a class="modal-action modal-close btn-flat" id="input-filter">Cancel</a>
+      <a onclick="reassignLeadToTeam()" class="modal-action modal-close btn-flat mr-1">Assign</a>
+    </div>
+  </div>
+</div>
+<div id="filterColumn" class="modal  filterModal roundCornersFloat">
+  <form class="columnAction">
+  <div class="modal-content">
+    <h5 class="mt-0"><b>Edit Column</b></h5>
+    <div class="mt-2">
+      <div class="modal-section row mt-2 mb-2">
+        <% if(datatable.columns){ %>
+          <div class="row">
+            <% datatable.columns.forEach(function(column,i){ %>
+              <div class="input-field col m3 p-1">
+                <label>
+                  <input type="checkbox" name="column[]" checked data-error="#errorCol" value="<%= i %>">
+                  <span><%= column.title %></span>
+                </label>
+             </div>
+            <% }); %>
+          </div>
+         <% }%>
+        </div>
+        <div id="errorCol" class="pt-2" style="font-size: .8rem;color: #ff4081"></div>
+      </div>
+    </div>
+  <div class="modal-footer">
+    <button class="modal-close btn-flat">Close</button>
+    <button type="submit" class=" btn-flat mr-1" >Apply</button>
+  </div>
+</form>
+</div>

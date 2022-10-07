@@ -1,0 +1,73 @@
+.token-sale-details {
+    &--v1 {
+        .token-calculator {
+            &__coin {
+                width: calc(50% - 7.5px);
+                margin-bottom: rem(15);
+                padding: rem(10) rem(15);
+                text-align: #{$left};
+
+                .section--darkblue & {
+                    background: #2446b1;
+                }
+
+                &--is-active {
+                    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15) inset;
+                }
+
+                &:nth-child(2n+1) {
+                    margin-#{$right}: rem(15);
+                }
+
+                .coin-name {
+                    @include breakpoint-min(md) {
+                        font-size: rem(15);
+                    }
+                }
+            }
+
+            input {
+                @include input-placeholder {
+                    color: $color-blue-500;
+                }
+
+            }
+
+        }
+
+        &.section--darkblue {
+            .token-calculator {
+                &__coin {
+                    background: #2446b1;
+                }
+            }
+        }
+
+        .token-calculator-fields {
+            padding: rem(20) rem(30);
+
+            .input-field-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 2px;
+                padding: rem(10) rem(15);
+
+                &--src {
+                    background: rgba(0, 0, 0, 0.15);
+                    box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+
+                }
+
+                input {
+                    background: transparent;
+                    box-shadow: none;
+                    border: 0;
+                    outline: 0;
+                    color: $color-white;
+                }
+            }
+
+        }
+    }
+}

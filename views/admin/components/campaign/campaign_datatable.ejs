@@ -1,0 +1,92 @@
+<style>
+  /* .dataTables_wrapper {
+    clear: none !important;
+  } */
+</style>
+
+<script>
+  const columnNames = '<%- JSON.stringify(datatable.columns) %>';
+  const apiUrl = '<%- JSON.parse(JSON.stringify(datatable.apiUrl)) %>';
+  const id = '<%- datatable.id ? datatable.id : null %>';
+
+  console.log('interval :-', baseUrl, apiUrl, id);
+  let myTable
+  let filterObj = {};
+
+  $(document).ready(() => {
+
+    myTable = $('#example').DataTable({
+      bLengthChange: false,
+      bInfo: false,
+      paging: true,
+      ordering: false,
+      pageLength: 10,
+      searching: true,
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: `${baseUrl}${apiUrl}`,
+        type: 'POST',
+        datatype: 'JSON',
+        data: function (data) {
+          data.id = id;
+          data.filterObj = filterObj;
+        }
+      },
+      'columns': JSON.parse(columnNames),
+      // select: { style: 'multi' }
+    });
+
+  });
+
+  function action(actionUrl, userId, teamId) {
+
+    console.log('action :-', actionUrl, userId, teamId);
+
+    const data = {
+      actionUrl: actionUrl,
+      userId: userId,
+      teamId: teamId,
+    };
+
+    fetch(`${baseUrl}${actionUrl}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        $('#example').DataTable().ajax.reload(null, false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
+
+  document.getElementById('actionButton').addEventListener('click', function () {
+
+    const data = myTable.rows('.selected').data();
+
+    let selectedItems = [];
+    data.map(item => {
+      selectedItems.push(item)
+    });
+    console.log('rows ASD :-', selectedItems);
+
+  });
+
+  function checkboxFunc(data) {
+    console.log('checkbox :-', data);
+  }
+</script>
+
+<div class="section section-data-tables">
+  <div class="col s12">
+    <table id="example" class="display responsive nowrap" style="width:100%">
+    </table>
+  </div>
+</div>

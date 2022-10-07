@@ -1,0 +1,635 @@
+/**! ----- border radius---- **/
+.rounded {
+        &--none {
+                border-radius: rem(0)!important;
+        }
+
+        &--default {
+                border-radius: rem(5);
+        }
+
+        &--03 {
+                border-radius: rem(3);
+        }
+
+        &--05 {
+                border-radius: rem(5);
+        }
+
+        &--08 {
+                border-radius: rem(08);
+        }
+
+        &--10 {
+                border-radius: rem(10);
+        }
+
+        &--15 {
+                border-radius: rem(15);
+        }
+
+        &--full {
+                border-radius: rem(100);
+        }
+}
+
+/**! ----- Opacity ---- **/
+.opacity {
+        &--02 {
+                opacity: .02;
+
+        }
+
+        &--03 {
+                opacity: .03;
+        }
+
+        &--05 {
+                opacity: .05;
+        }
+
+        &--08 {
+                opacity: .08;
+        }
+
+        &--10 {
+                opacity: .10;
+        }
+
+        &--20 {
+                opacity: .20;
+        }
+
+        &--30 {
+                opacity: .30;
+        }
+
+        &--40 {
+                opacity: .40;
+        }
+
+        &--50 {
+                opacity: .50;
+        }
+
+        &--60 {
+                opacity: .60;
+        }
+
+        &--70 {
+                opacity: .70;
+        }
+
+        &--80 {
+                opacity: .80;
+        }
+
+        &--90 {
+                opacity: .90;
+        }
+
+        &--100 {
+                opacity: 100;
+        }
+
+}
+
+/**! ----- Border---- **/
+.border {
+        &--none {
+                border: 0;
+        }
+
+        &--around {
+                border-style: solid;
+                border-width: 1px;
+                @extend %border-color;
+        }
+
+        &--top {
+                border-style: solid;
+                border-width: 1px 0px 0px 0px;
+                @extend %border-color;
+        }
+
+        &--bottom {
+                border-style: solid;
+                border-width: 0px 0px 1px 0px;
+                @extend %border-color;
+        }
+
+        &--left {
+                border-style: solid;
+                border-width: 0px 0px 0px 1px;
+                @extend %border-color;
+        }
+
+        &--right {
+                border-style: solid;
+                border-width: 0px 1px 0px 0px;
+                @extend %border-color;
+        }
+}
+
+/**! ----- Remove Margin and padding (spacing) from the first and last child---- **/
+.remove-space--top> {
+
+        div,
+        span,
+        p,
+        li,
+        li a {
+                &:first-child {
+                        margin-top: 0 !important;
+                        padding-top: 0 !important;
+                }
+        }
+}
+
+.remove-space--bottom> {
+
+        div,
+        span,
+        p,
+        li,
+        li a {
+                &:last-child {
+                        margin-bottom: 0 !important;
+                        padding-bottom: 0 !important;
+                }
+        }
+}
+
+.remove-space--x> {
+
+        div,
+        span,
+        p,
+        li,
+        a {
+                &:first-child {
+                        margin-left: 0 !important;
+                        padding-left: 0 !important;
+                }
+
+                &:last-child {
+                        margin-right: 0 !important;
+                        padding-right: 0 !important;
+                }
+        }
+}
+
+.remove-space--xy> {
+
+        div,
+        span,
+        p,
+        li,
+        a {
+                &:first-child {
+                        margin-left: 0 !important;
+                        padding-left: 0 !important;
+                        margin-top: 0 !important;
+                        padding-top: 0 !important;
+                }
+
+                &:last-child {
+                        margin-right: 0 !important;
+                        padding-right: 0 !important;
+                        margin-bottom: 0 !important;
+                        padding-bottom: 0 !important;
+                }
+        }
+}
+
+@include breakpoint-min(sm) {
+        .remove-space-sm--top> {
+
+                div,
+                span,
+                p,
+                li,
+                li a {
+                        &:first-child {
+                                margin-top: 0 !important;
+                                padding-top: 0 !important;
+                        }
+                }
+        }
+
+        .remove-space-sm--bottom> {
+
+                div,
+                span,
+                p,
+                li,
+                li a {
+                        &:last-child {
+                                margin-bottom: 0 !important;
+                                padding-bottom: 0 !important;
+                        }
+                }
+        }
+
+        .remove-space-sm--x> {
+
+                div,
+                span,
+                p,
+                li,
+                a {
+                        &:first-child {
+                                margin-left: 0 !important;
+                                padding-left: 0 !important;
+                        }
+
+                        &:last-child {
+                                margin-right: 0 !important;
+                                padding-right: 0 !important;
+                        }
+                }
+        }
+
+        .remove-space-sm--xy> {
+
+                div,
+                span,
+                p,
+                li,
+                a {
+                        &:first-child {
+                                margin-left: 0 !important;
+                                padding-left: 0 !important;
+                                margin-top: 0 !important;
+                                padding-top: 0 !important;
+                        }
+
+                        &:last-child {
+                                margin-right: 0 !important;
+                                padding-right: 0 !important;
+                                margin-bottom: 0 !important;
+                                padding-bottom: 0 !important;
+                        }
+                }
+        }
+}
+
+/**! ----- box shadow---- **/
+.box-shadow {
+        &--1 {
+                box-shadow: 0 rem(3) rem(5) 0 rgba(44, 46, 48, 0.15);
+
+        }
+
+        &--2 {
+                box-shadow: 0 rem(8) rem(30) rgba(0, 0, 0, 0.15);
+
+        }
+
+        &--3 {
+                box-shadow: 0 rem(12) rem(30) rgba(0, 0, 0, 0.06);
+
+        }
+
+        &--4 {
+                box-shadow: 0 rem(8) rem(20) rgba(0, 0, 0, 0.1);
+
+        }
+
+        &--5 {
+                box-shadow: 0 rem(25) rem(65) 0 rgba(0, 0, 0, 0.1);
+
+        }
+
+        &--6 {
+                box-shadow: 0 rem(5) rem(15) 0 rgba(0, 0, 0, 0.1);
+
+        }
+
+}
+
+
+
+/**! ----- Max Width---- **/
+.max-w {
+        @include breakpoint-max(sm) {
+                &--320 {
+                        max-width: rem(320);
+                }
+
+                &--350 {
+                        max-width: rem(350);
+                }
+
+                &--400 {
+                        max-width: rem(500);
+                }
+
+                &--500 {
+                        max-width: rem(500);
+                }
+        }
+}
+
+/**! ----- Width---- **/
+.w-80{
+        width: 80%;
+}
+.w-85{
+        width: 80%;
+}
+.w-90{
+        width: 90%;
+}
+/**! ----- Height---- **/
+.h-100vh {
+        height: 100vh;
+}
+
+.h-min-100vh {
+        min-height: 100vh;
+}
+
+@include breakpoint-min(lg) {
+        .h-lg-100vh {
+                height: 100vh;
+        }
+
+        .h-min-lg-100vh {
+                min-height: 100vh;
+        }
+}
+
+/**! ----- overflow---- **/
+.hidden {
+        overflow: hidden;
+}
+
+/**! ----- Z Index---- **/
+.z-index1 {
+        z-index: 1;
+}
+
+.z-index2 {
+        z-index: 2;
+}
+
+.z-index3 {
+        z-index: 3;
+}
+
+.z-index-1 {
+        z-index: -1;
+}
+
+.z-index-2 {
+        z-index: -2;
+}
+
+.z-index-3 {
+        z-index: -3;
+}
+
+/**! ----- Position ---- **/
+.pos-abs-top {
+        @include pos-abs(0, auto, auto, auto)
+}
+
+.pos-abs-bottom {
+        @include pos-abs(auto, auto, 0, auto)
+}
+
+.pos-abs-right {
+        @include pos-abs(auto, 0, auto, auto)
+}
+
+.pos-abs-left {
+        @include pos-abs(auto, auto, auto, 0)
+}
+
+.pos-abs-bottom-left {
+        @include pos-abs(auto, auto, 0, 0)
+}
+
+.pos-abs-bottom-right {
+        @include pos-abs(auto, 0, 0, auto)
+}
+
+.pos-abs-top-right {
+        @include pos-abs(0, 0, auto, auto)
+}
+
+.pos-abs-top-left {
+        @include pos-abs(0, auto, auto, 0)
+}
+
+.pos-abs-center {
+        @include centerer;
+}
+
+.pos-abs-horizon-center {
+        @include centerer (true, false);
+}
+
+.pos-abs-vertical-center {
+        @include centerer (false, ture);
+
+}
+
+.pos-right {
+        #{$right}: 0 !important;
+}
+
+.pos-left {
+        #{$left}: 0 !important;
+}
+
+
+@include breakpoint-min(md) {
+        .pos-abs-md-top {
+                @include pos-abs(0, auto, auto, auto)
+        }
+
+        .pos-abs-md-bottom {
+                @include pos-abs(auto, auto, 0, auto)
+        }
+
+        .pos-abs-md-right {
+                @include pos-abs(auto, 0, auto, auto)
+        }
+
+        .pos-abs-md-left {
+                @include pos-abs(auto, auto, auto, 0)
+        }
+
+        .pos-abs-md-bottom-left {
+                @include pos-abs(auto, auto, 0, 0)
+        }
+
+        .pos-abs-md-bottom-right {
+                @include pos-abs(auto, 0, 0, auto)
+        }
+
+        .pos-abs-md-top-right {
+                @include pos-abs(0, 0, auto, auto)
+        }
+
+        .pos-abs-md-top-left {
+                @include pos-abs(0, auto, auto, 0)
+        }
+
+        .pos-abs-md-center {
+                @include centerer;
+        }
+
+        .pos-abs-md-horizon-center {
+                @include centerer (true, false);
+        }
+
+        .pos-abs-md-vertical-center {
+                @include centerer (false, ture);
+
+        }
+
+        .pos-md-right {
+                #{$right}: 0 !important;
+        }
+
+        .pos-md-left {
+                #{$left}: 0 !important;
+        }
+
+}
+
+@include breakpoint-min(lg) {
+        .pos-abs-lg-top {
+                @include pos-abs(0, auto, auto, auto)
+        }
+
+        .pos-abs-lg-bottom {
+                @include pos-abs(auto, auto, 0, auto)
+        }
+
+        .pos-abs-lg-right {
+                @include pos-abs(auto, 0, auto, auto)
+        }
+
+        .pos-abs-lg-left {
+                @include pos-abs(auto, auto, auto, 0)
+        }
+
+        .pos-abs-lg-bottom-left {
+                @include pos-abs(auto, auto, 0, 0)
+        }
+
+        .pos-abs-lg-bottom-right {
+                @include pos-abs(auto, 0, 0, auto)
+        }
+
+        .pos-abs-lg-top-right {
+                @include pos-abs(0, 0, auto, auto)
+        }
+
+        .pos-abs-lg-top-left {
+                @include pos-abs(0, auto, auto, 0)
+        }
+
+        .pos-abs-lg-center {
+                @include centerer;
+        }
+
+        .pos-abs-lg-horizon-center {
+                @include centerer (true, false);
+        }
+
+        .pos-abs-lg-vertical-center {
+                @include centerer (false, ture);
+
+        }
+
+        .pos-lg-right {
+                #{$right}: 0 !important;
+        }
+
+        .pos-lg-left {
+                #{$left}: 0 !important;
+        }
+}
+
+@include breakpoint-min(xl) {
+        .pos-abs-xl-top {
+                @include pos-abs(0, auto, auto, auto)
+        }
+
+        .pos-abs-xl-bottom {
+                @include pos-abs(auto, auto, 0, auto)
+        }
+
+        .pos-abs-xl-right {
+                @include pos-abs(auto, 0, auto, auto)
+        }
+
+        .pos-abs-xl-left {
+                @include pos-abs(auto, auto, auto, 0)
+        }
+
+        .pos-abs-xl-bottom-left {
+                @include pos-abs(auto, auto, 0, 0)
+        }
+
+        .pos-abs-xl-bottom-right {
+                @include pos-abs(auto, 0, 0, auto)
+        }
+
+        .pos-abs-xl-top-right {
+                @include pos-abs(0, 0, auto, auto)
+        }
+
+        .pos-abs-xl-top-left {
+                @include pos-abs(0, auto, auto, 0)
+        }
+
+        .pos-abs-xl-center {
+                @include centerer;
+        }
+
+        .pos-abs-xl-horizon-center {
+                @include centerer (true, false);
+        }
+
+        .pos-abs-xl-vertical-center {
+                @include centerer (false, ture);
+
+        }
+
+        .pos-xl-right {
+                #{$right}: 0 !important;
+        }
+
+        .pos-xl-left {
+                #{$left}: 0 !important;
+        }
+}
+
+/**! ----- height emulator---- **/
+.height-emulator {
+        float: left;
+}
+
+/**! ----- transition---- **/
+.transition-default {
+        transition: .3s;
+}
+
+
+/**! ----- List style---- **/
+.list-inside {
+        li {
+                list-style-position: inside;
+        }
+}
+
+/**! ----- Flex---- **/
+.flex-1 {
+        flex: 1 0 0;
+}

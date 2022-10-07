@@ -1,0 +1,478 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<style>
+  .addChip {
+    letter-spacing: 0px;
+    padding: 0 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    box-shadow: none;
+    line-height: 32px;
+    display: inline-block;
+    height: 32px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+    background-color: #2196f3 !important;
+    letter-spacing: 0.5px;
+  }
+  .addFilter {
+    letter-spacing: 0px;
+    padding: 0 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    box-shadow: none;
+    line-height: 32px;
+    display: inline-block;
+    height: 32px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+    background-color: orange !important;
+    letter-spacing: 0.5px;
+  }
+  .customDatatable .card {
+    box-shadow: none;
+  }
+
+  .customDatatable .card .card-content .row .col {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .btn {
+    background-color: #f55c54;
+    padding: 0 14px;
+    border-radius: 8px;
+  }
+
+  .btn:hover {
+    background-color: #f55c54;
+    padding: 0 14px;
+    border-radius: 8px;
+  }
+
+  /* .contractFilter{
+        float: left !important;
+    }
+
+    .contractFilter .select-wrapper input.select-dropdown{
+        height: 1.8rem !important;
+        font-size: 13px !important;
+        margin: 0px 0 0px 0 !important;
+    } */
+  .select-wrapper input.select-dropdown {
+    border: none;
+    border-bottom: 0;
+  }
+</style>
+
+<div id="main">
+
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col s10 m6 l6">
+            <!-- <h5 class="breadcrumbs-title mt-0 mb-0">
+              <span>Campaign Details</span>
+            </h5>
+            <ol class="breadcrumbs mb-0">
+              <li class="breadcrumb-item"><a href="/campaign">Campaigns</a></li>
+              <li class="breadcrumb-item active">View Campaign Details</li>
+            </ol> -->
+            <div class="row mt-0" style="color: white; display: flex; align-items: center;">
+              <div class="col s0 m0 l0" style="padding-right: 0px;">
+                <p class="mt-0"><%= campaign.name %></p>
+              </div>                         
+            </div>
+            <p class="mt-0" style="color: white; padding-left: 4px;"><%= campaign.description%></p>
+          </div>
+          <div class="col s2 m6 l6">
+            <h5 class="right">
+              <% if(displayTelecaller) { %>
+              <% if(campaign.status == 'Active') { %>
+              <a class="btn modal-trigger" id="closeCampaign" href="#closeCampaignModal">
+                <i class="material-icons left">cancel</i>
+                Close
+              </a>
+              <% }; %>
+              <% if(campaign.status !== 'Active') { %>
+              <a class="btn" style="background-color: grey; cursor: initial;">
+                <i class="material-icons left">cancel</i>
+                Closed
+              </a>
+              <% }; %>
+              <% }; %>
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <div class="card roundCorners">
+          <div class="card-content">
+            <div class="row p-0">
+              <div class="col s12">
+                <div class="quick-floats">
+                  <!-- <h5 class="left">
+                    <b>
+                      <%= campaign.name %>
+                    </b>
+                  </h5> -->
+                  
+                  <script>
+                      const campaignInfo = '<%- JSON.stringify(campaign) %>';
+                      const parseCampaignInfo = JSON.parse(campaignInfo);
+
+                      let closeCampaignId = parseCampaignInfo.id;
+
+                    function confirmCloseCampaign() {
+                      console.log('closeCampaign:');
+
+                      let url = window.location.href;
+
+                      const data = {
+                        campaignId:closeCampaignId
+                      };
+
+                      fetch(`${baseUrl}campaign/closeCampaign`, {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify(data),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                          $('#exampleLeads').DataTable().ajax.reload(null, false);
+                          $('#exampleTelecallers').DataTable().ajax.reload(null, false);
+                          document.getElementById('closeCampaign').style.backgroundColor = 'grey';
+                          document.getElementById('closeCampaign').innerHTML ='<i class="material-icons left">cancel</i>Closed';
+                        })
+                        .catch((error) => {
+                          console.error('Error:', error);
+                        });
+
+                    }
+                  </script>
+                </div>
+              </div>
+            </div>
+            <div class="row m-0 mt-1 mb-1">
+              <div class="col s3 m2 l2">
+                <p class="m-0"><b>Status</b></p>
+                
+                <% if(campaign.status == 'Active') { %>
+                <p class="mt-2"><%= campaign.status %></p>
+                <% }; %>
+                <% if(campaign.status !== 'Active') { %>
+                  <p class="mt-2">Completed</p>
+                <% }; %>
+              </div>
+              <div class="col s3 m2 l2">
+                <p class="m-0"><b>Total leads</b></p>
+                <p class="mt-2"><%= campaign.totalLeads %></p>
+              </div>
+              <div class="col s3 m2 l2">
+                <p class="m-0"><b>Collectable amount</b></p>
+                <p class="mt-2"><%= campaign.collectableAmt %></p>
+              </div>
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>Collected amount</b></p>
+                <p class="mt-2"><%= campaign.collectedAmt %></p>
+              </div>
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>Start Date</b></p>
+                <p class="mt-2"><%= campaign.createdAt %></p>
+              </div>
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>End Date</b></p>
+                <p class="mt-2"><%= campaign.endDate %></p>
+              </div>
+              <!-- <div class="col s12 m3 l3 p-0">
+                <div class="col s1 m1 l1 p-0 mr-3">
+                  <i class="material-icons iconStyle">info_outline</i>
+                </div>
+                <div class="col s10 m10 l10 p-0">
+                  <p style="font-size: 16px; margin-top: -3px;">
+                    <b>Status:</b>
+                    <span class="chip green lighten-5 ml-2">
+                      <span class="green-text"><b>Active</b></span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="col s12 m4 l4 p-0">
+                <div class="col s1 m1 l1 p-0 mr-2">
+                  <i class="material-icons iconStyle">date_range</i>
+                </div>
+                <div class="col s10 m10 l10 p-0">
+                  <p style="font-size: 16px;  margin-top: 0px;"><b>Start Date:</b>
+                    <%= campaign.createdAt %>
+                  </p>
+                </div>
+              </div> -->
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="container">
+
+      <div class="col s12">
+        <div id="button-trigger" class="card roundCorners card-default scrollspy">
+          <div class="card-content" style="padding: 0px; margin-bottom: -30px;">
+            <ul class="tabs" style="border-radius: 10px 10px 0px 0px;">
+              <li class="tab col m6"><a href="#leads">Leads</a></li>
+
+              <% if(displayTelecaller) { %>
+              <li class="tab col m6"><a href="#telecallers">Telecallers/FOS</a></li>
+              <% }; %>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="leads" class="col s12">
+        <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+          <div class="card-content">
+            <div class="row">
+              <div class="col s12 m12 l12" style="display: flex; align-items: baseline;">
+                <p class="mt-0">Kindly filter and allocate leads to telecaller/FOS</p>
+                <div class="col s2 m6 l6" style="display: flex; justify-content: flex-end;">
+                  <% if(displayTelecaller) { %>
+                    <% if(campaign.status == 'Active') { %>
+                      <a class="btn-small modal-trigger addChip mb-1" href="#allocateModal">
+                        <i class="material-icons left" style="margin-right: 5px;">call_split</i>
+                        Allocate
+                      </a>
+                    <% }; %>
+                    
+                    <% if(datatableLeads.filter !=undefined) { %>
+                      <a class="btn-small modal-trigger addFilter mb-1" href="#filterModal">
+                        <i class="material-icons left" style="margin-right: 5px; ">filter_list</i> Filter
+                      </a>
+                      <% } %>
+                      <% if(datatableLeads.filter && datatableLeads.filter=='campaign' ) { %>
+                      <%- include('../../components/filters/campaign_details_leads.ejs') -%>
+                      <% } %>
+                  <% }; %>
+                </div>
+              </div>
+              <!-- <div class="col s6 m6 l6">
+                
+              </div> -->
+            </div>
+            <div class="row">
+              <%- include('./datatables/leads_datatable.ejs', datatableLeads) -%>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% if(displayTelecaller) { %>
+      <div id="telecallers" class="col s12">
+        <div id="button-trigger" class="card card-default scrollspy" style="border-radius: 0px 0px 10px 10px;">
+          <div class="card-content">
+            <% if(campaign.status == 'Active') { %>
+              <a class="btn-small modal-trigger addChip mb-1" href="#telecallerModal">
+                <i class="material-icons left" style="margin-right: 5px;">add</i>
+                Add Team
+              </a>
+            <% }; %>            
+            <a class="btn-small modal-trigger addFilter mb-1" href="#telefilterModal">
+              <i class="material-icons left" style="margin-right: 5px; ">filter_list</i> Filter
+            </a>
+            <%- include('../../components/filters/campaign_details_callers.ejs') -%>
+            <div class="row">
+              <%- include('./datatables/telecallers_datatable.ejs', datatableTelecallers) -%>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }; %>
+
+    </div>
+  </div>
+
+  <div class="card">
+
+    <!-- REASSIGN -->
+    <div id="reassignModal" class="modal modal-fixed-footer customModal roundCornersFloat" style="height: 50%;">
+      <div class="modal-content customModalContent">
+
+        <h5 class="mt-0"><b>Reassign Lead</b></h5>
+
+        <h4 class="card-title mt-4">Currently assigned to:</h4>
+
+        <div class="chip mt-3 customChip" id="currentlyAssignedTo">
+          Cedric Kelly
+        </div>
+
+        <h4 class="card-title mt-4">Reassign to:</h4>
+        <!-- <div class="chips chips-autocomplete"></div> -->
+        <div class="input-field">
+          <select id="reassignTelecallerList" name="reassignTelecallerList">
+            <option value="" disabled selected>Choose Telecaller</option>
+            <% campaignTelecallers.forEach((telecaller) => { %>
+            <option value="<%= telecaller.id %>"><%= telecaller.firstName %> <%= telecaller.lastName %></option>
+            <% }); %>
+          </select>
+        </div>
+
+      </div>
+      <div class="modal-footer customModalFooter">
+        <a class="modal-action modal-close btn-flat">Cancel</a>
+        <a onclick="reassignLeadSave()" class="modal-action modal-close btn-flat mr-1">Reassign</a>
+      </div>
+    </div>
+
+    <!-- ASSIGN -->
+    <div id="assignModal" class="modal modal-fixed-footer customModal roundCornersFloat" style="height: 50%;">
+      <div class="modal-content customModalContent">
+
+        <h5 class="mt-0"><b>Assign Lead</b></h5>
+
+
+        <h4 class="card-title mt-4">Assign to:</h4>
+        <!-- <div class="chips chips-autocomplete"></div> -->
+        <div class="input-field">
+          <select id="assignTelecallerList" name="assignTelecallerList">
+            <option value="" disabled selected>Choose Telecaller</option>
+            <% campaignTelecallers.forEach((telecaller) => { %>
+            <option value="<%= telecaller.id %>"><%= telecaller.firstName %> <%= telecaller.lastName %></option>
+            <% }); %>
+          </select>
+        </div>
+
+      </div>
+      <div class="modal-footer customModalFooter">
+        <a class="modal-action modal-close btn-flat">Cancel</a>
+        <a onclick="assignLeadSave()" class="modal-action modal-close btn-flat mr-1">Save</a>
+      </div>
+    </div>
+
+    <!-- ADD TELECALLER -->
+    <div id="telecallerModal" class="modal modal-fixed-footer customModal roundCornersFloat"
+      style="margin-top: 0%; height: 100%; max-width: 60%; overflow-x: hidden;">
+      <div class="modal-content customModalContent mb-5">
+        <div class="row">
+          <div class="col s6 m6 l6">
+            <h5 class="mt-0"><b>Add Team</b></h5>
+          </div>
+          <div class="col s6 m6 l6 input-field mt-0">
+            <select id="TeamMemberId" name="teamLeader" onchange="fetchMembers()">
+                <option value="" disabled selected>Select team</option>
+                <% teams.forEach((team) => { %>
+                  <option value="<%= team.id %>"><%= team.name %></option>
+                  <% }); %>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="customDatatable mt-4" style="box-shadow: none;">
+        <%- include('../../components/datatable_new.ejs', datatable=datatableAddTelecallers) -%>
+      </div>
+      <div class="modal-footer customModalFooter">
+        <a class="modal-action modal-close btn-flat">Close</a>
+        <a onclick="addTellecaller()" class="modal-action modal-close btn-flat mr-1">Add</a>
+      </div>
+    </div>
+
+    <div id="removeTelecallerModal" class="modal modal-fixed-footer customModal roundCornersFloat"
+      style="height: 200px; width: 600px;">
+      <div class="modal-content customModalContent">
+        <h5 class="mt-0"><b>Confirm Action</b></h5>
+        <br>
+        <h6>Are you sure you want to remove this telecaller?</h6>
+      </div>
+      <div class="modal-footer customModalFooter">
+        <a class="modal-action modal-close btn-flat">No</a>
+        <a onclick="confirmRemoveTelecaller()" class="modal-action modal-close btn-flat mr-1">Yes</a>
+      </div>
+    </div>
+
+    <div id="closeCampaignModal" class="modal modal-fixed-footer customModal roundCornersFloat"
+    style="height: 200px; width: 600px;">
+    <div class="modal-content customModalContent">
+      <h5 class="mt-0"><b>Confirm Action</b></h5>
+      <br>
+      <h6>Are you sure you want to close this campaign?</h6>
+    </div>
+    <div class="modal-footer customModalFooter">
+      <a class="modal-action modal-close btn-flat">No</a>
+      <a onclick="confirmCloseCampaign()" class="modal-action modal-close btn-flat mr-1">Yes</a>
+    </div>
+  </div>
+
+  </div>
+
+
+
+</div>
+
+</div>
+<script>
+  let outerUserId = '';
+  let outercampaignName = '';
+</script>
+<script>
+  $(function () {
+    $('.chips').chips();
+
+    $('.chips-autocomplete').chips({
+      placeholder: 'Add Telecaller',
+      secondaryPlaceholder: '+Telecaller',
+      autocompleteOptions: {
+        data: {
+          'Suki Burks': null,
+          'Prescott Bartlett': null,
+          'Timothy Mooney': null,
+          'Bruno Nash': null,
+        },
+        limit: Infinity,
+        minLength: 1
+      }
+    });
+  });
+
+  $(document).on('click', '#myLnk', function () {
+    const LnID = $(this).data();
+    console.log(LnID);
+  });
+</script>
+
+<script>
+  const toast = '<%- JSON.stringify(toast) %>';
+  const toastText = '<%- JSON.stringify(toastText) %>';
+  const toastColor = '<%- JSON.stringify(toastColor) %>';
+  const parseToast = JSON.parse(toast);
+  const parseToastText = JSON.parse(toastText);
+  const parseToastColor = JSON.parse(toastColor);
+
+  $(document).ready(function () {
+      if (parseToast) {
+          M.toast({
+              html: parseToastText,
+              classes: parseToastColor
+          })
+      }
+  });  
+</script>
+
+<%- include('../../bottom.ejs') -%>

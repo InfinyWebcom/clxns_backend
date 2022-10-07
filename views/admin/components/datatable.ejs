@@ -1,0 +1,68 @@
+<script>
+    <%if(locals.ViewUrl) { %>
+    const ViewUrl = '<%=ViewUrl%>';
+    <% } %>
+    <%if(locals.EditUrl) { %>
+    const EditUrl = '<%=EditUrl%>';
+    <% } %>
+    <%if(locals.DelUrl) { %>
+    const DelUrl = '<%=ViewUrl%>';
+    <% } %>
+    <%if(locals.AddUrl) { %>
+    const AddUrl = '<%=ViewUrl%>';
+    <% } %>
+</script>
+
+<div class="col s12">
+    <div class="container">
+        <div class="section section-data-tables">
+            <!-- DataTables example -->
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div id="button-trigger" class="card card card-default scrollspy">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s12">
+                                    <table id="userTable" class="display">
+                                        <thead>
+                                            <tr>
+                                                <% Headers.forEach(function(head){ %>
+                                                <th><%=head.display_name%></th>
+                                                <% }); %>
+                                                <% if(locals.Actions) { %>
+                                                <th>Actions</th>
+                                                <% }; %>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% Objects.forEach(function(object){ %>
+                                            <tr>
+                                                
+                                                <% Headers.forEach(function(head){ %>
+                                                <td><%=object[head.sys_name]%></td>
+                                                <% }); %>
+
+                                                <% if(locals.Actions) { %>
+                                                <th>
+                                                    <% Actions.forEach(function(Action){ %>
+                                                    <a class="dt-action text-capitalize dt-<%=Action.name%>"
+                                                        data-url="<%=Action.url%>" data-id="<%=object.id%>"  data-lan_or_cc_no="<%=object.lan_or_cc_no%>"
+                                                        href="<%=Action.url%><%=object.lan_or_cc_no%>"> <%=Action.name%> </a>
+                                                    <% }); %>
+                                                </th>
+                                                <% }; %>
+
+                                            </tr>
+                                            <% }); %>
+                                            </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-overlay"></div>
+</div>

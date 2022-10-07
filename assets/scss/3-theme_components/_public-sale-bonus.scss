@@ -1,0 +1,110 @@
+.bonuses {
+    &--v1 {
+        .token-progress {
+            #{$left}: -50px;
+            position: absolute;
+
+            &__text {
+                writing-mode: vertical-rl;
+                margin-top: 40px;
+                margin-#{$left}: 10px;
+                transform: scale(-1);
+            }
+
+            .line {
+                position: absolute;
+                height: 1px;
+                width: 36px;
+                border-bottom: 1.2px dashed rgba(255, 255, 255, 0.1);
+                top: 13px;
+                #{$right}: -27px;
+            }
+        }
+    }
+
+    &--v2 {
+        .bar-portion {
+            height: rem(35);
+            position: relative;
+            z-index: 1;
+
+            @include breakpoint-min(sm) {
+                height: rem(45);
+
+            }
+
+            &:first-child {
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+
+            &:last-child {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+
+            .bonuses__rate {
+                position: absolute;
+                top: rem(-46);
+                height: rem(50);
+                line-height: rem(46);
+                text-align: center;
+                width: 100%;
+                font-size: rem(15);
+                z-index: -1;
+
+                @include breakpoint-min(sm) {
+                    font-size: rem(18);
+                    font-weight: 700;
+
+                }
+            }
+
+            .bonuses__duration {
+                position: absolute;
+                top: rem(-90);
+                width: 100%;
+                text-align: center;
+                font-size: rem(12);
+                font-weight: 500;
+                @include breakpoint-min(sm) {
+                font-size: rem(14);
+                top: rem(-80);
+
+
+                }
+                @include breakpoint-min(md) {
+                    font-size: rem(16);
+
+                }
+            }
+
+            &:first-child {
+                .bonuses__rate {
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+                }
+
+            }
+
+            &:nth-child(2n+2) {
+                .bonuses__rate {
+                    border-bottom-left-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                    top: auto;
+                    bottom: rem(-50);
+                    line-height: rem(52);
+
+                }
+
+                .bonuses__duration {
+                    top: auto;
+                    bottom: rem(-85);
+                }
+
+            }
+
+        }
+    }
+}

@@ -1,0 +1,201 @@
+<style>
+  #main .section-data-tables .dataTables_wrapper table.dataTable tbody {
+  height: auto !important;
+}
+#exampleLeadSuccessLocation_filter{
+  display: none !important;
+}
+</style>
+<script>
+
+
+const columnNames = '<%- JSON.stringify(datatable.columns) %>';
+const apiUrl = '<%- JSON.parse(JSON.stringify(datatable.apiUrl)) %>';
+
+let myTableLeadsLocation
+let filterObjLeadsLocation = {};
+let userId;
+$(document).ready(() => {
+ 
+  myTableLeadsLocation = $('#exampleLeadSuccessLocation').DataTable({
+    bLengthChange: false,
+    bInfo: false,
+    paging: false,
+    ordering: false,
+    pageLength: 20,
+    serverSide: true,
+    processing: true,
+    ajax: {
+      url: `${baseUrl}${apiUrl}`,
+      type: 'POST',
+      datatype: 'JSON',
+      data: function (data) {
+      
+      }
+    },
+    'columns': JSON.parse(columnNames),
+    // select: { style: 'multi' }
+  });
+});
+
+function action(actionUrl, userId, teamId) {
+
+  console.log('action :-', actionUrl, userId, teamId);
+
+  const data = {
+    actionUrl: actionUrl,
+    userId: userId,
+    teamId: teamId,
+  };
+
+  fetch(`${baseUrl}${actionUrl}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      $('#exampleLeads').DataTable().ajax.reload(null, false);
+      $('#exampleTelecallers').DataTable().ajax.reload(null, false);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
+}
+
+
+function getSourcingDetail(actionUrl, userId, teamId) {
+  userId = userId;
+  myTableLeadsLocation.search(userId).draw();
+console.log('action :-', actionUrl, userId, teamId);
+
+const data = {
+  actionUrl: actionUrl,
+  userId: userId,
+  teamId: teamId,
+  screenType: "popup"
+}
+
+fetch(`${baseUrl}${actionUrl}`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+}).then(response => response.json()).then(data => {
+    
+  console.log('data:************************', data.data);
+  var successsData = data.data
+
+  let chipsHtml = '<h6 class="mt-0"><b>'+'Bank Name : '+ successsData.bankName +'</b></h6>'+
+        '<div class="row mt-6">'+
+        '<div class="col s2 m2 l2">'+
+          '<p class="m-0"><b>Total Leads</b></p>'+
+          '<h6 class="mt-8">'+ successsData.noOfLeads +'</h6>'+
+        '</div>'+
+        '<div class="col s2 m2 l2">'+
+          '<p class="m-0"><b>Pool value</b></p>'+
+          '<h6 class="mt-8">'+ successsData.poolValue +'</h6>'+
+        '</div>'+
+        '<div class="col s2 m2 l2">'+
+          '<p class="m-0"><b>Status</b></p>'+
+          '<h6 class="mt-8">'+ successsData.status +'</h6>'+
+        '</div>'+
+        '<div class="col s2 m2 l2">'+
+          '<p class="m-0"><b>UploadedBy</b></p>'+
+          '<h6 class="mt-8">'+ successsData.userName +'</h6>'+
+        '</div>'+
+        '<div class="col s2 m2 l2">'+
+          '<p class="m-0"><b>Start Date</b></p>'+
+          '<h6 class="mt-1 dateDisplay">'+ successsData.startDate +'</h6>'+
+        '</div>'+
+        '<div class="col s2 m2 l2">'+
+          '<p class="m-0"><b>End Date</b></p>'+
+        '<h6 class="mt-1 dateDisplay">'+ successsData.endDate +'</h6>'+
+        '</div>'+
+      '</div>';
+
+  document.getElementById('sourcingdetaildata').innerHTML = '';
+  document.getElementById('sourcingdetaildata').innerHTML = chipsHtml;
+
+}).catch(error => {
+    console.log('Error:', error);
+});
+}
+
+function getSourcingFailDetail(actionUrl, userId, teamId) {
+
+console.log('action :-', actionUrl, userId, teamId);
+
+const data = {
+  actionUrl: actionUrl,
+  userId: userId,
+  teamId: teamId,
+  screenType: "popup"
+}
+
+fetch(`${baseUrl}${actionUrl}`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+}).then(response => response.json()).then(data => {
+    
+  console.log('data:----------------------************************', data.data);
+  var successsData = data.data
+  
+  var liTag=JSON.parse(successsData.errors).map(function(errData){
+                 return `<li>
+                    <p class="m-0" style="color: red;"><b> ${errData.Error} on line ${errData.LineNo}</b></p>
+                  </li>`;
+                  }).join('');
+
+                  console.log(liTag);
+  let chipsHtml = '<h6 class="mt-0"><b>'+'Bank Name : '+ successsData.bankName +'</b></h6>'+
+        '<div class="row mt-6">'+
+        '<div class="col s3 m3 l3">'+
+          '<p class="m-0"><b>UploadedBy</b></p>'+
+          '<h6 class="mt-8">'+ successsData.userName +'</h6>'+
+        '</div>'+
+        '<div class="col s3 m3 l3">'+
+          '<p class="m-0"><b>Status</b></p>'+
+          '<h6 class="mt-8">'+ successsData.status +'</h6>'+
+        '</div>'+
+        '<div class="col s3 m3 l3">'+
+          '<p class="m-0"><b>Start Date</b></p>'+
+          '<h6 class="mt-1 dateDisplay">'+ successsData.startDate +'</h6>'+
+        '</div>'+
+        '<div class="col s3 m3 l3">'+
+          '<p class="m-0"><b>End Date</b></p>'+
+        '<h6 class="mt-1 dateDisplay">'+ successsData.endDate +'</h6>'+
+        '</div>'+
+      '</div>'+
+      '<h6 class="mt-3">Error Logs :</h6>'+
+            '<div class="row mt-0">'+
+              '<div class="col s12 m12 12">'+
+                '<ol>'+
+                  liTag
+                '</ol>'+
+              '</div>'+
+              '</div>';
+
+  document.getElementById('sourcingfaileddata').innerHTML = '';
+  document.getElementById('sourcingfaileddata').innerHTML = chipsHtml;
+
+}).catch(error => {
+    console.log('Error:', error);
+});
+}
+</script>
+
+<div class="section section-data-tables">
+<div class="col s12">
+  <table id="exampleLeadSuccessLocation" class="display responsive nowrap" style="width:100%">
+  </table>
+</div>
+</div>

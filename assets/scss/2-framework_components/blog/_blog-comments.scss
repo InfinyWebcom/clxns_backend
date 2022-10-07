@@ -1,0 +1,105 @@
+.comments-area {
+    .comments-title {
+        font-size: rem(24);
+        font-weight: 600;
+        margin-bottom: rem(30);
+
+        @include breakpoint-min(lg) {
+            margin-bottom: rem(50);
+        }
+    }
+
+    .comment-list {
+        margin: 0;
+    }
+
+    li {
+        list-style: none;
+        margin: 0;
+
+    }
+
+    ol {
+        padding: 0;
+    }
+
+    .comment-body {
+        background: $color-white;
+        margin-top: rem(20);
+        border-radius: rem(10);
+        border: 1px solid $border-on-light-standard;
+        padding-top: rem(30);
+        padding-bottom: rem(30);
+
+        @include breakpoint-max(sm) {
+            padding-left: rem(20);
+            padding-right: rem(20);
+        }
+        @include breakpoint-max(md) {
+            padding-left: rem(30);
+            padding-right: rem(30);
+        }
+        @include breakpoint-min(md) {
+            display: flex;
+            position: relative;
+        }
+
+    }
+
+    .avatar {
+        img {
+            max-width: rem(78);
+            border-radius: rem(150);
+            box-shadow: 0 0 0 5px $color-white;
+            @include breakpoint-min(md) {
+                position: relative;
+                #{$left}: -50%;
+                flex: 0 0 rem(78);
+            }
+        }
+    }
+
+    .comment-inner {
+        padding-#{$right}: rem(25);
+        display: flex;
+        flex-direction: column;
+        @include breakpoint-min(md) {
+            margin-#{$left}: rem(-15);
+        }
+    }
+
+    .author-name {
+        font-size: rem(17);
+        font-weight: 600;
+        margin-bottom: rem(2);
+    }
+
+    .comment-metadata {
+        margin-bottom: rem(20);
+
+        time {
+            color: $color-gray-400;
+            font-size: rem(14)
+        }
+    }
+
+    .comment-content {
+        P {
+            margin-bottom: rem(30);
+
+            img {
+                margin-top: rem(10);
+            }
+        }
+    }
+
+    .comment-reply-link {
+        font-weight: 700;
+        @extend %color-primary;
+        text-transform: uppercase;
+    }
+
+    .comment-edit-link {
+        color: $color-gray-400;
+    }
+}

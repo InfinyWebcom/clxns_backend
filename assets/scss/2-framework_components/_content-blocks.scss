@@ -1,0 +1,27 @@
+.overlap-image {
+    &__secondary {
+        &[class*="pos-abs-bottom"] {
+            bottom: rem(-60);
+        }
+
+        &.pos-abs-bottom-right, &.pos-abs-right {
+            @include breakpoint-min(md) {
+                #{$right}: rem(-50);
+            }
+
+            @include breakpoint-max(md) {
+                #{$left}: 50%;
+            }
+        }
+
+        &.pos-abs-bottom-left, &.pos-abs-left {
+            @include breakpoint-min(md) {
+                #{$left}: rem(-50);
+            }
+
+            @include breakpoint-max(md) {
+                #{$right}: 50%;
+            }
+        }
+    }
+}

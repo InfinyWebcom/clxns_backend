@@ -1,0 +1,121 @@
+<%- include('../top.ejs') -%>
+<%- include('../header.ejs') -%>
+<%-include('../sidenav.ejs') -%>
+<div id="main">
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <!-- Search for small screen-->
+      <div class="container">
+        <div class="row">
+          <div class="col s10 m6 l6">
+            <h5 class="breadcrumbs-title mt-0 mb-0">
+              <span>Campaign Details</span>
+            </h5>
+            <ol class="breadcrumbs mb-0">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="/campaign">Campaigns</a></li>
+              <li class="breadcrumb-item active">View Campaign Details</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <section class="tabs-vertical mt-1 section">
+          <div class="row">
+            <div class="col s12 m12 l12">
+              <div id="Form-advance" class="card card card-default scrollspy">
+                <div class="card-content">
+                  <h4 class="card-title">View Campaign</h4>
+                  <form id="formValidateEnquiries" action="/campaign/addCampaign" method="post">
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <label for="name">Name</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" id="name" name="name" type="text"
+                          value="<%= campaign.name %>" data-error=".errorTxt1" disabled="true" />
+                        <small class="errorTxt1"></small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col m6 s12">
+                        <label for="cases">No of Cases</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" id="cases" name="cases" type="text"
+                          value="<%= campaign.cases %>" data-error=".errorTxt2" disabled="true" />
+                        <small class="errorTxt2"></small>
+                      </div>
+                      <div class="input-field col m6 s12">
+                        <label for="end_date">User ID</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" id="user_id" name="user_id"
+                          type="text" value="<%= campaign.user_id %>" data-error=".errorTxt5" disabled="true" />
+                        <small class="errorTxt5"></small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col m6 s12">
+                        <label for="start_date">Start Date</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" placeholder="Date" id="start_date"
+                          name="start_date" type="date" value="<%= campaign.start_date %>" data-error=".errorTxt3"
+                          disabled="true" />
+                        <small class="errorTxt3"></small>
+                      </div>
+                      <div class="input-field col m6 s12">
+                        <label for="end_date">End Date</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" placeholder="Date" id="end_date"
+                          name="end_date" type="date" value="<%= campaign.end_date %>" data-error=".errorTxt4"
+                          disabled="true" />
+                        <small class="errorTxt4"></small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col m6 s12">
+                        <label for="no_of_leads">No of Leads</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" id="no_of_leads" name="no_of_leads"
+                          type="text" value="<%= campaign.no_of_leads %>" data-error=".errorTxt5" disabled="true" />
+                        <small class="errorTxt5"></small>
+                      </div>
+                      <div class="input-field col m6 s12">
+                        <label for="leads_pending">Pending Leads</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" id="leads_pending"
+                          name="leads_pending" type="text" value="<%= campaign.leads_pending %>" data-error=".errorTxt6"
+                          disabled="true" />
+                        <small class="errorTxt6"></small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col m6 s12">
+                        <label for="leads_open">No of LeadsOpen</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" id="leads_open" name="leads_open"
+                          type="text" value="<%= campaign.leads_open %>" data-error=".errorTxt7" disabled="true" />
+                        <small class="errorTxt7"></small>
+                      </div>
+                      <div class="input-field col m6 s12">
+                        <label for="leads_closed">No of LeadsClose</label>
+                        <input style="border-bottom: 1px solid rgba(0, 0, 0, .42);" id="leads_closed"
+                          name="leads_closed" type="text" value="<%= campaign.leads_closed %>" data-error=".errorTxt8"
+                          disabled="true" />
+                        <small class="errorTxt8"></small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <a class="btn waves-effect waves-light gradient-45deg-purple-deep-orange float-right"
+                          href="/campaign">Cancel</a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="content-overlay"></div>
+    </div>
+  </div>
+</div>
+
+<%- include('../bottom.ejs') -%>

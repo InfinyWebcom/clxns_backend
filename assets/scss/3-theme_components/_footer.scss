@@ -1,0 +1,151 @@
+/**! ----- Footer Genaral Styling ---- **/
+.footer {
+    a {
+        @extend .transition-default;
+    }
+
+    .widget {
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 0;
+        }
+
+        li {
+            padding-top: rem(6);
+            padding-bottom: rem(6);
+        }
+    }
+
+
+    &.section--dark {
+
+        // .icon-group:not(a),
+        p,
+        a {
+            opacity: .75;
+        }
+
+        .icon-group a,
+        .icon-group p,
+        p a,
+        a p {
+            opacity: 1;
+        }
+
+        .widget {
+            li {
+                a {
+                    color: white;
+                }
+            }
+        }
+
+    }
+
+    &.section--light {
+        .widget {
+            li {
+                a {
+                    color: $color-gray-400;
+                }
+            }
+        }
+
+        a {
+            &:hover {
+                @extend %color-primary;
+            }
+        }
+
+    }
+
+    &.section--light,
+    &.section--dark {
+        a {
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+    }
+
+}
+
+/**! ----- Footer Fixed ---- **/
+@include breakpoint-min(lg) {
+    .footer--fixed {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: -1;
+    }
+}
+
+/**! ----- Footer V1 ---- **/
+.footer--v1 {
+    .footer-border {
+        border-style: solid;
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+        border-right-width: 0;
+        border-left-width: 0;
+        border-color: rgba(239, 240, 247, 0.15);
+    }
+
+    .widget {
+        ul {
+            margin-bottom: rem(20);
+
+            li {
+                padding-right: rem(17);
+                padding-left: rem(17);
+
+            }
+
+            @include breakpoint-min(md) {
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+
+    // Footer bottom
+    .footer-bottom {
+
+        a,
+        p {
+            color: #fff;
+            font-size: rem(15);
+        }
+    }
+
+    // Footer Languages
+    .footer-languages {
+        li {
+            &:not(:last-child) {
+                &:after {
+                    content: "-";
+                    margin-right: rem(8);
+                    margin-left: rem(8);
+                }
+            }
+        }
+    }
+}
+
+/**! ----- Footer V2 ---- **/
+.footer--v2 {
+    padding-top: rem(110);
+    padding-bottom: rem(100);
+
+    @include breakpoint-min(md) {
+        padding-top: rem(130);
+    }
+
+    @include breakpoint-min(lg) {
+        padding-top: rem(160);
+    }
+}

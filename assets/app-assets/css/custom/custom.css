@@ -1,0 +1,94 @@
+/*================================================================================
+	Item Name: Materialize - Material Design Admin Template
+	Version: 5.0
+	Author: PIXINVENT
+	Author URL: https://themeforest.net/user/pixinvent/portfolio
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN CSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.dt-action {
+	margin-right: 10px;
+}
+
+/* --------------------------------------------- */
+
+.roundCorners {
+	border-radius: 8px !important;
+}
+
+.roundCornersFloat {
+	border-radius: 15px !important;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.filterModal {
+	background-color: rgb(255, 255, 255, 1) !important;
+	/* backdrop-filter: saturate(180%) blur(50px); */
+}
+
+.customModal {
+	margin-top: 10%;
+	background-color: rgb(255, 255, 255, 1) !important;
+	/* backdrop-filter: saturate(180%) blur(50px); */
+	/* background-color: rgb(255, 255, 255, 0.7) !important; */
+	/* backdrop-filter: saturate(180%) blur(50px); */
+}
+
+.customModalLeadHistory {
+	margin-top: 4%;
+	background-color: rgb(255, 255, 255, 1) !important;
+}
+
+.customModalContent {
+	/* background-color: rgb(255, 255, 255, 1); */
+}
+
+.customModalFooter {
+	/* background-color: rgb(255, 255, 255, 0.1) !important; */
+	/* backdrop-filter: saturate(180%) blur(50px); */
+}
+
+.modal-overlay {
+	/* background: transparent !important; */
+	/* background: #fff !important;
+	opacity: 0.15 !important; */
+}
+
+.btn-flat {
+	border-radius: 8px;
+	padding: 0px 15px 0px 15px;
+}
+
+.btn-flat:hover {
+	background-color: rgb(223, 223, 223);
+	border-radius: 8px;
+	padding: 0px 15px 0px 15px;
+}
+
+.profile-dropdown {
+	top: 72px !important;
+	background-color: rgba(255, 255, 255, 1) !important;
+	/* backdrop-filter: saturate(180%) blur(50px) !important; */
+}
+
+/* .profile-dropdown-text{
+	margin: 8px;
+	color: black;
+	border-radius: 10px;
+	background-color: rgb(255, 255, 255, 0.7) !important;
+	box-shadow: 0 2px 2px 0 rgba(146, 146, 146, 0.14), 0 3px 1px -2px rgba(151, 151, 151, 0.12), 0 1px 5px 0 rgba(167, 167, 167, 0.2);
+}
+
+.profile-dropdown-text:hover{
+	margin: 8px;
+	color: black;
+	border-radius: 10px;
+	background-color: rgb(255, 255, 255, 0.5) !important;
+} */

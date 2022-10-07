@@ -1,0 +1,83 @@
+.space,
+.space--2,
+.space--3 {
+	padding-top: $standard-space /2 !important;
+	padding-bottom: $standard-space /2 !important;
+}
+
+.space--top,
+.space--top--2,
+.space--top--3 {
+	padding-top: $standard-space /2 !important;
+}
+
+.space--bottom,
+.space--bottom--2,
+.space--bottom--3 {
+	padding-bottom: $standard-space /2 !important;
+}
+
+@include breakpoint-min(lg) {
+
+	.space,
+	.space--2,
+	.space--3 {
+		padding-top: $standard-space /1.5 !important;
+		padding-bottom: $standard-space /1.5 !important;
+	}
+
+	.space--top,
+	.space--top--2,
+	.space--top--3 {
+		padding-top: $standard-space /1.5 !important;
+	}
+
+	.space--bottom,
+	.space--bottom--2,
+	.space--bottom--3 {
+		padding-bottom: $standard-space /1.5 !important;
+	}
+
+}
+
+@include breakpoint-min(xl) {
+	.space {
+		padding-top: $standard-space !important;
+		padding-bottom: $standard-space !important;
+
+		&--2 {
+			padding-top: $standard-space*1.8 !important;
+			padding-bottom: $standard-space*1.8 !important;
+		}
+
+		&--3 {
+			padding-top: $standard-space*2.5 !important;
+			padding-bottom: $standard-space*2.5 !important;
+		}
+
+		&--top {
+			padding-top: $standard-space !important;
+		}
+
+		&--top--2 {
+			padding-top: $standard-space*1.8 !important;
+		}
+
+		&--top--3 {
+			padding-top: $standard-space*2.5 !important;
+		}
+
+
+		&--bottom {
+			padding-bottom: $standard-space !important;
+		}
+
+		&--bottom--2 {
+			padding-bottom: $standard-space*1.8 !important;
+		}
+
+		&--bottom--3 {
+			padding-bottom: $standard-space*2.5 !important;
+		}
+	}
+}

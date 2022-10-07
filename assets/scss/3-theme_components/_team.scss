@@ -1,0 +1,31 @@
+.team--v1 {
+    .card {
+        max-width: 270px;
+        margin-right: auto;
+        margin-left: auto;
+
+        img {
+            max-width: 160px;
+            border-radius: 100%;
+        }
+    }
+
+    &.section--dark {
+        .card {
+            background: $color-dark-500;
+        }
+    }
+
+    &.section--darkblue {
+        .card {
+            background: #0e0f64;
+        }
+    }
+}
+.team--v2 {
+    .card {
+        .card__aside{
+            flex: 0 0 120px;
+        }
+    }
+}

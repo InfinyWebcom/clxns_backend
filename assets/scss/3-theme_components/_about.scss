@@ -1,0 +1,47 @@
+/**! ----- about v1 ---- **/
+.about {
+    &--v1 {
+        .about__image {
+            @include breakpoint-min(lg) {
+                position: relative;
+                #{$right}: rem(200);
+            }
+
+            @include breakpoint-max(lg) {
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+}
+
+
+/**! ----- about video (used in home platform) ---- **/
+.intro-video--v1 {
+    .about-video__pattern {
+        @include breakpoint-min(lg) {
+            top: rem(-100);
+            #{$right}: rem(100);
+            #{$left}: auto;
+        }
+    }
+}
+
+.about-video-media {
+    @include breakpoint-min(lg) {
+        z-index: 2;
+        #{$right}: 0;
+
+        @include breakpoint-max(xl) {
+
+            @include centerer(false, true);
+        }
+    }
+
+    @include breakpoint-min(xl) {
+        position: absolute;
+        top: 80px;
+    }
+}

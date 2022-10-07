@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Receipt</title>
+  <style>
+body {
+  /* padding-left: 20px;
+  padding-right: 20px; */
+  font: 14px 'Epilogue', sans-serif;
+  width: 550px;
+}
+.parent{
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
+</style>
+</head>
+<body>
+  <div class='parent'>
+  <!-- Block -->
+   <p>Hi <%= customerName %>,</p>
+   <br>
+   <p>Our Executive <%= userName %> with employee ID <%= employeeId %>, has received a payment of <%= collectedAmt %> on <%= date %> for your <%= fiName %> Loan, 
+    against your total due amount of <%= totalAmtDue %> through <%= paymentType %> payment.
+    Your transaction/Cheque number is <%= chequeNo %> for the same.</p>
+
+   <p>Your final payment status is <%= paymentStatus %>.</p>
+   <br>
+   <p>Regards,</p>
+   <p>CLXNS on behalf of <%= fiName %></p>
+    <br>
+    <div class="row">
+      <div class="center-align" style="text-align: center;">
+        <img class="responsive-img" src="https://staging.clxns.in/img/brand-logo-white.png" alt="Image Circle" style="margin-top: 30px;width: 150px;height: 50px;"/>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

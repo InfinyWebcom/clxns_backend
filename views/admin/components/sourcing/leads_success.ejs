@@ -1,0 +1,102 @@
+<%- include('../../top.ejs') -%>
+<%- include('../../header.ejs') -%>
+<%- include('../../sidenav.ejs') -%>
+
+<style>
+  .btn {
+    background-color: #27c783;
+  }
+
+  .btn:hover {
+    background-color: #27c783;
+  }
+
+  .card-alert {
+    background-color: #ee485a;
+  }
+</style>
+<div id="main">
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue "></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col s6 m6 l6">
+            <h5 class="breadcrumbs-title mt-0 mb-0"><span>Pool Details</span></h5>
+            <ol class="breadcrumbs mb-0">
+              <li class="breadcrumb-item"><a href="#">Bank Name : <%=LeadsUpload.bankName%></a>
+              </li>
+            </ol>
+          </div>
+          <div class="col s6 m6 l6">
+            <a class="btn waves-effect waves-light gradient-45deg-green-teal
+            float-right" href="/sourcing">Back</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <div class="section section-data-tables">
+          <div class="card roundCorners" style="height: 75px;margin-top: 70px;">
+            <div class="card-content">
+              <div class="row">
+                <div class='col s12 l12'>
+                  <p class="caption mb-0">
+                   File has been successfully uploaded!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="row">
+    <div class="col s12" style="margin-top: 30px;">
+      <div class="container">
+        <div id="Form-advance" class="card card-default roundCorners" style="height: 120px;">
+          <div class="card-content">
+            <div class="row mt-0">
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>Total Leads</b></p>
+                <h6 class="mt-8"><%=LeadsUpload.noOfLeads%></h6>
+              </div>
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>Pool value</b></p>
+                <h6 class="mt-8"><%=LeadsUpload.poolValue%></h6>
+              </div>
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>Status</b></p>
+                <h6 class="mt-8"><%=LeadsUpload.status%></h6>
+              </div>
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>UploadedBy</b></p>
+                <h6 class="mt-8"><%= userName %></h6>
+              </div>
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>Start Date</b></p>
+                <h6 class="mt-8"><%=LeadsUpload.startDate%></h6>
+              </div>
+              <div class="col s2 m2 l2">
+                <p class="m-0"><b>End Date</b></p>
+                <h6 class="mt-8"><%=LeadsUpload.endDate%></h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <%- include('../../components/datatable_new.ejs', datatable) -%>
+  </div>
+
+</div>
+<%- include('../../bottom.ejs') -%>

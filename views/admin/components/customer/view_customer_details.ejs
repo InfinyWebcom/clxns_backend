@@ -1,0 +1,141 @@
+<%- include('../../top.ejs') -%> <%- include('../../header.ejs') -%> <%-
+include('../../sidenav.ejs') -%>
+<style>
+  .Pstyle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+</style>
+<div id="main">
+  <div class="row">
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue"></div>
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col s12 m12 l12">
+            <h5 class="breadcrumbs-title mt-0 mb-0">
+              <span><%= customers.name %></span>
+            </h5>
+            <ol class="breadcrumbs mb-0">
+              <!-- <li class="breadcrumb-item"><a href="/dashboard">Home</a></li> -->
+              <li class="breadcrumb-item"><a href="/customer">Customer</a></li>
+              <li class="breadcrumb-item active">
+                <%= customers.name %> Details
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <section class="tabs-vertical mt-1 section">
+          <div class="row">
+            <div class="col s12">
+              <div class="card-panel" style="margin-bottom: 0px">
+                <div class="card-content">
+                  <h6>Primary</h6>
+                  <div class="row m-0">
+                    <div class="col s4 m4 l4 p-0">
+                      <p class="Pstyle">
+                        <i class="material-icons iconStyle">mail</i><%=
+                        customers.email %>
+                      </p>
+                      <p class="Pstyle">
+                        <i class="material-icons iconStyle">call</i>+91<%=
+                        customers.contactNo %>
+                      </p>
+                    </div>
+                    <div class="col s8 m8 l8 p-0">
+                      <p class="Pstyle">
+                        <i class="material-icons iconStyle">place</i><%=
+                        customers.address %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <div id="work-collections">
+          <div class="row">
+            <div class="col s12 m12 l6">
+              <ul
+                id="projects-collection"
+                class="collection z-depth-1 animate fadeLeft"
+                style="height: 300px !important; overflow-y: auto;"
+              >
+                <li class="collection-item avatar">
+                  <i class="material-icons cyan circle">contact_phone</i>
+                  <h6 class="collection-header m-0">Contact</h6>
+                  <p>Secondary</p>
+                </li>
+                <% CustomerContact.forEach(function(customercontact){ %>
+                <li class="collection-item">
+                  <div class="row">
+                    <div class="col s9 mt-3">
+                      <p class="collections-title"><%= customercontact.contactNo %></p>
+                      <p class="collections-content">Added On : <%= customercontact.createdAt.toString().slice(4, 15) %></p>
+                    </div>
+                    <div class="col s3 mt-3">
+                      <span><%= customercontact.note %></span>
+                    </div>
+                  </div>
+                </li>
+                <% }); %>
+              </ul>
+            </div>
+            <div class="col s12 m12 l6">
+              <ul
+                id="issues-collection"
+                class="collection z-depth-1 animate fadeRight"
+                style="height: 300px !important; overflow-y: auto;"
+              >
+                <li class="collection-item avatar">
+                  <i class="material-icons red accent-2 circle"
+                    >account_balance</i
+                  >
+                  <h6 class="collection-header m-0">Address</h6>
+                  <p>Secondary</p>
+                </li>
+                <% CustomerAddress.forEach(function(customeraddress){ %>
+                <li class="collection-item">
+                  <div class="row">
+                    <div class="col s9">
+                      <p class="collections-title">
+                        <%= customeraddress.address %>
+                      </p>
+                      <p class="collections-content">Added On : <%= customeraddress.createdAt.toString().slice(4, 15) %></p>
+                    </div>
+                    <div class="col s3">
+                        <span><%= customeraddress.note %></span>
+                        <p class="collections-content"><%= customeraddress.addressType %></p>
+                    </div>
+                  </div>
+                </li>
+                <% }); %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <%- include('../../components/datatable_new.ejs', datatable) -%>
+  </div>
+</div>
+
+<%- include('../../bottom.ejs') -%>

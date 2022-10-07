@@ -1,0 +1,239 @@
+<script>
+  function applyFilter() {
+    filterObjLeads.fi = $('#fi').val();
+    filterObjLeads.loanType = $('#loanType').val();
+    filterObjLeads.serailIdFrom = $('#fromSerialId').val();
+    filterObjLeads.serailIdTo = $('#toSerialId').val();
+    filterObjLeads.dateFrom = $('#dateFrom').val();
+    filterObjLeads.dateTo = $('#dateTo').val();
+    filterObjLeads.amountMore = $('#amountMore').val();
+    filterObjLeads.amountLess = $('#amountLess').val();
+    filterObjLeads.amountOutstanding = $('#amountOutstanding').val();
+    filterObjLeads.daysDue = $('#daysDue').val();
+    filterObjLeads.callStatus = $('#callStatus').val();
+    filterObjLeads.closeStatus = $('#closeStatus').val();
+    filterObjLeads.collectionStatus = $('#collectionStatus').val();
+    filterObjLeads.fieldVisitStatus = $('#fieldVisitStatus').val();
+    filterObjLeads.bucket = $('#bucket').val();
+    filterObjLeads.team = $('#team').val();
+    filterObjLeads.telecallerAssigned = $('#telecallerAssigned').val();
+    filterObjLeads.FOSAssigned = $('#FOSAssigned').val();
+    $('#exampleLeads').DataTable().draw();
+  }
+
+  function applyAllocate() {
+
+
+    let telecallerSelect = document.getElementById("telecallerList");
+    let telecallerId = telecallerSelect.value;
+    let url = window.location.href;
+
+    const data = {
+      filterObjLeads: filterObjLeads,
+      telecallerId: telecallerId,
+      campaignId: url.charAt(url.length - 1),
+    };
+
+    console.log('data : ', data);
+
+    if (telecallerId != '') {
+      fetch(`${baseUrl}campaign/allocateTelecaller`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }).then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          $('#exampleLeads').DataTable().ajax.reload(null, false);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+  }
+</script>
+
+<div id="filterModal" class="modal modal-fixed-footer filterModal roundCornersFloat">
+  <div class="modal-content">
+    <h5 class="mt-0"><b>Filter</b></h5>
+    <div class="mt-5">
+      <div class="modal-section row mt-2">
+
+        <div class="input-field col s3 m3 l3">
+          <select id='fi'>
+            <option value="">All</option>
+            <option value="HDFC">HDFC</option>
+            <option value="IDBI">IDBI</option>
+            <option value="AXIS">AXIS</option>
+            <option value="SBI">SBI</option>
+          </select>
+          <label for="fi">FI</label>
+        </div>
+
+        <div class="input-field col s3 m3 l3">
+          <select id='loanType'>
+            <option value="">All</option>
+            <option value="PL">PL</option>
+            <option value="CL">CL</option>
+            <option value="HL">HL</option>
+            <option value="CC">CC</option>
+          </select>
+          <label for="loanType">Loan Type</label>
+        </div>
+        <div class="col s3 m3 l3">
+          <div class="input-field">
+            <label for="fromSerialId">From Serial Id</label>
+            <input class="text" type="text" id="fromSerialId" name="SerialId" placeholder="">
+          </div>
+        </div>
+        <div class="col s3 m3 l3">
+          <div class="input-field">
+            <label for="toSerialId">To Serial Id</label>
+            <input class="text" type="text" id="toSerialId" name="SerialId" placeholder="">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section row mt-2">
+        <div class="col s3 m3 l3">
+          <div class="input-field">
+            <label for="dateFrom">From</label>
+            <input class="datepicker" type="text" id="dateFrom" name="dateFrom" placeholder="">
+          </div>
+        </div>
+        <div class="col s3 m3 l3">
+          <div class="input-field">
+            <label for="dateTo">To</label>
+            <input class="datepicker" type="text" id="dateTo" name="dateTo" placeholder="">
+          </div>
+        </div>
+        <div class="col s3 m3 l3">
+          <div class="input-field">
+            <label for="amountMore">Amount more than</label>
+            <input type="number" id="amountMore" name="amountMore" placeholder="">
+          </div>
+        </div>
+        <div class="col s3 m3 l3">
+          <div class="input-field">
+            <label for="amountLess">Amount less than</label>
+            <input type="number" id="amountLess" name="amountLess" placeholder="">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section row mt-2">
+
+        <div class="input-field col m3 s3">
+          <input type="number" id="amountOutstanding" name="amountOutstanding" placeholder="">
+          <label for="amountOutstanding">Amount Outstanding</label>
+        </div>
+        <div class="input-field col m3 s3">
+          <input type="number" id="daysDue" name="daysDue" placeholder="">
+          <label for="daysDue">Days Due</label>
+        </div>
+        <div class="input-field col m3 s3">
+          <select id="callStatus" name="callStatus">
+            <option value='' selected>All</option>
+            <option value="answered">answered</option>
+            <option value="rejected">rejected</option>
+          </select>
+          <label>Call Status</label>
+        </div>
+        <div class="input-field col m3 s3">
+          <select id="closeStatus" name="closeStatus">
+            <option value='' selected>All</option>
+            <option value="closed">closed</option>
+            <option value="open">open</option>
+          </select>
+          <label>Close Status</label>
+        </div>
+
+      </div>
+
+      <div class="modal-section row mt-2">
+        <div class="input-field col m4 s4">
+          <select id="collectionStatus" name="collectionStatus">
+            <option value='' selected>All</option>
+            <option value="collected">collected</option>
+            <option value="pending">pending</option>
+          </select>
+          <label>Collection Status</label>
+        </div>
+        <div class="input-field col m4 s4">
+          <select id="fieldVisitStatus" name="fieldVisitStatus">
+            <option value='' selected>All</option>
+            <option value="visited">visited</option>
+            <option value="pending">pending</option>
+          </select>
+          <label>Field Visit Status</label>
+        </div>
+        <div class="input-field col m4 s4">
+          <select id="bucket" name="bucket">
+            <option value='' selected>All</option>
+            <option value="bucketOne">bucketOne</option>
+            <option value="bucketTwo">bucketTwo</option>
+          </select>
+          <label>Bucket</label>
+        </div>
+      </div>
+
+      <div class="modal-section row mt-2">
+        <div class="input-field col m4 s4">
+          <select id="team" name="team">
+            <option value='' selected>All</option>
+            <option value="teamOne">teamOne</option>
+            <option value="teamTwo">teamTwo</option>
+          </select>
+          <label>Team</label>
+        </div>
+        <div class="input-field col m4 s4">
+          <select id="telecallerAssigned" name="telecallerAssigned">
+            <option value='' selected>All</option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+          </select>
+          <label>Caller Assigned</label>
+        </div>
+        <div class="input-field col m4 s4">
+          <select id="FOSAssigned" name="FOSAssigned">
+            <option value='' selected>All</option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+          </select>
+          <label>FOS Assigned</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="modal-close btn-flat mr-1" onclick="applyFilter()">Apply</button>
+  </div>
+</div>
+
+
+
+<div class="card">
+  <div id="allocateModal" class="modal modal-fixed-footer customModal roundCornersFloat" style="height: 50%;">
+    <div class="modal-content customModalContent">
+
+      <h5 class="mt-0"><b>Allocate Telecallers</b></h5>
+
+      <!-- <h4 class="card-title mt-4">Allocate filtered 203 leads to: </h4> -->
+
+      <div class="input-field">
+        <select id="telecallerList" name="telecallerList">
+          <option value="" disabled selected>Choose Telecaller</option>
+          <% campaignTelecallers.forEach((telecaller) => { %>
+          <option value="<%= telecaller.id %>"><%= telecaller.firstName %> <%= telecaller.lastName %></option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer customModalFooter">
+      <a class="modal-action modal-close btn-flat">Cancel</a>
+      <a onclick="applyAllocate()" class="modal-action modal-close btn-flat mr-1">Allocate</a>
+    </div>
+  </div>
+</div>

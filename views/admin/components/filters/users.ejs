@@ -1,0 +1,128 @@
+<script>
+  function applyFilterOld() {
+    console.log('applyFilter users-----', $('#name').val());
+    filterObj.name = $('#name').val();
+    filterObj.email = $('#email').val();
+    filterObj.age = $('#age').val();
+    filterObj.location = $('#location').val();
+    filterObj.language = $('#language').val();
+    filterObj.experience = $('#experience').val();
+    $('#example').DataTable().draw();
+  }
+</script>
+
+<style>
+  .filterModal {
+    margin-top: 4%;
+  }
+</style>
+
+<div id="filterModal" class="modal modal-fixed-footer filterModal roundCornersFloat">
+  <div class="modal-content">
+    <h5 class="mt-0"><b>Filter</b></h5>
+    <div class="mt-5">
+      <div class="modal-section row mt-2">
+        <div class="col s6 m6 l6">
+          <div class="input-field">
+            <label for="amountMore">Name</label>
+            <input type="text" id="name" name="name" placeholder="">
+          </div>
+        </div>
+        <div class="col s6 m6 l6">
+          <div class="input-field">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="">
+          </div>
+        </div>
+      </div>
+      <div class="modal-section row mt-1">
+        <div class="col s6 m6 l6">
+          <div class="input-field">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" placeholder="">
+          </div>
+        </div>
+        <div class="col s6 m6 l6">
+            <div class="input-field">
+
+              <select id="location" name="location" multiple>
+                <option value="" disabled>Choose Locations
+                </option>
+                <% datatable.locations.forEach((location) => { %>
+                  <option value="<%= location.name %>"><%= location.name %></option>
+                  <% }); %>
+              </select>
+
+              <label>Select Your Location</label>
+            </div>
+        </div>
+      </div>
+      <div class="modal-section row mt-1">
+        <div class="col s6 m6 l6">
+          <div class="input-field">
+
+            <select id="language" name="language" multiple>
+              <option value="" disabled>Choose Languages
+              </option>
+              <% datatable.languages.forEach((language) => { %>
+                <option value="<%= language.name %>"><%= language.name %></option>
+                <% }); %>
+            </select>
+
+            <label for="language">Language</label>
+            <!-- <input type="text" id="language" name="language" placeholder=""> -->
+
+          </div>
+        </div>
+        <div class="col s6 m6 l6">
+          <div class="input-field">
+            <select id='experience'>
+              <option value="" selected disabled>Choose experience </option>
+              <option value="1">0 to 3 months</option>
+              <option value="2">3 to 6 months</option>
+              <option value="3">6 to 12 months</option>
+              <option value="4">1 to 3 years</option>
+              <option value="5">3 to 5 years</option>
+              <option value="6">5 to 10 years </option>
+              <option value="7">More than 10 years</option>
+            </select>
+            <label for="experience">Experience</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!-- <button class="modal-close btn-flat">Clear</button> -->
+    <button class="modal-close btn-flat mr-1" onclick="applyFilter()">Apply</button>
+  </div>
+</div>
+
+<div id="filterColumn" class="modal  filterModal roundCornersFloat">
+  <form class="columnAction">
+  <div class="modal-content">
+    <h5 class="mt-0"><b>Edit Column</b></h5>
+    <div class="mt-2">
+      <div class="modal-section row mt-2 mb-2">
+        <% if(datatable.columns){ %>
+          <div class="row">
+            <% datatable.columns.forEach(function(column,i){ %>
+              <div class="input-field col m3 p-1">
+                <label>
+                  <input type="checkbox" name="column[]" checked data-error="#errorCol" value="<%= i %>">
+                  <span><%= column.title %></span>
+                </label>
+             </div>
+            <% }); %>
+          </div>
+         <% }%>
+        </div>
+        <div id="errorCol" class="pt-2" style="font-size: .8rem;color: #ff4081"></div>
+      </div>
+    </div>
+  <div class="modal-footer">
+    <button class="modal-close btn-flat">Close</button>
+    <button type="submit" class=" btn-flat mr-1" >Apply</button>
+  </div>
+</form>
+</div>

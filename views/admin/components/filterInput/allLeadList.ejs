@@ -1,0 +1,431 @@
+<style>
+  .fontStyle{
+   font-size: 13px;
+  }
+</style>
+<script>
+//for switch button
+ var checkedtelecallerAssigned = 'No';
+ var checkedFOSAssigned = 'No';
+ var checkedExpiryLead = 'No';
+ $(document).ready(function () {
+    $("#telecallerAssigned").on('change', function() { 
+    if ($(this).is(':checked')) {
+        checkedtelecallerAssigned='Yes';
+    }
+    else {
+       checkedtelecallerAssigned='No';
+    }
+  });
+
+
+  $("#FOSAssigned").on('change', function() { 
+    if ($(this).is(':checked')) {
+        checkedFOSAssigned='Yes';
+    }
+    else {
+        checkedFOSAssigned='No';
+    }
+  });
+
+  $("#expiryLead").on('change', function() { 
+    if ($(this).is(':checked')) {
+        checkedExpiryLead='Yes';
+    }
+    else {
+        checkedExpiryLead='No';
+    }
+  });
+
+ });   
+
+ //for all leads filters
+ function applyFilter() {
+    filter=true;
+    const RoleName = '<%- JSON.stringify(roleName.name) %>';
+    console.log('applyFilter RoleName-----', RoleName);
+
+    console.log('applyFilter checkedtelecallerAssigned-----', checkedtelecallerAssigned);
+
+    console.log('applyFilter checkedFOSAssigned-----', checkedFOSAssigned);
+    console.log('applyFilter checkedExpiryLead-----', checkedExpiryLead);
+
+    // $("input[name='loanType[]']:checked").each(function ()
+    // {
+    //     console.log('applyFilter checkedloanType-----', $(this).val());
+    //     checkedloanType.push($(this).val());
+    // });
+  
+    filterObj.fi = ($('input[name="fis"]').is(':checked'))?$('input[name="fis"]:checked').val():'';
+    filterObj.loanType = ($('input[name="loanType"]').is(':checked')) ? $("input[name='loanType']:checked").val() :'';
+    filterObj.PoolId = ($('#PoolId').val())?  $('#PoolId').val() :'';
+    // filterObj.IDFrom = $('#fromSerialNo').val();
+    // filterObj.IDTo = $('#toSerialNo').val();
+    filterObj.amountMore = $('#amountMore').val();
+    filterObj.amountLess = $('#amountLess').val();
+    filterObj.callStatus = ($('#callStatus').val())?  $('#callStatus').val() :'';
+    filterObj.DPDBucket = ($('#DPDBucket').val())?$('#DPDBucket').val() : '';
+    if(JSON.parse(RoleName)!='team_leader'){
+        filterObj.team = ($('input[name="team"]').is(':checked'))?  $("input[name='team']:checked").val() :'';
+    }else{
+        filterObj.team = '';
+    }
+
+    if(JSON.parse(RoleName)=='team_leader'){
+        filterObj.telecaller =  ($('#telecaller').val())?  $('#telecaller').val() :'';
+    }else{
+        filterObj.telecaller = '';
+    }
+
+    filterObj.paymentStatus =($('input[name="paymentStatus"]').is(':checked')) ? $("input[name='paymentStatus']:checked").val() :'';
+    filterObj.EmployeeID = $('#EmployeeID').val();
+    
+    filterObj.telecallerAssigned = checkedtelecallerAssigned ;
+    filterObj.FOSAssigned = checkedFOSAssigned ;
+    filterObj.expiryLead = checkedExpiryLead ;
+    filterObj.from = $('#FROM').val();
+    filterObj.to = $('#TO').val();
+    console.log("\n\n\ Filter OBJ",filterObj);
+    $('#example').DataTable().draw();
+    filterApi(filterObj);
+  }
+
+
+
+  function clearUserFilter() {
+        console.log('clearUserFilter -----', filterObj);
+        filterObj = {}
+        filterObj.isDeleted=0;
+        filterObj.team='';
+        filterObj.fi='';
+        filterObj.PoolId='';
+        filterObj.loanType='';
+        filterObj.IDFrom='';
+        filterObj.IDTo='';
+        filterObj.callStatus='';
+        filterObj.amountLess='';
+        filterObj.amountMore='';
+        filterObj.DPDBucket='';
+        filterObj.telecaller = '';
+        filterObj.paymentStatus ='';
+        filterObj.EmployeeID = '';
+        filterApi(filterObj);
+        $('#example').DataTable().draw();
+    }
+
+  $(document).on('click','#leadReport', function () {
+    const RoleName = '<%- JSON.stringify(roleName.name) %>';
+    filterObj.fi = ($('input[name="fis"]').is(':checked'))?$('input[name="fis"]:checked').val():'';
+    filterObj.loanType = ($('input[name="loanType"]').is(':checked')) ? $("input[name='loanType']:checked").val() :'';
+    filterObj.PoolId = ($('#PoolId').val())?  $('#PoolId').val() :'';
+    filterObj.amountMore = $('#amountMore').val();
+    filterObj.amountLess = $('#amountLess').val();
+    filterObj.callStatus = ($('#callStatus').val())?  $('#callStatus').val() :'';
+    filterObj.DPDBucket = ($('#DPDBucket').val())?$('#DPDBucket').val() : '';
+    if(JSON.parse(RoleName)!='team_leader'){
+        filterObj.team = ($('input[name="team"]').is(':checked'))?  $("input[name='team']:checked").val() :'';
+    }else{
+        filterObj.team = '';
+    }
+
+    if(JSON.parse(RoleName)=='team_leader'){
+        filterObj.telecaller =  ($('#telecaller').val())?  $('#telecaller').val() :'';
+    }else{
+        filterObj.telecaller = '';
+    }
+
+    filterObj.paymentStatus =($('input[name="paymentStatus"]').is(':checked')) ? $("input[name='paymentStatus']:checked").val() :'';
+    filterObj.EmployeeID = $('#EmployeeID').val();
+    
+    filterObj.telecallerAssigned = checkedtelecallerAssigned ;
+    filterObj.FOSAssigned = checkedFOSAssigned ;
+    filterObj.expiryLead = checkedExpiryLead ;
+    filterObj.from = $('#FROM').val();
+    filterObj.to = $('#TO').val();
+    console.log("\n\n\ Filter OBJ LeadReport",filterObj);
+    DownloadLeadReport(filterObj);
+  });
+
+let teamsId;
+console.log('\n\nloanArray : Vivek');
+function reassignLeadToTeam() {
+    let teleSelect = $(".checkId");
+    console.log('\n\nloanArray :',loanArray);
+    let finalConfirm = confirm("Are you sure you want to reassign "+loanArray.length+ " Lead"+((loanArray.length > 1)?"s":""));
+
+    filterObj.loanArray=loanArray;
+    console.log('\n\nfilterObj :',filterObj);
+    if(teleSelect){
+    teleSelect = Array.from(teleSelect);
+    teleSelect = teleSelect.filter(ele => ele.checked).map(ele => ele.value).join();
+    console.log('\n\nteleSelect:',teleSelect);
+    }
+    teleId =teleSelect;
+
+    console.log('\n\nteleId :',teleId);
+    let teamSelect = document.getElementById("TeamMemberID");
+
+    teamsId = teamSelect.value;
+
+    const data = {
+    filterObj: filterObj,
+    teamId: teamsId,
+    telecallerId:teleId
+    };
+
+    console.log('data body: ', data);
+    if (teamsId && finalConfirm) {
+        fetch(`${baseUrl}leads/newLeads/reassignLeadToTeam`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        }).then(response => response.json())
+        .then(data => {
+        console.log('Success:', data);
+        // $('#example').DataTable().ajax.reload(null, false);
+        location.reload();
+        if (data.title=='Success') {
+            M.toast({
+                html: 'Leads reassigned!',
+                classes: 'green'
+            })
+        }
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+    }
+}
+
+</script> 
+<div>
+    <h6 class="mt-0 text-uppercase pb-0 mb-0 fontStyle" style="margin-top: 10px !important;"><b>FI Name</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-0 pt-0">
+            <div class="center-align row">
+                    <% fis.forEach(function(fi,i){ %>
+                    <div class="input-field col s12 mt-0 pb-5">
+                        <label>
+                            <input name="fis" type="radio" value="<%= fi.id %>"/>
+                            <span><%= fi.name %></span>
+                        </label>
+                    </div>
+                    <% }); %>
+            </div>
+
+        </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Loan Type</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+            <div class="center-align row">
+              <% productTypes.forEach(function(productType,i){ %>
+                    <div class="input-field col s12 mt-0 pb-5">
+                        <label>
+                            <input name="loanType" type="radio" value="<%= productType.id %>"/>
+                            <span> <%= productType.name %></span>
+                        </label>
+                    </div>
+                    <% }); %>
+            </div>
+
+        </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Pool</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+            <div class="center-align row">
+                    <div class="input-field col s12 mt-0 pb-5">
+                      <select id="PoolId" name="PoolId">
+                        <option value="" disabled selected>Select Pool</option>
+                        <% leadsUploads.forEach((leadsUpload) => { %>
+                          <option value="<%= leadsUpload.id %>"><%=leadsUpload.bankName%> <%=moment(leadsUpload.createdAt).format('YYYY-MM-DD')%></option>
+                          <% }); %>
+                    </select>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="navbar-options row">
+      <div class="input-field col s6 navbar-color mb-0 mt-4 pt-0 pb-2">
+        <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>OS more than</b></h6>
+        <input type="number" id="amountMore" name="amountMore" placeholder="">
+      </div>
+      <div class="input-field col s6 navbar-color mb-0 mt-4 pt-0 pb-2">
+        <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>OS less than</b></h6>
+        <input type="number" id="amountLess" name="amountLess" placeholder="">
+      </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>DPD Bucket</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+          <div class="center-align row">
+                  <div class="input-field col s12 mt-0 pb-5">
+                    <select id="DPDBucket" name="DPDBucket">
+                      <option value="" disabled selected>Select DPDBucket</option>
+                      <% dpdBuckets.forEach((dpdBucket) => { %>
+                        <option value="<%= dpdBucket.shortName %>"><%=dpdBucket.shortName%></option>
+                        <% }); %>
+                  </select>
+                  </div>
+          </div>
+      </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Status and Sub status</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+            <div class="center-align row">
+                <div class="input-field col s12 mt-0 pb-5">
+                    <select id="callStatus" name="callStatus">
+                        <option value="" disabled selected>Select Status</option>
+                        <% callStatus.forEach((callstatus) => { %>
+                        <option value="<%= callstatus.id %>"><%=callstatus.status%></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Payment Status</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+            <% var PaymentStatus=['Pending','Partially Paid','Paid'] %>
+            <div class="center-align row">
+              <% PaymentStatus.forEach(function(paymentStatus,i){ %>
+                    <div class="input-field col s12 mt-0 pb-5">
+                        <label>
+                            <input name="paymentStatus" type="radio" value="<%= paymentStatus %>"/>
+                            <span> <%= paymentStatus %></span>
+                        </label>
+                    </div>
+                    <% }); %>
+            </div>
+
+        </div>
+    </div>
+
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Telecaller/FOS Assigned</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+            <input type="text" id="EmployeeID" name="EmployeeID" placeholder="Enter Employee Id">
+          </div>
+      </div>
+    </div>
+
+    <% if(roleName.name!='team_leader' && roleName.name!='telecaller') { %>
+    <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Teams</b></h6>
+    <div class="navbar-options row">
+        <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+            <div class="center-align row">
+              <% teamFilters.forEach(function(teams,i){ %>
+                    <div class="input-field col s12 mt-0 pb-5">
+                        <label>
+                            <input name="team" type="radio" value="<%= teams.id %>"/>
+                            <span><%= teams.name %></span>
+                        </label>
+                    </div>
+                    <% }); %>
+            </div>
+
+        </div>
+    </div>
+    <% }; %>
+
+       <% if(roleName.name=='team_leader') { %>
+        <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Telecallers</b></h6>
+        <div class="navbar-options row">
+            <div class="input-field col s12 navbar-color mb-0 mt-2 pt-0 pb-2">
+                <div class="center-align row">
+                    <div class="input-field col s12 mt-0 pb-5">
+                    <select id="telecaller" name="telecaller">
+                        <option value="" disabled selected>Choose Telecaller</option>
+                        <% teamMembers.forEach((teamMember) => { %>
+                          <option value="<%= teamMember.userId %>"><%=teamMember.userName%></option>
+                        <% }); %>
+                    </select>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+     <% }; %>
+
+     <% if(roleName.name=='admin' || roleName.name=='business_head') { %>
+        <div class="navbar-options row mt-5">
+            <div class="col s6">
+                <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Expiry Leads</b></h6>
+            </div>
+            <div class="input-field col s6 navbar-color mb-0 mt-0 pt-0 pb-0">
+                <div class="switch">
+                    <label> No <input type="checkbox" id="expiryLead" name="expiryLead" value="false" /> <span class="lever"></span> Yes </label>
+                </div>
+            </div>
+        </div>
+     <% }; %>
+
+     <% if(roleName.name!='telecaller') { %>
+    <div class="navbar-options row mt-5">
+        <div class="col s6">
+            <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>Caller Assigned</b></h6>
+        </div>
+        <div class="input-field col s6 navbar-color mb-0 mt-0 pt-0 pb-0">
+            <div class="switch">
+                <label> No <input type="checkbox" id="telecallerAssigned" name="telecallerAssigned" value="false" /> <span class="lever"></span> Yes </label>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="navbar-options row mt-5">
+        <div class="col s6">
+            <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>FOS Assigned</b></h6>
+        </div>
+        <div class="input-field col s6 navbar-color mb-0 mt-0 pt-0 pb-0">
+            <div class="switch">
+                <label> No <input type="checkbox" id="FOSAssigned" name="FOSAssigned" value="false" /> <span class="lever"></span> Yes </label>
+            </div>
+        </div>
+    </div>
+    <% }; %>
+    <div class="navbar-options row mt-5">
+        <div class="col s4 mt-4">
+            <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>FROM</b></h6>
+        </div>
+        <div class="input-field col s8 navbar-color mb-0 mt-0 pt-0 pb-0">
+           
+            <input class="" type="date" id="FROM" name="FROM" value="">
+
+            <script>
+                let dateString = new Date();
+                dateString.setMonth(dateString.getMonth() - 3);
+                let test = new Date(dateString).toISOString()
+                let newTest = test.slice(0, 10)
+                console.log('TEST', newTest)
+                document.getElementById("FROM").value = newTest;
+                // $('#FROM').val(newTest);
+                </script>
+            </div>
+    </div>
+
+    
+    <div class="navbar-options row mt-5">
+        <div class="col s4 mt-4">
+            <h6 class="mt-6 text-uppercase pb-0 mb-0 fontStyle"><b>TO</b></h6>
+        </div>
+        <div class="input-field col s8 navbar-color mb-0 mt-0 pt-0 pb-0">
+            
+            <input class="" type="date" id="TO" name="TO" value="<%= new Date().toISOString().slice(0, -14) %>"
+            max="<%= new Date().toISOString().slice(0, -14) %>">
+        </div>
+    </div>
+</div>

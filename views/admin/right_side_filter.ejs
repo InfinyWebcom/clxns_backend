@@ -1,0 +1,99 @@
+<% if(url!='leads/newLeads' && url!='leads/assignLeads' && url!='users') { %>
+<a href="javascript:void(0)" data-target="theme-cutomizer-out" style="top: 12%;"
+   class="btn btn-customizer5 pink accent-2 white-text sidenav-trigger theme-cutomizer-trigger gradient-45deg-amber-amber">
+   <span>Filters</span>
+   <!-- <i class="material-icons activator">filter_list</i> -->
+</a>
+<% } %>
+<div id="theme-cutomizer-out" class="theme-cutomizer sidenav row right-aligned ps ps--active-y pb-0"
+   style="transform: translateX(105%);">
+   <form class="rightFilterAction">
+      <div class="col s12">
+         <a class="sidenav-close" href="javascript:void(0)"><i class="material-icons">close</i></a>
+         <div class="menu-options">
+            <h6 class="mt-6"><b>FILTERS</b></h6>
+            <hr class="customize-devider">
+         </div>
+
+         <div class="filterInputs">
+            <% if(url && url=='users' ) { %>
+               <%- include('./components/filterInput/userList.ejs') -%>
+            <% } %>
+            <% if(url=='dashboard' ) { %>
+               <%- include('./components/filterInput/dashboardList.ejs') -%>
+            <% } %>
+            <% if(url=='leads/newLeads' ) { %>
+               <%- include('./components/filterInput/freshLeadList.ejs') -%>
+            <% } %>
+            <% if(url=='leads/assignLeads' ) { %>
+               <%- include('./components/filterInput/allLeadList.ejs') -%>
+            <% } %>
+         </div>
+
+         <div class="right-filter-apply-btns">
+            <hr class="customize-devider">
+            <div class="navbar-options row">
+               <div class="input-field col s12">
+
+                  <div class="row">
+                     <% if(url && url=='users' ) { %>
+                     <div class="col m6">
+                        <a class="btn gradient-45deg-light-blue-cyan sidenav-close" style="right: 0px !important;position: static !important;" onclick="applyUserFilter()">
+                           <span>Apply</span>
+                        </a>
+                     </div>
+                     <div class="col m6" style="margin-left: -14px;">
+                        <button class="btn gradient-45deg-purple-deep-orange right" type="reset" onclick="clearUserFilter()">
+                           <span>Clear</span>
+                        </button>
+                     </div>
+                     <%  } %>
+                     <% if(url && url=='leads/newLeads' ) { %>
+                        <div class="col m6">
+                           <a class="btn gradient-45deg-light-blue-cyan sidenav-close" style="right: 0px !important;position: static !important;" onclick="applyFilterNew()">
+                              <span>Apply</span>
+                           </a>
+                        </div>
+                        <div class="col m6" style="margin-left: -14px;">
+                           <button class="btn gradient-45deg-purple-deep-orange right" type="reset" onclick="clearUserFilter()">
+                              <span>Clear</span>
+                           </button>
+                        </div>
+                        <%  } %>
+                        <% if(url && url=='leads/assignLeads' ) { %>
+                           <div class="col m6">
+                              <a class="btn gradient-45deg-light-blue-cyan sidenav-close" style="right: 0px !important;position: static !important;" onclick="applyFilter()">
+                                 <span>Apply</span>
+                              </a>
+                           </div>
+                           <div class="col m6" style="margin-left: -14px;">
+                              <button class="btn waves-effect gradient-45deg-purple-deep-orange right" type="reset" onclick="clearUserFilter()">
+                                 <span>Clear</span>
+                              </button>
+                           </div>
+                           <%  } %>
+                     <% if(url && url=='dashboard') { %>
+                        <div class="col m6">
+                           <a class="btn gradient-45deg-light-blue-cyan sidenav-close" style="right: 0px !important;position: static !important;" href="">
+                              <span>Apply</span>
+                           </a>
+                        </div>
+                        <div class="col m6" style="margin-left: -14px;">
+                           <button class="btn gradient-45deg-purple-deep-orange right" type="reset" onclick="clearUserFilter()">
+                              <span>Clear</span>
+                           </button>
+                        </div>
+                        <%  } %>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </form>
+   <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+      <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+   </div>
+   <div class="ps__rail-y" style="top: 0px; height: 657px; right: 0px;">
+      <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 391px;"></div>
+   </div>
+</div>

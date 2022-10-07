@@ -1,0 +1,143 @@
+
+// base font settings
+// =============================================================
+$base-unit: 16;
+$base-line-height: 1rem;
+
+// fonts family
+// =============================================================
+$font-heading: 'SFUI', sans-serif;
+$font-body: 'SFUI', sans-serif;
+
+// font family all
+// =============================================================
+$font-all: $font-body;
+
+// font Size
+// =============================================================
+$h1-font-size: rem(60);
+$h2-font-size: rem(48);
+$h3-font-size: rem(36);
+$h4-font-size: rem(24);
+$h5-font-size: rem(22);
+$h6-font-size: rem(18);
+$body-font-size: rem(17);
+
+// font line height
+// =============================================================
+$h1-line-height: 1.16;
+$h2-line-height: 1.2;
+$h3-line-height: 1.35;
+$h4-line-height: 1.4;
+$h5-line-height: 1.5;
+$h6-line-height: 1.65;
+$body-line-height: 1.75;
+
+// "UL/ OL/ LI" line height
+$list-line-height: rem(34);
+
+/**! ----- font family init ---- **/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 400;
+  font-family: $font-heading;
+  @extend %heading-text-color;
+}
+
+h1 {
+  @extend .h1-font;
+}
+
+h2 {
+  @extend .h2-font;
+}
+
+h3 {
+  @extend .h3-font;
+
+}
+
+h4 {
+  @extend .h4-font;
+}
+
+h5 {
+  @extend .h5-font;
+}
+
+h6 {
+  @extend .h6-font;
+}
+
+p {
+  @extend .body-font;
+  @extend %body-text-color;
+  font-weight: 400;
+  font-family: $font-body;
+}
+
+.blockquote {
+  @extend .h6-font;
+
+
+  h4 {
+    line-height: 3rem;
+  }
+
+  h5 {
+    line-height: 2.8rem;
+  }
+
+}
+
+/**! ----- font Setting (size & line height, spacing etc) ---- **/
+.h1-font {
+  font-size: $h3-font-size;
+  line-height: $h3-line-height;
+
+  @include breakpoint-min(md) {
+    font-size: $h1-font-size;
+    line-height: $h1-line-height;
+  }
+}
+
+.h2-font {
+  font-size: $h3-font-size;
+  line-height: $h3-line-height;
+
+  @include breakpoint-min(md) {
+    font-size: $h2-font-size;
+    line-height: $h2-line-height;
+  }
+}
+
+.h3-font {
+  font-size: $h3-font-size;
+  line-height: $h3-line-height;
+
+}
+
+.h4-font {
+  font-size: $h4-font-size;
+  line-height: $h4-line-height;
+}
+
+.h5-font {
+  font-size: $h5-font-size;
+  line-height: $h5-line-height;
+}
+
+.h6-font {
+  font-size: $h6-font-size;
+  line-height: $h6-line-height;
+}
+
+.body-font {
+  font-size: $body-font-size;
+  line-height: $body-line-height;
+}
+

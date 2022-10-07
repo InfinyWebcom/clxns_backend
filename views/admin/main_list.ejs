@@ -1,0 +1,416 @@
+<%- include('top.ejs') -%>
+<%- include('header.ejs') -%>
+<%- include('sidenav.ejs') -%>
+<style>
+  .dropdown-content li > a, .dropdown-content li > span {
+    font-size: 16px;
+    line-height: 22px;
+    display: block;
+    padding: 14px 16px;
+    color: #ff4081 !important;
+}
+#view-flat-button > div > div > div{
+  width: 137px;
+  color: white;
+}
+#view-flat-button > div > div > div > input:hover{
+  color: rgba(255, 255, 255, .85);
+  background-color: #e0e0e0a3;
+}
+#view-flat-button > div > div > div > input{
+  border-radius: 8px;
+    padding: 0px 0px 0px 16px;
+    text-transform: capitalize;
+    color: white;
+    border-bottom: none;
+}
+#view-flat-button > div > div > div > svg{
+  fill: rgb(245 237 237 / 87%) !important;
+}
+</style>
+<script>
+  var filter=false;
+  const apiUrlCheck = '<%- JSON.stringify(datatable.apiUrl) %>';
+  const roleNam = '<%- JSON.stringify(roleName.name) %>';
+  const toast = '<%- JSON.stringify(toast) %>';
+  const toastText = '<%- JSON.stringify(toastText) %>';
+  const toastColor = '<%- JSON.stringify(toastColor) %>';
+  const parseToast = JSON.parse(toast);
+  const parseToastText = JSON.parse(toastText);
+  const parseToastColor = JSON.parse(toastColor);
+
+  $(document).ready(function () {
+      if (parseToast) {
+          M.toast({
+              html: parseToastText,
+              classes: parseToastColor
+          })
+      }
+
+
+  $('#assignTeam').on('click', function () {
+    if(JSON.parse(apiUrlCheck) !='leads/leadslistAll'){
+    if(filter===true){
+       $('#allocateModal').modal('open');
+    }else{
+      if (true) {
+          M.toast({
+              html: 'Kindly apply filter first  before assigning leads to a team!',
+              classes: 'green'
+          })
+      }
+    }
+    }else{
+      if(loanArray.length>0){
+       $('#reallocateModal').modal('open');
+    }else{
+        M.toast({
+            html: 'Kindly select loan number first  before resssigning leads to a team!',
+            classes: 'green'
+        })
+    }
+    }
+  });
+  });
+  $(document).on('click','[href="#confirmModal"]', function () {
+    // const modalMsg = document.querySelector('#confirmModal > div.modal-content.customModalContent > h6');
+    var msg = $(this).data('msg') || '';
+    console.log('document msg----------', msg);
+    // modalMsg.textContent = msg;
+    if (msg != "") {
+      $('#confirmModal > div.modal-content.customModalContent > h6').text(msg);
+    }    
+  });
+
+
+function filterApi(filterObj) {
+  
+console.log("\n\n\ Filter OBJ2",filterObj);
+const data = {
+  filterData: filterObj,
+};
+
+console.log('data body: ', data);
+
+  fetch(`${baseUrl}leads/filterApiData`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        $("#noOfLead").html(parseInt(data.data.caseAllocate).toLocaleString());
+        $("#CollectableAmt").html(parseInt(data.data.totalAmount).toLocaleString());
+        $("#caseAllocated").html(parseInt(data.data.caseAllocate).toLocaleString());
+        $("#caseCollected").html(parseInt(data.data.caseRecover).toLocaleString());
+        $("#casePending").html(parseInt(data.data.casePending).toLocaleString());
+        $("#totalAmountCollected").html(parseInt(data.data.totalAmountRecover).toLocaleString());
+        $("#amountAllocated").html(parseInt(data.data.totalAmount).toLocaleString());
+        $("#amountPending").html(parseInt(data.data.amountPending).toLocaleString());
+        $("#openLeads").html(parseInt(data.data.openLeads).toLocaleString());
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
+  }
+</script>
+<div id="main">
+  <div class="row">
+
+    <div class="content-wrapper-before gradient-45deg-indigo-light-blue"></div>
+
+    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col s12 m6 l4">
+            <h5 class="breadcrumbs-title mt-0 mb-0">
+             <span><%= pageHeading %></span>
+            </h5>
+            <ol class="breadcrumbs mb-0">
+              <li class="breadcrumb-item"><a href="index.html">
+                </a>
+              </li>
+            </ol>
+          </div>
+
+          <% if(addUrl.includes('leads/addLeads') && datatable.filter !=undefined && datatable.isFilter=='false' ) { %>
+            <div class="col s12 m6 l8" style="padding-right: 0px;">
+              <div class="row filterCSS">
+              
+             <div class="col m6 l7 filterStyleCSS">
+             </div>
+             <div class="col l5">
+              <a class="btn waves-light amber darken-4 accent-2 z-depth-4 mobileView sidenav-trigger gradient-45deg-amber-amber" href="javascript:void(0)"  data-target="theme-cutomizer-out" style="margin-left: -20px;">
+                <!-- <i class="material-icons activator">filter_list</i> -->
+                <span>Filters</span>
+             </a>
+              <a class="btn waves-light gradient-45deg-green-teal right mobileCss" id="assignTeam" href="javascript:void(0)">
+                <span>Assign</span>
+                <!-- <i class="material-icons right">add</i> -->
+              </a>
+             </div>
+              
+            </div>
+            </div>
+            <% }; %>
+
+            <% if(addUrl.includes('leads/addLeads') && datatable.filter !=undefined && datatable.isFilter ==undefined && (roleName.name=='team_leader' || roleName.name=='field_coordinator' || roleName.name=='field_manager')) { %>
+              <div class="col s12 m6 l8" style="padding-right: 0px;">
+                <div class="row filterCSS">
+                
+               <div class="col m6 l7 filterStyleCSS">
+               </div>
+               <div class="col l5">
+                <a class="btn waves-light gradient-45deg-amber-amber darken-4 accent-2 z-depth-4 sidenav-trigger" href="javascript:void(0)"  data-target="theme-cutomizer-out" style="margin-left: -20px;">
+                  <span>Filters</span>
+               </a>
+                <a class="btn waves-light gradient-45deg-green-teal right mobileCss" id="assignTeam" href="javascript:void(0)">
+                  <span>Reassign</span>
+                </a>
+               </div>
+                
+              </div>
+              </div>
+              <% }; %>
+              <% if(addUrl.includes('leads/addLeads') && datatable.filter !=undefined && datatable.isFilter ==undefined  && roleName.name!='team_leader' && roleName.name!='field_coordinator' && roleName.name!='field_manager') { %>
+                <div class="col s2 m6 l8">
+                  <a class="btn waves-light gradient-45deg-amber-amber right darken-4 accent-2 z-depth-4 sidenav-trigger" href="javascript:void(0)"  data-target="theme-cutomizer-out" style="margin-left: 200px;">
+                     <span>Filters</span>
+                 </a>
+                </div>
+                <% }; %>
+
+              <% if(datatable.url=='leads' && datatable.filter && datatable.filter=='leads' ) { %>
+              <%- include('../admin/components/filters/leads.ejs', datatableAddTelecallers) -%>
+              <% } %>
+
+          <% if(permissionsList.includes('add') && !(addUrl.includes('customer/addCustomer')) && !(addUrl.includes('leads/archiveLeads')) && !(addUrl.includes('leads/addLeads')) && !(addUrl.includes('audit/add'))) { %>
+          <div class="col s2 m6 l8">
+            <a class="btn waves-effect waves-light right gradient-45deg-green-teal adduser"
+              href="<%= addUrl %>">
+              <i class="material-icons hide-on-med-and-up">settings</i>
+              <span class="hide-on-small-onl"><%= addButtonName %></span>
+              <i class="material-icons right">add</i>
+            </a>
+          </div>
+          <% }; %>
+
+        </div>
+      </div>
+    </div>
+    <% if(datatable.apiUrl=='user/userlist' ) { %>
+    <div class="row">
+      <div class="col s12">
+          <div class="container">
+              <section class="tabs-vertical mt-1 section">
+                  <div class="row">
+                      <div class="col s12">
+                          <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                              <div class="card-content">
+                                <div class="row mt-0">
+                                  <div class="col s4 m4 l4">
+                                    <p class="m-0"><b>Telecallers</b></p>
+                                    <h5 class="mt-2"><%=noOfTelecaller%></h5>
+                                  </div>
+                                  <div class="col s4 m4 l4">
+                                    <p class="m-0"><b>FOS</b></p>
+                                    <h5 class="mt-2"><%=noOfFOS%></h5>
+                                  </div>
+                                  <div class="col s4 m4 l4">
+                                    <p class="m-0"><b>Team Leaders</b></p>
+                                    <h5 class="mt-2"><%=noOfTeamLeader%></h5>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+          </div>
+      </div>
+    </div>
+    <% }; %>
+    <% if(datatable.apiUrl=='leads/leadslistNew' ) { %>
+      <div class="row">
+        <div class="col s12">
+            <div class="container">
+                <section class="tabs-vertical mt-1 section">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                                <div class="card-content">
+                                  <div class="row mt-0">
+                                    <div class="col s6 m6 l6">
+                                      <p class="m-0"><b>No of New Leads</b></p>
+                                      <h5 class="mt-2" id="noOfLead"><%=parseInt(newLeadCount).toLocaleString()%></h5>
+                                    </div>
+                                    <div class="col s6 m6 l6">
+                                      <p class="m-0"><b>Total Collectable Amount</b></p>
+                                      <h5 class="mt-2" id="CollectableAmt"><%=parseInt(totalAmount).toLocaleString()%></h5>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+      </div>
+      <% }%>
+
+      <% if(datatable.apiUrl=='masterData/pincodes/pincodeList' ) { %>
+        <div class="row">
+          <div class="col s12">
+              <div class="container">
+                  <section class="tabs-vertical mt-1 section">
+                      <div class="row">
+                          <div class="col s12">
+                              <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                                  <div class="card-content">
+                                    <div class="row mt-0">
+                                      <div class="col s6 m6 l6">
+                                        <p class="m-0"><b>Total Pincode</b></p>
+                                        <h5 class="mt-2" id="totalPincode"><%=parseInt(pincodeCount).toLocaleString()%></h5>
+                                      </div>
+                                      <div class="col s6 m6 l6">
+                                        <p class="m-0"><b>Serviceable Pincode</b></p>
+                                        <h5 class="mt-2" id="serviceablePincode"><%=parseInt(pincodeServiceable).toLocaleString()%></h5>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </section>
+              </div>
+          </div>
+        </div>
+        <% }%>
+
+      <% if(datatable.apiUrl=='leads/leadslistAll' ) { %>
+        <div class="row">
+          <div class="col s12">
+              <div class="container">
+                  <section class="tabs-vertical mt-1 section">
+                      <div class="row">
+                          <div class="col s12">
+                              <div class="card-panel roundCorners" style="margin-bottom: 0px">
+                                  <div class="card-content">
+                                    <div class="row mt-0" style="display: flex;">
+                                      <div class="col s2 m2 l2">
+                                        <p class="m-0"><b>Cases<br/>Allocated</b></p>
+                                        <h5 class="mt-2" id="caseAllocated"><%=parseInt(caseAllocate).toLocaleString()%></h5>
+                                      </div>
+                                      <div class="col s2 m2 l2">
+                                        <p class="m-0"><b>Cases<br/>Collected</b></p>
+                                        <h5 class="mt-2" id="caseCollected"><%=parseInt(caseRecover).toLocaleString()%></h5>
+                                      </div>
+                                      <div class="col s2 m2 l2">
+                                        <p class="m-0"><b>Cases<br/>Pending</b></p>
+                                        <h5 class="mt-2" id="casePending"><%=parseInt(casePending).toLocaleString()%></h5>
+                                      </div>
+                                      <div class="col s2 m2 l2">
+                                        <p class="m-0"><b>Amount<br/>Allocated</b></p>
+                                        <h5 class="mt-2" id="amountAllocated"><%=parseInt(totalAmount).toLocaleString()%></h5>
+                                      </div>
+                                      <div class="col s2 m2 l2">
+                                        <p class="m-0"><b>Amount<br/>Collected</b></p>
+                                        <h5 class="mt-2" id="totalAmountCollected"><%=parseInt(totalAmountRecover).toLocaleString()%></h5>
+                                      </div>
+                                      <div class="col s2 m2 l2">
+                                        <p class="m-0"><b>Amount<br/>Pending</b></p>
+                                        <h5 class="mt-2" id="amountPending"><%=parseInt(amountPending).toLocaleString()%></h5>
+                                      </div>
+                                      <% if(roleName.name=='field_manager') { %>
+                                      <div class="col s2 m2 l2">
+                                        <p class="m-0"><b>Open<br/>Leads</b></p>
+                                        <h5 class="mt-2" id="openLeads"><%=parseInt(openLeads).toLocaleString()%></h5>
+                                      </div>
+                                      <% } %>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </section>
+              </div>
+          </div>
+        </div>
+        <% } %>
+    <%- include('components/datatable_new.ejs', datatable) -%>
+
+  </div>
+
+</div>
+<script>
+  var loanArray=[];
+ 
+  $(document).ready(function () {
+    var checkBox =$('#example_wrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr > th:nth-child(1) > span');
+    checkBox.html('<label><input type="checkbox" id="checkAll"><span></span></label>');
+    $(document).on('change','#checkAll', function () {
+      filter=true;
+        if ($(this).is(":checked")){
+            $('.CheckBox').prop('checked', true);
+        }else{
+          $('.CheckBox').prop('checked', false);
+        }
+        loanArray = $(".CheckBox").map(function(){
+          if($(this).is(":checked")){
+            return $(this).val();
+          }else{
+            let index = loanArray.indexOf($(this).val());
+            if (index > -1) {
+              loanArray.splice(index, 1);
+            }
+          }
+          
+        }).toArray();
+        console.log("Checked Leads",loanArray); 
+        if(loanArray.length==0){
+          filter=false
+        }
+      });
+
+    $(document).on('change','.CheckBox', function () {
+      filter=true;
+        console.log($(this).is(":checked"));
+      
+        let loanId=$(this).val();
+        if ($(this).is(":checked")){
+          if (loanArray.indexOf(loanId) < 0) {
+            loanArray.push(loanId);
+          }
+        }else{
+          let index = loanArray.indexOf(loanId);
+          if (index > -1) {
+            loanArray.splice(index, 1);
+          }
+        }
+        console.log("LoanArray 2",loanArray);
+        if(loanArray.length==0){
+          filter=false
+        }
+    })
+});
+
+
+
+function checkboxFunc(loanId) {
+    console.log('checkbox :-', loanId);
+    console.log("Check :",$(this).is(":checked"))
+    if (loanArray.indexOf(loanId) < 0) {
+      loanArray.push(loanId);
+    }
+    console.log('checkboxArray :-', loanArray);
+  }
+  
+</script>
+<% if(datatable.filter !=undefined && url=='users' || url=='leads/newLeads' || url=='leads/assignLeads' ) { %>
+<%- include('right_side_filter.ejs') -%>
+<%  } %>
+<%- include('bottom.ejs') -%>
